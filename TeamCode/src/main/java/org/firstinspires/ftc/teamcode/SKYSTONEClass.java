@@ -15,7 +15,7 @@ public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf;
     Servo leftClaw;
-    CRServo collector;
+    CRServo collector, knockOffRightServo;
     //Software
     private Telemetry telemetry;
 
@@ -37,7 +37,7 @@ public class SKYSTONEClass {
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
-
+        knockOffRightServo = hardwareMap.crservo.get("grabberServo");
 
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -149,5 +149,8 @@ public class SKYSTONEClass {
             ret = Math.max(ret, Math.abs(x));
         }
         return ret;
+    }
+    public void moveServoArm(int degrees) {
+
     }
 }

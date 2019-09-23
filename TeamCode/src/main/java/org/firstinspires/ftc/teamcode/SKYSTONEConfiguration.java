@@ -7,5 +7,5 @@ class SKYSTONEConfiguration {
     final String frontRightMotor = "frontRight";
     final String leftClawServo = "leftClawServo";
     final String collectorServo = "collectorServo";
-
+    final String knockOffRightServo = "grabberServo";
 }
