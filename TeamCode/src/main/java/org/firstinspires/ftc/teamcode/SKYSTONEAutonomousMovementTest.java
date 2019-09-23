@@ -70,7 +70,6 @@ public class SKYSTONEAutonomousMovementTest extends LinearOpMode {
         };
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.3;
-        //SKYSTONEClass methods = new SKYSTONEClass();
         methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -83,20 +82,20 @@ public class SKYSTONEAutonomousMovementTest extends LinearOpMode {
 
             x = 0;
             y = 0;
-            dashboardRecordPosition(144, 144);
-            TelemetryPacket packet;
+            // dashboardRecordPosition(144, 144);
+            //TelemetryPacket packet;
 
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.aFoundationDistance + 5, speed);
-            packet = new TelemetryPacket();
-            packet.put("cat", 3.8);
+            methods.encoderStraightDriveInches(-SKYSTONEConstants.aFoundationDistance + 10, speed);
+            //packet = new TelemetryPacket();
+            //packet.put("cat", 3.8);
             //packet.fieldOverlay().setFill("blue").fillRect(-);
 
-            dashboard.sendTelemetryPacket(packet);
+            //dashboard.sendTelemetryPacket(packet);
 
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.bFoundationClear, speed);
             methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(SKYSTONEConstants.cSkybridgeClear, speed);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.dSkyStoneAlign,speed);
+            methods.encoderStraightDriveInches(-SKYSTONEConstants.cSkybridgeClear, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.dSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
             methods.encoderStraightDriveInches(-30,speed);
@@ -112,7 +111,7 @@ public class SKYSTONEAutonomousMovementTest extends LinearOpMode {
         }
     }
 
-    private void dashboardRecordPosition(int deltax, int deltay) {
+    /*private void dashboardRecordPosition(int deltax, int deltay) {
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("cat", 3.7);
         packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
@@ -120,5 +119,5 @@ public class SKYSTONEAutonomousMovementTest extends LinearOpMode {
         dashboard.sendTelemetryPacket(packet);
         x = x + deltax;
         y = y + deltay;
-    }
+    }*/
 }
