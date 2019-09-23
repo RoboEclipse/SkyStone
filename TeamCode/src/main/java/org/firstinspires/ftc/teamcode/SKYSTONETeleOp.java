@@ -95,7 +95,15 @@ public class SKYSTONETeleOp extends OpMode
         if(gamepad2.x) {
             myRobot.collector.setPower(.7);
         }
-
+        else if(gamepad2.y) {
+            myRobot.collector.setPower(-.7);
+        }
+        if(gamepad2.a) {
+            myRobot.knockOffRightServo.setPower(0.3);
+        }
+        else if(gamepad2.b) {
+            myRobot.knockOffRightServo.setPower(-0.3);
+        }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
         double v_rotation = gamepad1.right_stick_x;
