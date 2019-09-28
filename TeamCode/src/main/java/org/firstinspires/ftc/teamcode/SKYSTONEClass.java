@@ -37,7 +37,7 @@ public class SKYSTONEClass {
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
-        knockOffRightServo = hardwareMap.crservo.get(skystoneNames.knockOffRightServo);
+        knockOffRightServo = hardwareMap.crservo.get(skystoneNames.grabberServoR);
 
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

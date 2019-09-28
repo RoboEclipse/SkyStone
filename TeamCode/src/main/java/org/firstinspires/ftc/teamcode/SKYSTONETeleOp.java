@@ -41,6 +41,7 @@ public class SKYSTONETeleOp extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEClass myRobot = new SKYSTONEClass();
+    private double leftClawPosition = 0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -104,18 +105,17 @@ public class SKYSTONETeleOp extends OpMode
         else if(gamepad2.b) {
             myRobot.knockOffRightServo.setPower(-0.3);
         }
+        if(gamepad2.left_bumper){
+            leftClawPosition = 0;
+        }
+        else if(gamepad2.right_bumper){
+            leftClawPosition = 1;
+        }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
         double v_rotation = gamepad1.right_stick_x;
 
         myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
-        double leftClawPosition = 0.5;
-        if(gamepad1.dpad_up){
-            leftClawPosition += 0.01;
-        }
-        if(gamepad1.dpad_down) {
-            leftClawPosition -= 0.01;
-        }
         myRobot.setLeftClawPosition(leftClawPosition);
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
