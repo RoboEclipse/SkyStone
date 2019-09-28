@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-//import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -15,7 +15,7 @@ public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf;
     Servo leftClaw;
-    CRServo collector, knockOffRightServo;
+    CRServo collector, grabberServoR;
     //Software
     private Telemetry telemetry;
 
@@ -26,7 +26,7 @@ public class SKYSTONEClass {
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry_){
         telemetry = telemetry_;
-        //FtcDashboard dashboard = FtcDashboard.getInstance();
+        FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
 
@@ -37,7 +37,7 @@ public class SKYSTONEClass {
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
-        knockOffRightServo = hardwareMap.crservo.get(skystoneNames.grabberServoR);
+        grabberServoR = hardwareMap.crservo.get(skystoneNames.grabberServoR);
 
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -151,6 +151,6 @@ public class SKYSTONEClass {
         return ret;
     }
     public void grabStones(int degrees) {
-        knockOffRightServo.setPower(0.3);
+        grabberServoR.setPower(0.3);
     }
 }

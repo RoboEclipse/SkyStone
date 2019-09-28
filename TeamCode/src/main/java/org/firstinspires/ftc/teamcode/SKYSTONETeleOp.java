@@ -100,10 +100,10 @@ public class SKYSTONETeleOp extends OpMode
             myRobot.collector.setPower(-.7);
         }
         if(gamepad2.a) {
-            myRobot.knockOffRightServo.setPower(0.3);
+            myRobot.grabberServoR.setPower(0.3);
         }
         else if(gamepad2.b) {
-            myRobot.knockOffRightServo.setPower(-0.3);
+            myRobot.grabberServoR.setPower(-0.3);
         }
         if(gamepad2.left_bumper){
             leftClawPosition = 0;

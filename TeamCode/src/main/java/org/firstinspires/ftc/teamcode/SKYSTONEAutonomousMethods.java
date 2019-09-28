@@ -126,6 +126,23 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return myRobot.rb.getCurrentPosition();
     }
 
+    //Attachments
+    void lowerClaw(){
+        myRobot.leftClaw.setPosition(1);
+    }
+    void higherClaw(){
+        myRobot.leftClaw.setPosition(0);
+    }
+    void tightenCollector(){
+        myRobot.grabberServoR.setPower(.3);
+    }
+    void stopCollector(){
+        myRobot.grabberServoR.setPower(0);
+    }
+    void loosenCollector(){
+        myRobot.grabberServoR.setPower(-0.3);
+    }
+    //private void
     //Shortcuts
     private void setModeAllDrive(DcMotor.RunMode mode){
         myRobot.lb.setMode(mode);
