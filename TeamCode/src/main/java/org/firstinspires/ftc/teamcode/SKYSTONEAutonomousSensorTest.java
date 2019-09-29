@@ -33,6 +33,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -51,7 +55,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
     private SKYSTONEConstants constants = new SKYSTONEConstants();
-
+    private List<Recognition> updatedRecognitions;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -76,7 +80,23 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("OpModeIsActive",methods.opModeStatus());
             methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            methods.runTensorFlow();
+            updatedRecognitions = methods.runTensorFlow();
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+
+                // step through the list of recognitions and display boundary info.
+                int i = 0;
+                for (Recognition recognition : updatedRecognitions) {
+                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                            recognition.getLeft(), recognition.getTop());
+                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                            recognition.getRight(), recognition.getBottom());
+                }
+            }
+            else{
+                telemetry.addData("# Object Detected", 0);
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
             telemetry.addData("RollAngle", methods.getRoll());

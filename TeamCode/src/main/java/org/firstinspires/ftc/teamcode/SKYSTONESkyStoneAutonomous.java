@@ -29,11 +29,17 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.text.style.UpdateAppearance;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
 
 
 /**
@@ -58,6 +64,8 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
     private int x;
     private int y;
     FtcDashboard dashboard;
+    List<Recognition> updatedRecognitions;
+    String skyStonePosition = "Right";
 
     @Override
     public void runOpMode() {
@@ -71,6 +79,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         methods.initialize(hardwareMap, telemetry);
+
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         waitForStart();
@@ -78,8 +87,36 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance, speed);
-            methods.encoderStrafeDriveInchesRight(-3, speed);
+            methods.encoderStraightDriveInches(12, speed);
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            updatedRecognitions = methods.runTensorFlow();
+            //If anything detected
+            if(updatedRecognitions != null){
+                //Try and find a Skystone
+                for(Recognition recognition : updatedRecognitions){
+                    //Get width of image
+                    int width = recognition.getImageWidth();
+                    //Find skystone
+                    if(recognition.getLabel().equals("Skystone")){
+                        double center = (recognition.getLeft()+recognition.getRight())/2;
+                        if(center<width/3){
+                            skyStonePosition = "Left";
+                        }
+                        if(center<2*width/3){
+                            skyStonePosition = "Center";
+                        }
+                    }
+                }
+            }
+            //Move accordingly
+            if(skyStonePosition.equals("Left")){
+                methods.encoderStraightDriveInches(-8, speed);
+            }
+            else if(skyStonePosition.equals("Right")){
+                methods.encoderStraightDriveInches(8, speed);
+            }
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            //methods.encoderStrafeDriveInchesRight(-3, speed);
             methods.loosenCollector();
             methods.lowerClaw();
             sleep(1000);

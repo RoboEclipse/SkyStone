@@ -175,7 +175,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void loosenCollector(){
         myRobot.grabberServoR.setPower(-0.3);
     }
-    void runTensorFlow(){
+    List<Recognition> runTensorFlow(){
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -193,7 +193,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                             recognition.getRight(), recognition.getBottom());
                 }
             }
+            return updatedRecognitions;
         }
+        return null;
     }
     void stopTensorFlow(){
         if (tfod != null) {
@@ -290,7 +292,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(/*tfodMonitorViewId*/);
-        tfodParameters.minimumConfidence = 0.8;
+        tfodParameters.minimumConfidence = 0.6;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
