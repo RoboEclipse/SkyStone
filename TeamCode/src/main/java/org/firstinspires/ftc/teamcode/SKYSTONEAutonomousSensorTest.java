@@ -76,6 +76,7 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("OpModeIsActive",methods.opModeStatus());
             methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+            methods.runTensorFlow();
             // Show the elapsed game time and wheel power.
             telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
             telemetry.addData("RollAngle", methods.getRoll());
@@ -89,6 +90,7 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
             telemetry.addData("RightStickX", gamepad1.right_stick_x);
             telemetry.update();
         }
+        methods.stopTensorFlow();
     }
 
     public boolean opModeCheck(){
