@@ -87,7 +87,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            methods.encoderStraightDriveInches(12, speed);
+            methods.encoderStraightDriveInches(-12, speed);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             updatedRecognitions = methods.runTensorFlow();
             //If anything detected
@@ -126,12 +126,13 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             methods.stopCollector();
             sleep(1000);
-            methods.encoderStraightDriveInches(-SKYSTONEConstants._bBridgeCrossDistance, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;
         }
+        methods.stopTensorFlow();
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {
