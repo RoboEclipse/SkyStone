@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -47,13 +49,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
+@Autonomous(name="SKYSTONEFoundationAutonomous", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
-    private SKYSTONEConstants constants = new SKYSTONEConstants();
+public class SKYSTONEFoundationAutonomous extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private int x;
+    private int y;
+    FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
@@ -64,8 +68,8 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
 
             }
         };
-
-        //SKYSTONEClass methods = new SKYSTONEClass();
+        dashboard = FtcDashboard.getInstance();
+        final double speed = 0.3;
         methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -74,26 +78,47 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive",methods.opModeStatus());
-            methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            methods.runTensorFlow();
+            TelemetryPacket packet;
+            packet = new TelemetryPacket();
+            packet.put("cat", 3.8);
+            //packet.fieldOverlay().setFill("blue").fillRect(-);
+
+            dashboard.sendTelemetryPacket(packet);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.aFoundationDistance, speed);
+
+            x = 0;
+            y = 0;
+            // dashboardRecordPosition(144, 144);
+
+            methods.encoderStraightDriveInches(-SKYSTONEConstants.aFoundationDistance + 10, speed);
+
+
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.bFoundationClear, speed);
+            methods.encoderTurn(-90, speed, 3);
+            methods.encoderStraightDriveInches(-SKYSTONEConstants.cSkybridgeClear, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.dSkyStoneAlign,speed);
+            /*
+            methods.encoderStrafeDriveInchesRight(5, speed);
+            methods.encoderStraightDriveInches(-30,speed);
+            methods.encoderStraightDriveInches(35, speed);
+            methods.encoderStrafeDriveInchesRight(-5,speed);
+            methods.encoderStrafeDriveInchesRight(5,speed);
+            methods.encoderStraightDriveInches(-20,speed);
+            */
             // Show the elapsed game time and wheel power.
-            telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
-            telemetry.addData("RollAngle", methods.getRoll());
-            telemetry.addData("VerticalAngle", methods.getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
-                    ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LeftStickY", gamepad1.left_stick_y);
-            telemetry.addData("RightStickY", gamepad1.right_stick_y);
-            telemetry.addData("LeftStickX", gamepad1.left_stick_x);
-            telemetry.addData("RightStickX", gamepad1.right_stick_x);
             telemetry.update();
+            break;
         }
-        methods.stopTensorFlow();
     }
 
-    public boolean opModeCheck(){
-        return opModeIsActive();
-    }
+    /*private void dashboardRecordPosition(int deltax, int deltay) {
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("cat", 3.7);
+        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
+
+        dashboard.sendTelemetryPacket(packet);
+        x = x + deltax;
+        y = y + deltay;
+    }*/
 }

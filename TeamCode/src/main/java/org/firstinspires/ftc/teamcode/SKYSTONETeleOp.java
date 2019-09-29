@@ -93,17 +93,22 @@ public class SKYSTONETeleOp extends OpMode
             lx=1;
             speedMultiplier = 0.75;
         }
+        /*
         if(gamepad2.x) {
             myRobot.collector.setPower(.7);
         }
         else if(gamepad2.y) {
             myRobot.collector.setPower(-.7);
         }
+        */
         if(gamepad2.a) {
-            myRobot.knockOffRightServo.setPower(0.3);
+            myRobot.grabberServoR.setPower(0.3);
         }
         else if(gamepad2.b) {
-            myRobot.knockOffRightServo.setPower(-0.3);
+            myRobot.grabberServoR.setPower(-0.3);
+        }
+        else{
+            myRobot.grabberServoR.setPower(0);
         }
         if(gamepad2.left_bumper){
             leftClawPosition = 0;
