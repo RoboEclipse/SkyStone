@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.text.style.UpdateAppearance;
+import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -109,6 +110,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
                 }
             }
             telemetry.addData("SkyStone", "Location: " + skyStonePosition);
+            Log.i("SkyStone Location", "Location: " + skyStonePosition);
             telemetry.update();
             //Move accordingly
             if(skyStonePosition.equals("Left")){
