@@ -108,6 +108,16 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
                         }
                     }
                 }
+                // step through the list of recognitions and display boundary info.
+                int i = 0;
+                for (Recognition recognition : updatedRecognitions) {
+                    Log.i(String.format("label (%d)", i), recognition.getLabel());
+                    Log.i(String.format("  left,top (%d) %.03f , %.03f",
+                            i, recognition.getLeft(), recognition.getTop()), "");
+                    Log.i(String.format("  right,bottom (%d) %.03f , %.03f",
+                            i, recognition.getRight(), recognition.getBottom()), "");
+                }
+
             }
             telemetry.addData("SkyStone", "Location: " + skyStonePosition);
             Log.i("SkyStone Location", "Location: " + skyStonePosition);
