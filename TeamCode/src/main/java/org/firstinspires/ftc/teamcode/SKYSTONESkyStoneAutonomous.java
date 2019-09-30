@@ -87,7 +87,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            methods.encoderStraightDriveInches(-12, speed);
+            methods.encoderStraightDriveInches(-16, speed);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             updatedRecognitions = methods.runTensorFlow();
             //If anything detected
@@ -108,6 +108,8 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
                     }
                 }
             }
+            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
+            telemetry.update();
             //Move accordingly
             if(skyStonePosition.equals("Left")){
                 methods.encoderStraightDriveInches(-8, speed);
@@ -125,10 +127,12 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             methods.encoderStrafeDriveInchesRight(15, speed);
             methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             methods.stopCollector();
+            methods.higherClaw();
             sleep(1000);
             methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
             telemetry.update();
             break;
         }

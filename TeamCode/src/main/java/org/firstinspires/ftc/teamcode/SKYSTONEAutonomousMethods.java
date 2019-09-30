@@ -167,13 +167,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.leftClaw.setPosition(0);
     }
     void tightenCollector(){
-        myRobot.grabberServoR.setPower(.3);
+        myRobot.grabberServoR.setPower(.5);
     }
     void stopCollector(){
         myRobot.grabberServoR.setPower(0);
     }
     void loosenCollector(){
-        myRobot.grabberServoR.setPower(-0.3);
+        myRobot.grabberServoR.setPower(-0.5);
     }
     List<Recognition> runTensorFlow(){
         if (tfod != null) {
