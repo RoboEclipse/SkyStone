@@ -66,7 +66,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
     private int y;
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
-    String skyStonePosition = "Right";
+    String skyStonePosition = "Center";
 
     @Override
     public void runOpMode() {
@@ -95,27 +95,27 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             if(updatedRecognitions != null){
                 //Try and find a Skystone
                 for(Recognition recognition : updatedRecognitions){
-                    //Get width of image
-                    int width = recognition.getImageWidth();
+                    //Get height of image
+                    int height = recognition.getImageHeight();
                     //Find skystone
                     if(recognition.getLabel().equals("Skystone")){
-                        double center = (recognition.getLeft()+recognition.getRight())/2;
-                        if(center<width/3){
+                        double center = (recognition.getTop()+recognition.getBottom())/2;
+                        if(center>2*height/3){
                             skyStonePosition = "Left";
                         }
-                        if(center<2*width/3){
-                            skyStonePosition = "Center";
+                        if(center<height/3){
+                            skyStonePosition = "Right";
                         }
                     }
                 }
                 // step through the list of recognitions and display boundary info.
                 int i = 0;
                 for (Recognition recognition : updatedRecognitions) {
-                    Log.i(String.format("label (%d)", i), recognition.getLabel());
-                    Log.i(String.format("  left,top (%d) %.03f , %.03f",
-                            i, recognition.getLeft(), recognition.getTop()), "");
-                    Log.i(String.format("  right,bottom (%d) %.03f , %.03f",
-                            i, recognition.getRight(), recognition.getBottom()), "");
+                    Log.i("Label", String.format("label (%d)", i) + recognition.getLabel());
+                    Log.i("LeftTopCorner", String.format("  left,top (%d) %.03f , %.03f",
+                            i, recognition.getLeft(), recognition.getTop()));
+                    Log.i("RightBottomCorner", String.format("  right,bottom (%d) %.03f , %.03f",
+                            i, recognition.getRight(), recognition.getBottom()));
                 }
 
             }

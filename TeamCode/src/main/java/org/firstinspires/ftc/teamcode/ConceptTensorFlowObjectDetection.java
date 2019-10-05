@@ -91,11 +91,16 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 if (tfod != null) {
+
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
+                      if(updatedRecognitions.size()>0){
+                          telemetry.addData("Width", updatedRecognitions.get(0).getImageWidth() + "");
+                          telemetry.addData("Height", updatedRecognitions.get(0).getImageHeight() + "");
+                      }
 
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
