@@ -14,7 +14,7 @@ import java.util.Locale;
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf;
-    Servo leftClaw;
+    Servo leftClaw, clawRotation, clawSlide, stackingClaw;
     CRServo collector, grabberServoR;
     //Software
     private Telemetry telemetry;
@@ -36,6 +36,9 @@ public class SKYSTONEClass {
         rb = hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
+        clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
+        clawSlide = hardwareMap.servo.get(skystoneNames.slidingServo);
+        stackingClaw = hardwareMap.servo.get(skystoneNames.stackingClawServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
         grabberServoR = hardwareMap.crservo.get(skystoneNames.grabberServoR);
 
@@ -149,7 +152,9 @@ public class SKYSTONEClass {
         }
         return ret;
     }
-    public void grabStones(int degrees) {
+    /*public void grabSkyStone(int degrees) {
         grabberServoR.setPower(0.3);
-    }
+    } */
+    public void grabStones (int closingDegrees) { stackingClaw.setPosition(closingDegrees); }
+    public void rotateStackingClaw(int turningDegrees) { clawRotation.setPosition(turningDegrees); }
 }
