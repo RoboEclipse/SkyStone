@@ -19,4 +19,8 @@ public class SKYSTONEConstants {
     public static double _aSkyStoneDistance = -32;
     public static double _bBridgeCrossDistance = 55;
     public static double _cBridgeReturnDistance = -40;
+    //Skystone Tele-op Stacking Claw Rotation Servo Constants
+    public static double zero = 0.5; //Angled straight
+    public static double right90 = 2/3; //90 degrees right from straight
+    public static double left90 = 1/3; //90 degrees left from straight
 }

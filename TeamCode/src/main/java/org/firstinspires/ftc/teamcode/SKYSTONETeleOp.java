@@ -101,7 +101,7 @@ public class SKYSTONETeleOp extends OpMode
             myRobot.collector.setPower(-.7);
         }
         */
-        if(gamepad2.a) {
+        /* if(gamepad2.a) {
             myRobot.grabberServoR.setPower(0.3);
         }
         else if(gamepad2.b) {
@@ -115,7 +115,7 @@ public class SKYSTONETeleOp extends OpMode
         }
         else if(gamepad2.right_bumper){
             leftClawPosition = 1;
-        }
+        } */
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
         double v_rotation = gamepad1.right_stick_x;
