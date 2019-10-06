@@ -90,7 +90,6 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
         while (opModeIsActive()) {
             methods.encoderStraightDriveInches(-16, speed);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
-            updatedRecognitions = methods.runTensorFlow();
             //If anything detected
             if(updatedRecognitions != null){
                 //Try and find a Skystone
@@ -148,7 +147,6 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             telemetry.update();
             break;
         }
-        methods.stopTensorFlow();
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {
