@@ -26,4 +26,8 @@ public class SKYSTONEConstants {
     //Skystone Tele-op Stacking Grabber Claw
     public static double tighten = 0.5;
     public static double loosen = 0.7;
+    //Skystone Tele-op Sliding Servo looking from the claw towards the slider
+    public static double farLeft = 0.2;
+    public static double middle = 0.5;
+    public static double farRight = 0.8;
 }
