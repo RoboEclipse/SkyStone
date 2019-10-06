@@ -92,8 +92,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
         while (opModeIsActive()) {
 
             //Move back into depot
-            methods.encoderStraightDriveInches(SKYSTONEConstants._depotDistance
-                    , speed);
+            //methods.encoderStraightDriveInches(SKYSTONEConstants._depotDistance, speed);
             //Strafe slightly close
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             y = vuforiaMethods.loopDetection(telemetry, detections);
