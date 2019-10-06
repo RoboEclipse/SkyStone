@@ -63,8 +63,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private int x;
-    private int y;
+    double y = 0;
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
     String skyStonePosition = "Center";
@@ -91,40 +90,25 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            vuforiaMethods.loopDetection(telemetry, detections);
-            methods.encoderStraightDriveInches(-16, speed);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
-            //If anything detected
-            if(updatedRecognitions != null){
-                //Try and find a Skystone
-                for(Recognition recognition : updatedRecognitions){
-                    //Get height of image
-                    int height = recognition.getImageHeight();
-                    //Find skystone
-                    if(recognition.getLabel().equals("Skystone")){
-                        double center = (recognition.getTop()+recognition.getBottom())/2;
-                        if(center>2*height/3){
-                            skyStonePosition = "Left";
-                        }
-                        if(center<height/3){
-                            skyStonePosition = "Right";
-                        }
-                    }
-                }
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    Log.i("Label", String.format("label (%d)", i) + recognition.getLabel());
-                    Log.i("LeftTopCorner", String.format("  left,top (%d) %.03f , %.03f",
-                            i, recognition.getLeft(), recognition.getTop()));
-                    Log.i("RightBottomCorner", String.format("  right,bottom (%d) %.03f , %.03f",
-                            i, recognition.getRight(), recognition.getBottom()));
-                }
 
+            //Move back into depot
+            methods.encoderStraightDriveInches(SKYSTONEConstants._depotDistance
+                    , speed);
+            //Strafe slightly close
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            y = vuforiaMethods.loopDetection(telemetry, detections);
+            if(y > 6){
+                skyStonePosition = "Right";
+                Log.d("SkystonePosition", "Right");
+                telemetry.addData("SkystonePosition", "Right");
             }
-            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
-            Log.i("SkyStone Location", "Location: " + skyStonePosition);
-            telemetry.update();
+            else if(y<-6){
+                skyStonePosition = "Left";
+                Log.d("SkystonePosition", "Left");
+            }
+            else{
+                Log.d("SkyStonePosition", "Center");
+            }
             //Move accordingly
             if(skyStonePosition.equals("Left")){
                 methods.encoderStraightDriveInches(-8, speed);
@@ -134,18 +118,21 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             }
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             //methods.encoderStrafeDriveInchesRight(-3, speed);
+            /*
             methods.loosenCollector();
             methods.lowerClaw();
             sleep(1000);
             methods.tightenCollector();
             sleep(3000);
+            */
             methods.encoderStrafeDriveInchesRight(15, speed);
             methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
-            methods.stopCollector();
-            methods.higherClaw();
+            //methods.stopCollector();
+            //methods.higherClaw();
             sleep(1000);
             methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             // Show the elapsed game time and wheel power.
+            telemetry.addData("Offset", y);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("SkyStone", "Location: " + skyStonePosition);
             telemetry.update();

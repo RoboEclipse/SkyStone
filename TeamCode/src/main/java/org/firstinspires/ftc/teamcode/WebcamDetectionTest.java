@@ -69,7 +69,6 @@ public class WebcamDetectionTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             vuforiaMethods.loopDetection(telemetry, detections);
-            break;
         }
         vuforiaMethods.deactivateDetection();
     }

@@ -180,7 +180,8 @@ public class SKYSTONEVuforiaDetection {
         targetsSkyStone.activate();
     }
 
-    public void loopDetection(Telemetry telemetry, List<VuforiaTrackable> allTrackables) {
+    public double loopDetection(Telemetry telemetry, List<VuforiaTrackable> allTrackables) {
+        double output;
         // check all the trackable targets to see which one (if any) is visible.
         targetVisible = false;
         for (VuforiaTrackable trackable : allTrackables) {
@@ -208,11 +209,14 @@ public class SKYSTONEVuforiaDetection {
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+            output = translation.get(1) / mmPerInch;
         }
         else {
             telemetry.addData("Visible Target", "none");
+            output = 0;
         }
         telemetry.update();
+        return output;
     }
     void deactivateDetection(){
         // Disable Tracking when we are done;
