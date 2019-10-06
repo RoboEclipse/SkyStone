@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -77,10 +78,12 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
             }
         };
+        SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         methods.initialize(hardwareMap, telemetry);
-
+        List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
+        vuforiaMethods.activateDetection();
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         waitForStart();
@@ -88,6 +91,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            vuforiaMethods.loopDetection(telemetry, detections);
             methods.encoderStraightDriveInches(-16, speed);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             //If anything detected
@@ -147,6 +151,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             telemetry.update();
             break;
         }
+        vuforiaMethods.deactivateDetection();
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {

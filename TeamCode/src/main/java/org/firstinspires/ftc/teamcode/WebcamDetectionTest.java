@@ -29,10 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -51,67 +55,32 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
+@Autonomous(name="WebcamDetectionTest", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
-    private SKYSTONEConstants constants = new SKYSTONEConstants();
-    private List<Recognition> updatedRecognitions;
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+public class WebcamDetectionTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
-
-            }
-        };
-
-        //SKYSTONEClass methods = new SKYSTONEClass();
-        methods.initialize(hardwareMap, telemetry);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
+        SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
+        List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
+        vuforiaMethods.activateDetection();
         waitForStart();
-        runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive",methods.opModeStatus());
-            methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
-
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-            }
-            else{
-                telemetry.addData("# Object Detected", 0);
-            }
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
-            telemetry.addData("RollAngle", methods.getRoll());
-            telemetry.addData("VerticalAngle", methods.getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
-                    ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LeftStickY", gamepad1.left_stick_y);
-            telemetry.addData("RightStickY", gamepad1.right_stick_y);
-            telemetry.addData("LeftStickX", gamepad1.left_stick_x);
-            telemetry.addData("RightStickX", gamepad1.right_stick_x);
-            telemetry.update();
+            vuforiaMethods.loopDetection(telemetry, detections);
+            break;
         }
+        vuforiaMethods.deactivateDetection();
     }
 
-    public boolean opModeCheck(){
-        return opModeIsActive();
-    }
+    /*private void dashboardRecordPosition(int deltax, int deltay) {
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("cat", 3.7);
+        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
+
+        dashboard.sendTelemetryPacket(packet);
+        x = x + deltax;
+        y = y + deltay;
+    }*/
 }

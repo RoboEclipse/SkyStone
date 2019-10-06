@@ -111,8 +111,13 @@ public class SKYSTONEVuforiaDetection {
     private float phoneXRotate    = 0;
     private float phoneYRotate    = 0;
     private float phoneZRotate    = 0;
+    private VuforiaTrackables targetsSkyStone;
 
-    public List<VuforiaTrackable> VuforiaDetectionLoop(HardwareMap hardwareMap) {
+    // Load the data sets for the trackable objects. These particular data
+    // sets are stored in the 'assets' part of our application.
+
+
+    public List<VuforiaTrackable> initializeVuforia(HardwareMap hardwareMap) {
 
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
@@ -131,9 +136,7 @@ public class SKYSTONEVuforiaDetection {
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        // Load the data sets for the trackable objects. These particular data
-        // sets are stored in the 'assets' part of our application.
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+        targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -173,7 +176,7 @@ public class SKYSTONEVuforiaDetection {
         }
         return allTrackables;
     }
-    public void activateDetection(VuforiaTrackables targetsSkyStone){
+    public void activateDetection(){
         targetsSkyStone.activate();
     }
 
@@ -211,7 +214,7 @@ public class SKYSTONEVuforiaDetection {
         }
         telemetry.update();
     }
-    void DeactivateDetection(VuforiaTrackables targetsSkyStone){
+    void deactivateDetection(){
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }
