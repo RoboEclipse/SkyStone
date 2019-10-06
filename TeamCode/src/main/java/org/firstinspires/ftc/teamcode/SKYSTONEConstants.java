@@ -23,4 +23,7 @@ public class SKYSTONEConstants {
     public static double zero = 0.5; //Angled straight
     public static double right90 = 2/3; //90 degrees right from straight
     public static double left90 = 1/3; //90 degrees left from straight
+    //Skystone Tele-op Stacking Grabber Claw
+    public static double tighten = 0.5;
+    public static double loosen = 0.7;
 }
