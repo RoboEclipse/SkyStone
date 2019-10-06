@@ -22,9 +22,13 @@ public class SKYSTONEConstants {
     public static double _cBridgeReturnDistance = -40;
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
     public static double zero = 0.5; //Angled straight
-    public static double right90 = 2/3; //90 degrees right from straight
-    public static double left90 = 1/3; //90 degrees left from straight
+    public static double right90 = 0.84; //90 degrees right from straight
+    public static double left90 = 0.17; //90 degrees left from straight
     //Skystone Tele-op Stacking Grabber Claw
     public static double tighten = 0.5;
     public static double loosen = 0.7;
+    //Skystone Tele-op Sliding Servo looking from the claw towards the slider
+    public static double farLeft = 0.2;
+    public static double middle = 0.5;
+    public static double farRight = 0.8;
 }
