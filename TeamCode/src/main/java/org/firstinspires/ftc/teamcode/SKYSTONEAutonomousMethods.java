@@ -160,15 +160,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     //Attachments
-    void tightenCollector(){
-        myRobot.grabberServoR.setPower(.5);
-    }
-    void stopCollector(){
-        myRobot.grabberServoR.setPower(0);
-    }
-    void loosenCollector(){
-        myRobot.grabberServoR.setPower(-0.5);
-    }
 
 
     //private void

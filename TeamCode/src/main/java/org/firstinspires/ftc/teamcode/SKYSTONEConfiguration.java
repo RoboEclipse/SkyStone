@@ -20,4 +20,5 @@ class SKYSTONEConfiguration {
     final String collectorServo = "collectorServo";
     final String stackingClawServo = "stackingServo";
     final String rotationServo = "rotationServo";
+    final String collectorRotationServo = "collectorRotationServo";
 }

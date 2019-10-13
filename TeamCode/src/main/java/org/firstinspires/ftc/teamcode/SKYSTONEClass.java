@@ -14,8 +14,8 @@ import java.util.Locale;
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, stackingClaw, leftFoundationServo, rightFoundationServo;
-    CRServo collector, grabberServoR;
+    private Servo clawRotation, leftFoundationServo, rightFoundationServo, collectorServo;
+    private CRServo collectionRotationServo;
     //Software
     private Telemetry telemetry;
 
@@ -37,11 +37,10 @@ public class SKYSTONEClass {
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
         rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
-        stackingClaw = hardwareMap.servo.get(skystoneNames.stackingClawServo);
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
-        collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
-
+        collectorServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -156,10 +155,13 @@ public class SKYSTONEClass {
 
 
     //Servo Movement
-    void grabStones (double closingDegrees) { stackingClaw.setPosition(closingDegrees); }
+    void grabStones (double closingDegrees) { collectorServo.setPosition(closingDegrees); }
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
     void moveFoundationServos(double foundationPosition){
         leftFoundationServo.setPosition(foundationPosition);
         rightFoundationServo.setPosition(foundationPosition);
+    }
+    void runCollectorServos(double collectorPower){
+        collectionRotationServo.setPower(collectorPower);
     }
 }

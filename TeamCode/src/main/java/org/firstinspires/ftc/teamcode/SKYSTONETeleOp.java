@@ -43,7 +43,8 @@ public class SKYSTONETeleOp extends OpMode
     private SKYSTONEClass myRobot = new SKYSTONEClass();
     private double clawRotator = 0;
     private double clawPosition = 0;
-    private double foundationPosition = 0;
+    private double foundationPosition = 0.5;
+    private double collectorPower = 0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -75,34 +76,34 @@ public class SKYSTONETeleOp extends OpMode
     @Override
     public void loop() {
         //Drive motor controls
-        double lx = gamepad1.left_stick_x;
-        double ly = -gamepad1.left_stick_y;
+        double lx = -gamepad1.left_stick_x;
+        double ly = gamepad1.left_stick_y;
         double speedMultiplier = 1;
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
-            ly=1;
-            speedMultiplier = 0.75;
-        }
-        else if(gamepad1.dpad_down){
             ly=-1;
             speedMultiplier = 0.75;
         }
+        else if(gamepad1.dpad_down){
+            ly=1;
+            speedMultiplier = 0.75;
+        }
         if(gamepad1.dpad_left){
-            lx=-1;
+            lx=1;
             speedMultiplier = 0.75;
         }
         else if(gamepad1.dpad_right){
-            lx=1;
+            lx=-1;
             speedMultiplier = 0.75;
         }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
-        double v_rotation = gamepad1.right_stick_x;
+        double v_rotation = -gamepad1.right_stick_x;
 
         myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
 
         //Elevator controls
-        double elevatorPower = -gamepad1.left_stick_y;
+        double elevatorPower = -gamepad2.left_stick_y;
         myRobot.rightElevator.setPower(elevatorPower);
         myRobot.leftElevator.setPower(elevatorPower);
 
@@ -112,28 +113,39 @@ public class SKYSTONETeleOp extends OpMode
 
         //Claw rotation
         if(gamepad2.right_bumper){
-            clawRotator = 1;
+            clawRotator = SKYSTONEConstants.left90;
         }
         else if(gamepad2.left_bumper) {
-            clawRotator = 0;
+            clawRotator = SKYSTONEConstants.right90;
         }
         myRobot.rotateStackingClaw(clawRotator);
 
         //Claw controls
         if(gamepad2.y) {
-            clawPosition = 1;
+            clawPosition = SKYSTONEConstants.tighten;
         }
         else if(gamepad2.x) {
-            clawPosition = 0;
+            clawPosition = SKYSTONEConstants.loosen;
         }
         myRobot.grabStones(clawPosition);
+        //Collector Servos
+        if(gamepad2.left_trigger>0.7){
+            collectorPower = 0.75;
+        }
+        else if(gamepad2.right_trigger>0.7){
+            collectorPower = -0.75;
+        }
+        else{
+            collectorPower = 0;
+        }
+        myRobot.runCollectorServos(collectorPower);
 
         //Foundation Servo Control (testing)
-        if(gamepad2.left_trigger>0.7){
-            foundationPosition = 0;
+        if(gamepad1.left_trigger>0.7){
+            foundationPosition = 0.4;
         }
-        if(gamepad2.right_trigger>0.7){
-            foundationPosition = 1;
+        if(gamepad1.right_trigger>0.7){
+            foundationPosition = 0.6;
         }
         myRobot.moveFoundationServos(foundationPosition);
 
@@ -143,6 +155,7 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("ClawRotationPosition", clawRotator);
         telemetry.addData("ClawPosition", clawPosition);
         telemetry.addData("FoundationPosition", foundationPosition);
+        telemetry.addData("CollectorPower", collectorPower);
         myRobot.readEncoders();
     }
 
