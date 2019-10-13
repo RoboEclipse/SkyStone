@@ -13,8 +13,8 @@ import java.util.Locale;
 
 public class SKYSTONEClass {
     //Hardware
-    DcMotor lb, lf, rb, rf;
-    Servo leftClaw, clawRotation, clawSlide, stackingClaw;
+    DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
+    Servo leftClaw, clawRotation, stackingClaw;
     CRServo collector, grabberServoR;
     //Software
     private Telemetry telemetry;
@@ -37,7 +37,9 @@ public class SKYSTONEClass {
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
-        clawSlide = hardwareMap.servo.get(skystoneNames.slidingServo);
+        clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
+        leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
+        rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
         stackingClaw = hardwareMap.servo.get(skystoneNames.stackingClawServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
         grabberServoR = hardwareMap.crservo.get(skystoneNames.grabberServoR);
@@ -47,6 +49,9 @@ public class SKYSTONEClass {
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
     }

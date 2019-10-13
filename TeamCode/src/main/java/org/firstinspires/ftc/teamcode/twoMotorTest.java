@@ -29,25 +29,52 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
+/**
+ * This file contains an example of an iterative (Non-Linear) "OpMode".
+ * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
+ * The names of OpModes appear on the menu of the FTC Driver Station.
+ * When an selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+ *
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+ * It includes all the skeletal structure that all iterative OpModes contain.
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
 
-@TeleOp(name="SKYSTONETeleOp", group="Iterative Opmode")
+@TeleOp(name="TwoMotorTest", group="Iterative Opmode")
 //@Disabled
-public class SKYSTONETeleOp extends OpMode
+public class twoMotorTest extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private SKYSTONEClass myRobot = new SKYSTONEClass();
-    private double leftClawPosition = 0;
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        myRobot.initialize(hardwareMap, telemetry);
+        telemetry.addData("Status", "Initialized");
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        leftDrive  = hardwareMap.get(DcMotor.class, "motor1");
+        rightDrive = hardwareMap.get(DcMotor.class, "motor2");
+
+        // Most robots need the motor on one side to be reversed to drive forward
+        // Reverse the motor that runs backwards when connected directly to the battery
+
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -72,86 +99,25 @@ public class SKYSTONETeleOp extends OpMode
      */
     @Override
     public void loop() {
-        //Drive motor controls
-        double lx = gamepad1.left_stick_x;
-        double ly = -gamepad1.left_stick_y;
-        double speedMultiplier = 1;
-        double rotationMultiplier = .8;
-        if(gamepad1.dpad_up){
-            ly=1;
-            speedMultiplier = 0.75;
-        }
-        else if(gamepad1.dpad_down){
-            ly=-1;
-            speedMultiplier = 0.75;
-        }
-        if(gamepad1.dpad_left){
-            lx=-1;
-            speedMultiplier = 0.75;
-        }
-        else if(gamepad1.dpad_right){
-            lx=1;
-            speedMultiplier = 0.75;
-        }
+        // Setup a variable for each drive wheel to save power level for telemetry
+        double leftPower;
+        double rightPower;
 
-        if(gamepad2.left_stick_y > 0) {
-            myRobot.rightElevator.setPower(-gamepad2.left_stick_y);
-            myRobot.leftElevator.setPower(-gamepad2.left_stick_y);
-        }
-        else if(gamepad2.left_stick_y < 0) {
-            myRobot.rightElevator.setPower(gamepad2.left_stick_y);
-            myRobot.leftElevator.setPower(gamepad2.left_stick_y);
-        }
-        else if(gamepad2.right_stick_y > 0) {
-            myRobot.clawSlide.setPower(gamepad2.right_stick_y);
-        }
-        else if(gamepad2.right_stick_y < 0) {
-            myRobot.clawSlide.setPower(-gamepad2.right_stick_y);
-        }
-        else if(gamepad2.right_bumper){
-            myRobot.clawRotation.setPosition(1);
-        }
-        else if(gamepad2.left_bumper) {
-            myRobot.clawRotation.setPosition(0);
-        }
-        else if(gamepad2.y) {
-            myRobot.stackingClaw.setPosition(1);
-        }
-        else if(gamepad2.x) {
-            myRobot.stackingClaw.setPosition(0  );
-        }
-        /*
-        if(gamepad2.x) {
-            myRobot.collector.setPower(.7);
-        }
-        else if(gamepad2.y) {
-            myRobot.collector.setPower(-.7);
-        }
-        */
-        /* if(gamepad2.a) {
-            myRobot.grabberServoR.setPower(0.3);
-        }
-        else if(gamepad2.b) {
-            myRobot.grabberServoR.setPower(-0.3);
-        }
-        else{
-            myRobot.grabberServoR.setPower(0);
-        }
-        if(gamepad2.left_bumper){
-            leftClawPosition = 0;
-        }
-        else if(gamepad2.right_bumper){
-            leftClawPosition = 1;
-        } */
-        double theta = Math.atan2(lx, ly);
-        double v_theta = Math.sqrt(lx * lx + ly * ly);
-        double v_rotation = gamepad1.right_stick_x;
+        // Choose to drive using either Tank Mode, or POV Mode
+        // Comment out the method that's not used.  The default below is POV.
 
-        myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
-        myRobot.setLeftClawPosition(leftClawPosition);
+        // Tank Mode uses one stick to control each wheel.
+        // - This requires no math, but it is hard to drive forward slowly and keep straight.
+        leftPower  = -gamepad1.left_stick_y ;
+        rightPower = leftPower;
+
+        // Send calculated power to wheels
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        myRobot.readEncoders();
+        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
     /*
@@ -159,7 +125,6 @@ public class SKYSTONETeleOp extends OpMode
      */
     @Override
     public void stop() {
-
     }
 
 }
