@@ -119,14 +119,12 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             //methods.encoderStrafeDriveInchesRight(-3, speed);
             methods.loosenCollector();
-            methods.lowerClaw();
             sleep(1000);
             methods.tightenCollector();
             sleep(3000);
             methods.encoderStrafeDriveInchesRight(15, speed);
             methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             methods.stopCollector();
-            methods.higherClaw();
             sleep(1000);
             methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             // Show the elapsed game time and wheel power.

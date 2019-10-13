@@ -41,7 +41,9 @@ public class SKYSTONETeleOp extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEClass myRobot = new SKYSTONEClass();
-    private double leftClawPosition = 0;
+    private double clawRotator = 0;
+    private double clawPosition = 0;
+    private double foundationPosition = 0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -93,64 +95,54 @@ public class SKYSTONETeleOp extends OpMode
             lx=1;
             speedMultiplier = 0.75;
         }
-
-        if(gamepad2.left_stick_y > 0) {
-            myRobot.rightElevator.setPower(-gamepad2.left_stick_y);
-            myRobot.leftElevator.setPower(-gamepad2.left_stick_y);
-        }
-        else if(gamepad2.left_stick_y < 0) {
-            myRobot.rightElevator.setPower(gamepad2.left_stick_y);
-            myRobot.leftElevator.setPower(gamepad2.left_stick_y);
-        }
-        else if(gamepad2.right_stick_y > 0) {
-            myRobot.clawSlide.setPower(gamepad2.right_stick_y);
-        }
-        else if(gamepad2.right_stick_y < 0) {
-            myRobot.clawSlide.setPower(-gamepad2.right_stick_y);
-        }
-        else if(gamepad2.right_bumper){
-            myRobot.clawRotation.setPosition(1);
-        }
-        else if(gamepad2.left_bumper) {
-            myRobot.clawRotation.setPosition(0);
-        }
-        else if(gamepad2.y) {
-            myRobot.stackingClaw.setPosition(1);
-        }
-        else if(gamepad2.x) {
-            myRobot.stackingClaw.setPosition(0  );
-        }
-        /*
-        if(gamepad2.x) {
-            myRobot.collector.setPower(.7);
-        }
-        else if(gamepad2.y) {
-            myRobot.collector.setPower(-.7);
-        }
-        */
-        /* if(gamepad2.a) {
-            myRobot.grabberServoR.setPower(0.3);
-        }
-        else if(gamepad2.b) {
-            myRobot.grabberServoR.setPower(-0.3);
-        }
-        else{
-            myRobot.grabberServoR.setPower(0);
-        }
-        if(gamepad2.left_bumper){
-            leftClawPosition = 0;
-        }
-        else if(gamepad2.right_bumper){
-            leftClawPosition = 1;
-        } */
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
         double v_rotation = gamepad1.right_stick_x;
 
         myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
-        myRobot.setLeftClawPosition(leftClawPosition);
+
+        //Elevator controls
+        double elevatorPower = -gamepad1.left_stick_y;
+        myRobot.rightElevator.setPower(elevatorPower);
+        myRobot.leftElevator.setPower(elevatorPower);
+
+        //Slide controls
+        double slidePower = gamepad2.right_stick_y;
+        myRobot.clawSlide.setPower(slidePower);
+
+        //Claw rotation
+        if(gamepad2.right_bumper){
+            clawRotator = 1;
+        }
+        else if(gamepad2.left_bumper) {
+            clawRotator = 0;
+        }
+        myRobot.rotateStackingClaw(clawRotator);
+
+        //Claw controls
+        if(gamepad2.y) {
+            clawPosition = 1;
+        }
+        else if(gamepad2.x) {
+            clawPosition = 0;
+        }
+        myRobot.grabStones(clawPosition);
+
+        //Foundation Servo Control (testing)
+        if(gamepad2.left_trigger>0.7){
+            foundationPosition = 0;
+        }
+        if(gamepad2.right_trigger>0.7){
+            foundationPosition = 1;
+        }
+        myRobot.moveFoundationServos(foundationPosition);
+
         // Show the elapsed game time and wheel power.
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("ElevatorPower", elevatorPower);
+        telemetry.addData("SlidePower", slidePower);
+        telemetry.addData("ClawRotationPosition", clawRotator);
+        telemetry.addData("ClawPosition", clawPosition);
+        telemetry.addData("FoundationPosition", foundationPosition);
         myRobot.readEncoders();
     }
 

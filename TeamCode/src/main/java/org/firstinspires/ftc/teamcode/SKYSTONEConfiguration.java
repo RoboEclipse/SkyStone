@@ -1,21 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
 class SKYSTONEConfiguration {
-    //Motors
+    //Drive Motors
     final String backLeftMotor = "backLeft";
     final String frontLeftMotor = "frontLeft";
     final String backRightMotor = "backRight";
     final String frontRightMotor = "frontRight";
 
-    // Scoring motor//
+    //Attachment motors
     final String slidingMotor = "slidingMotor";
     final String leftElevatorMotor = "leftElevator";
     final String rightElevatorMotor = "rightElevator";
-    //Autonomous
-    final String leftClawServo = "leftClawServo";
-    final String grabberServoR = "grabberServoR";
-    //Tele-op
+
+    //Autonomous Servos
+    final String leftFoundationServo = "leftFoundationServo";
+    final String rightFoundationServo = "rightFoundationServo";
+
+    //Tele-Op Servos
     final String collectorServo = "collectorServo";
-    final String stackingClawServo = "stackingClawServo";
+    final String stackingClawServo = "stackingServo";
     final String rotationServo = "rotationServo";
 }

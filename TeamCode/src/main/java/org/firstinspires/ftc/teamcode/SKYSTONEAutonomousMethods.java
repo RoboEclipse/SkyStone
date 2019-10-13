@@ -160,12 +160,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     //Attachments
-    void lowerClaw(){
-        myRobot.leftClaw.setPosition(1);
-    }
-    void higherClaw(){
-        myRobot.leftClaw.setPosition(0);
-    }
     void tightenCollector(){
         myRobot.grabberServoR.setPower(.5);
     }

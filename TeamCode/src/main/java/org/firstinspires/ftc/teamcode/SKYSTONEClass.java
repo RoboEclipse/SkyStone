@@ -14,35 +14,33 @@ import java.util.Locale;
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    Servo leftClaw, clawRotation, stackingClaw;
+    Servo clawRotation, stackingClaw, leftFoundationServo, rightFoundationServo;
     CRServo collector, grabberServoR;
     //Software
     private Telemetry telemetry;
 
     //Classes
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
-    private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
+    //private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry_){
         telemetry = telemetry_;
         FtcDashboard dashboard = FtcDashboard.getInstance();
 
-
-
         //HardwareMaps
         lb = hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
         lf = hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
         rb = hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
         rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
-        leftClaw = hardwareMap.servo.get(skystoneNames.leftClawServo);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
         rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
         stackingClaw = hardwareMap.servo.get(skystoneNames.stackingClawServo);
+        leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
+        rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         collector = hardwareMap.crservo.get(skystoneNames.collectorServo);
-        grabberServoR = hardwareMap.crservo.get(skystoneNames.grabberServoR);
 
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,36 +54,9 @@ public class SKYSTONEClass {
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
+
+
     //Methods
-    //Drivetrain
-    void encoderStraightDriveInches(double inches, double power){
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        multiSetTargetPosition(inches*skystoneConstants.TICKS_PER_INCH, lb, lf, rb, rf);
-        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
-        runMotors(power, power);
-        while (anyBusy()){
-            telemetry.addData("Left Front: ", lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", rb.getCurrentPosition());
-        }
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void readEncoders(){
-        telemetry.addData(
-                "Encoders", "lf: " + lf.getCurrentPosition()
-                        + " lb: " + lb.getCurrentPosition()
-                        + " rf: " +rf.getCurrentPosition()
-                        + " rb: "+ rb.getCurrentPosition());
-    }
-
-
-    //Left Claw Servo
-    public void setLeftClawPosition(double position){
-        leftClaw.setPosition(position);
-    }
     //Shortcuts
     private void setModeAllDrive(DcMotor.RunMode mode){
         lb.setMode(mode);
@@ -107,10 +78,9 @@ public class SKYSTONEClass {
         rb.setPower(rightPower);
         rf.setPower(rightPower);
     }
-
     //Drive Stuff
     //Preferably Do Not Touch
-    public void drive(double direction, double velocity, double rotationVelocity) {
+    void drive(double direction, double velocity, double rotationVelocity) {
         SKYSTONEClass.Wheels w = getWheels(direction, velocity, rotationVelocity);
         lf.setPower(w.lf);
         rf.setPower(w.rf);
@@ -157,9 +127,39 @@ public class SKYSTONEClass {
         }
         return ret;
     }
-    /*public void grabSkyStone(int degrees) {
-        grabberServoR.setPower(0.3);
-    } */
-    public void grabStones (int closingDegrees) { stackingClaw.setPosition(closingDegrees); }
-    public void rotateStackingClaw(int turningDegrees) { clawRotation.setPosition(turningDegrees); }
+
+
+
+    //Drivetrain
+    void encoderStraightDriveInches(double inches, double power){
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        multiSetTargetPosition(inches*SKYSTONEConstants.TICKS_PER_INCH, lb, lf, rb, rf);
+        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
+        runMotors(power, power);
+        while (anyBusy()){
+            telemetry.addData("Left Front: ", lf.getCurrentPosition());
+            telemetry.addData("Left Back: ", lb.getCurrentPosition());
+            telemetry.addData("Right Front: ", rf.getCurrentPosition());
+            telemetry.addData("Right Back: ", rb.getCurrentPosition());
+        }
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    void readEncoders(){
+        telemetry.addData(
+                "Encoders", "lf: " + lf.getCurrentPosition()
+                        + " lb: " + lb.getCurrentPosition()
+                        + " rf: " +rf.getCurrentPosition()
+                        + " rb: "+ rb.getCurrentPosition());
+    }
+
+
+    //Servo Movement
+    void grabStones (double closingDegrees) { stackingClaw.setPosition(closingDegrees); }
+    void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
+    void moveFoundationServos(double foundationPosition){
+        leftFoundationServo.setPosition(foundationPosition);
+        rightFoundationServo.setPosition(foundationPosition);
+    }
 }
