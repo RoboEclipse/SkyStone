@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -157,6 +159,20 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("FoundationPosition", foundationPosition);
         telemetry.addData("CollectorPower", collectorPower);
         myRobot.readEncoders();
+
+        //Log
+        Log.d("ElevatorPower", String.valueOf(elevatorPower));
+        Log.d("SlidePower", String.valueOf(slidePower));
+        Log.d("ClawRotationPosition", String.valueOf(clawRotator));
+        Log.d("ClawPosition", String.valueOf(clawPosition));
+        Log.d("FoundationPosition", String.valueOf(foundationPosition));
+        Log.d("CollectorPower", String.valueOf(collectorPower));
+        Log.d("Encoders",
+        "lf: " + myRobot.lf.getCurrentPosition()
+            + " lb: " + myRobot.lb.getCurrentPosition()
+            + " rf: " + myRobot.rf.getCurrentPosition()
+            + " rb: "+ myRobot.rb.getCurrentPosition());
+
     }
 
     /*
