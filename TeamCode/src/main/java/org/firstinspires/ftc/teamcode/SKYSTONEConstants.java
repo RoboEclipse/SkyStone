@@ -28,4 +28,10 @@ class SKYSTONEConstants {
     //Skystone Tele-op Stacking Grabber Claw
     static double tighten = 0.2;
     static double loosen = 0.50;
+    //Skystone Left Foundation Claw
+    static double lDown = 0;
+    static double lUp = 0;
+    //Skystone Right Foundation Claw
+    static double rDown = 0.6; //At least .5
+    static double rUp = 0.25;
 }
