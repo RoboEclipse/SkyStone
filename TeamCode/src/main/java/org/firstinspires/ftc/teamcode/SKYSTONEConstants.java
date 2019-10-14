@@ -21,10 +21,11 @@ class SKYSTONEConstants {
     static double _bBridgeCrossDistance = 55;
     static double _cBridgeReturnDistance = -40;
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
-    static double zero = 0.5; //Angled straight
-    static double right90 = 0.84; //90 degrees right from straight
-    static double left90 = 0.17; //90 degrees left from straight
+    static double zero = 0.495; //Angled straight
+    static double right90 = 0.395; //90 degrees right from straight
+    static double left90 = 0.595; //90 degrees left from straight
+    static double oppositeSide = 0.695; //Make it straight but on the other side or back side
     //Skystone Tele-op Stacking Grabber Claw
-    static double tighten = 0.5;
-    static double loosen = 0.7;
+    static double tighten = 0.2;
+    static double loosen = 0.50;
 }
