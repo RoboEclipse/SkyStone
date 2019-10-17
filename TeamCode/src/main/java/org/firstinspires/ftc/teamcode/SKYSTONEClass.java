@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -16,6 +17,7 @@ public class SKYSTONEClass {
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
     CRServo collectionRotationServo;
+    DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance;
     //Software
     private Telemetry telemetry;
 
@@ -41,6 +43,10 @@ public class SKYSTONEClass {
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
+        leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
+        backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
+        backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
