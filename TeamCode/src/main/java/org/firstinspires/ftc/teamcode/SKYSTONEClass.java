@@ -14,8 +14,8 @@ import java.util.Locale;
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    private Servo clawRotation, leftFoundationServo, rightFoundationServo, collectorServo;
-    private CRServo collectionRotationServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
+    CRServo collectionRotationServo;
     //Software
     private Telemetry telemetry;
 
@@ -39,7 +39,7 @@ public class SKYSTONEClass {
         rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
-        collectorServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -130,38 +130,51 @@ public class SKYSTONEClass {
 
 
     //Drivetrain
-    void encoderStraightDriveInches(double inches, double power){
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        multiSetTargetPosition(inches*SKYSTONEConstants.TICKS_PER_INCH, lb, lf, rb, rf);
-        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
-        runMotors(power, power);
-        while (anyBusy()){
-            telemetry.addData("Left Front: ", lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", rb.getCurrentPosition());
-        }
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
     void readEncoders(){
         telemetry.addData(
                 "Encoders", "lf: " + lf.getCurrentPosition()
                         + " lb: " + lb.getCurrentPosition()
-                        + " rf: " +rf.getCurrentPosition()
-                        + " rb: "+ rb.getCurrentPosition());
+                        + " rf: " + rf.getCurrentPosition()
+                        + " rb: "+ rb.getCurrentPosition()
+                        + " left elevator: " + leftElevator.getCurrentPosition()
+                        + " right elevator: " + rightElevator.getCurrentPosition()
+                        + " slide motor: " + clawSlide.getCurrentPosition()
+        );
     }
 
 
     //Servo Movement
-    void grabStones (double closingDegrees) { collectorServo.setPosition(closingDegrees); }
+    void grabStones (double closingDegrees) { clawServo.setPosition(closingDegrees); }
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
-    void moveFoundationServos(double foundationPosition){
-        leftFoundationServo.setPosition(foundationPosition);
-        rightFoundationServo.setPosition(foundationPosition);
-    }
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
+    }
+    //Motor Movement
+    void runElevatorMotors(double power){
+        leftElevator.setPower(power);
+        rightElevator.setPower(power);
+    }
+    void runWithEncoder(double power, int ticks, DcMotor...motors){
+        for(DcMotor motor : motors){
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setTargetPosition(ticks);
+            motor.setPower(power);
+        }
+        while(anyBusy(motors)){
+
+        }
+        for(DcMotor motor : motors){
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+    boolean anyBusy(DcMotor...motors){
+        for(DcMotor motor : motors){
+            if(motor.isBusy()){
+                return true;
+            }
+        }
+        return false;
     }
 }

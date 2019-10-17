@@ -79,19 +79,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 */
-        /**
+        /*
          * Activate TensorFlow Object Detection before we wait for the start command.
          * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
-         **/
-    }
-    void waitForStart2(){
-        ElapsedTime time  = new ElapsedTime();
-        while (!isStarted()){
-            double clock = time.seconds();
-            telemetry.addData("Status", "Initialized");
-            telemetry.addData("Time", clock);
-            telemetry.update();
-        }
+         */
     }
 
     //Methods
@@ -133,7 +124,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void encoderTurn(double targetAngle, double power, double tolerance){
         double currentAngle = getHorizontalAngle();
         double startDifference = targetAngle-currentAngle;
-        double currentDifference = startDifference;
+        double currentDifference;
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
@@ -157,6 +148,29 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     int rightBackEncoder(){
         return myRobot.rb.getCurrentPosition();
+    }
+    void runWithEncoder(double power, int ticks, DcMotor...motors){
+        for(DcMotor motor : motors){
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setTargetPosition(ticks);
+            motor.setPower(power);
+        }
+        while(anyBusy(motors)){
+
+        }
+        for(DcMotor motor : motors){
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+    boolean anyBusy(DcMotor...motors){
+        for(DcMotor motor : motors){
+            if(motor.isBusy()){
+                return true;
+            }
+        }
+        return false;
     }
 
     //Attachments
@@ -219,15 +233,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return output;
     }
     boolean opModeStatus(){
-        if(opModeIsActive()){
-            return true;
-        }
-        else return false;
+        return opModeIsActive();
     }
     //VuforiaDetectionStuff
 
     //Vuforia Stuff
-    /**
+    /*
      * Initialize the Vuforia localization engine.
      */
     /*
@@ -283,5 +294,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return null;
     }
     */
+
+    //Complex Methods
+    void pickUpStone(){
+        myRobot.runCollectorServos(SKYSTONEConstants.left90);
+        myRobot.grabStones(SKYSTONEConstants.tighten);
+        myRobot.runCollectorServos(SKYSTONEConstants.straight);
+    }
 
 }
