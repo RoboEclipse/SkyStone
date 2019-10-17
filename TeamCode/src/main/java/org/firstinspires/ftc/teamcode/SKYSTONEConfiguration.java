@@ -21,4 +21,10 @@ class SKYSTONEConfiguration {
     final String stackingClawServo = "stackingServo";
     final String rotationServo = "rotationServo";
     final String collectorRotationServo = "collectorRotationServo";
+
+    //Distance Sensors
+    final String leftDistance = "leftDistance";
+    final String rightDistance = "rightDistance";
+    final String backLeftDistance = "backLeftDistance";
+    final String backRightDistance = "backRightDistance";
 }
