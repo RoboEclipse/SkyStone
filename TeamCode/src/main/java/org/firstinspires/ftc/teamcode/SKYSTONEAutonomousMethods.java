@@ -40,7 +40,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     private Telemetry telemetry;
 
     //Classes
-    private SKYSTONEClass myRobot = new SKYSTONEClass();
+    public SKYSTONEClass myRobot = new SKYSTONEClass();
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
     private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 

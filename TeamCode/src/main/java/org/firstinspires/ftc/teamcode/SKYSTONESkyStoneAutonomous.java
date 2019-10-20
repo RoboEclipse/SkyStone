@@ -75,7 +75,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
             }
         };
-        SKYSTONEClass myRobot = new SKYSTONEClass();
+        SKYSTONEClass myRobot = methods.myRobot;
         SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;

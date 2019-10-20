@@ -165,8 +165,8 @@ public class SKYSTONEClass {
     void runWithEncoder(double power, int ticks, DcMotor...motors){
         for(DcMotor motor : motors){
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motor.setTargetPosition(ticks);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motor.setPower(power);
         }
         while(anyBusy(motors)){
