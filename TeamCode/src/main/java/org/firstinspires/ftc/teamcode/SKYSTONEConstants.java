@@ -18,8 +18,13 @@ class SKYSTONEConstants {
     //Skystone Constants
     static double _depotDistance = -24;
     static double _aSkyStoneDistance = -32;
-    static double _bBridgeCrossDistance = 55;
-    static double _cBridgeReturnDistance = -40;
+    static double _bBridgeCrossDistance = -55;
+    static double _cBridgeReturnDistance = 40;
+    //Shared Constants
+    static double shiftDistance = 8;
+    static int raiseTicks = 600;
+    static int lowerTicks = -100;
+    static int extendSlide = -1200;
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
     static double zero = 0.495; //Angled straight
     static double right90 = 0.375; //90 degrees right from straight

@@ -29,11 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.text.style.UpdateAppearance;
 import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -77,6 +75,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
             }
         };
+        SKYSTONEClass myRobot = new SKYSTONEClass();
         SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
@@ -90,38 +89,25 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
-            //Move back into depot
-            //methods.encoderStraightDriveInches(SKYSTONEConstants._depotDistance, speed);
-            //Strafe slightly close
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            myRobot.runWithEncoder(0.5, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
+            myRobot.runWithEncoder(0.5, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             sleep(1000);
-            y = vuforiaMethods.loopDetection(telemetry, detections);
-            if(y > 6){
-                skyStonePosition = "Right";
-                Log.d("SkystonePosition", "Right");
-                telemetry.addData("SkystonePosition", "Right");
-            }
-            else if(y<-6){
-                skyStonePosition = "Left";
-                Log.d("SkystonePosition", "Left");
-            }
-            else{
-                Log.d("SkyStonePosition", "Center");
-            }
+            getSkystonePosition(vuforiaMethods, detections);
             //Move accordingly
             if(skyStonePosition.equals("Left")){
-                methods.encoderStraightDriveInches(-8, speed);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance, speed);
             }
             else if(skyStonePosition.equals("Right")){
-                methods.encoderStraightDriveInches(8, speed);
+                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance, speed);
             }
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            methods.pickUpStone();
             //methods.encoderStrafeDriveInchesRight(-3, speed);
-            sleep(1000);
-            sleep(3000);
-            methods.encoderStrafeDriveInchesRight(15, speed);
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
+            myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+            //methods.encoderStraightDriveInches(15, speed);
+            methods.encoderTurn(90, 0.5, 3);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
             sleep(1000);
             methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             // Show the elapsed game time and wheel power.
@@ -132,6 +118,22 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             break;
         }
         vuforiaMethods.deactivateDetection();
+    }
+
+    private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        y = vuforiaMethods.loopDetection(telemetry, detections);
+        if(y > 6){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right");
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(y<-6){
+            skyStonePosition = "Left";
+            Log.d("SkystonePosition", "Left");
+        }
+        else{
+            Log.d("SkyStonePosition", "Center");
+        }
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {

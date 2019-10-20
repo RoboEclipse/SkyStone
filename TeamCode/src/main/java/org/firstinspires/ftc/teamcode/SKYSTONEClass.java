@@ -43,10 +43,10 @@ public class SKYSTONEClass {
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
-        leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
-        rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
-        backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
-        backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
+        //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
+        //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
+        //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
