@@ -148,12 +148,12 @@ public class SKYSTONETeleOp extends OpMode
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
-            leftFoundationPosition = 0.88;
-            rightFoundationPosition = 0.25;
+            leftFoundationPosition = SKYSTONEConstants.lUp;
+            rightFoundationPosition = SKYSTONEConstants.rUp;
         }
         if(gamepad1.right_trigger>0.7){
-            leftFoundationPosition = 0.6;
-            rightFoundationPosition = 0.6;
+            leftFoundationPosition = SKYSTONEConstants.lDown;
+            rightFoundationPosition = SKYSTONEConstants.rDown;
 
         }
 
