@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -168,7 +170,9 @@ public class SKYSTONEClass {
             motor.setPower(power);
         }
         while(anyBusy(motors)){
-
+            for(DcMotor motor : motors){
+                Log.d("Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
+            }
         }
         for(DcMotor motor : motors){
             motor.setPower(0);
