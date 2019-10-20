@@ -114,15 +114,17 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.clawSlide.setPower(slidePower);
 
         //Claw rotation
-        if(gamepad2.right_bumper){
-            if(clawRotator<=SKYSTONEConstants.left90){
-                clawRotator+=0.02;
-            }
+        if(gamepad2.dpad_right){
+            clawRotator = SKYSTONEConstants.right90;
         }
-        else if(gamepad2.left_bumper) {
-            if(clawRotator>=SKYSTONEConstants.right90){
-                clawRotator-=0.02;
-            }
+        else if(gamepad2.dpad_left) {
+            clawRotator = SKYSTONEConstants.left90;
+        }
+        else if(gamepad2.dpad_up){
+            clawRotator = SKYSTONEConstants.straight;
+        }
+        else if(gamepad2.dpad_down){
+            clawRotator = SKYSTONEConstants.oppositeSide;
         }
 
 
