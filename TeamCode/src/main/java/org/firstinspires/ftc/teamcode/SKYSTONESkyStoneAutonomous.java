@@ -93,7 +93,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             myRobot.runWithEncoder(0.5, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
             Log.d("Status:", "Elevator Raised");
             //Extend slide
-            myRobot.runWithEncoder(0.5, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+            myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
             Log.d("Status:", "Slide extended");
             methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/2, speed);
             Log.d("Status:", "First distance traveled");
@@ -118,7 +118,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             Log.d("Status: ", "Claw Re-Centered");
             //methods.encoderStraightDriveInches(15, speed);
             //Turn
-            methods.encoderTurn(90, 0.5, 3);
+            methods.encoderTurn(-90, 0.5, 3);
             Log.d("Status: ", "Turned");
             //Cross bridge
             methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
