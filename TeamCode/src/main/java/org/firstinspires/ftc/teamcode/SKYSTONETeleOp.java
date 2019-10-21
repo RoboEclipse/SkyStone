@@ -112,8 +112,15 @@ public class SKYSTONETeleOp extends OpMode
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
         myRobot.clawSlide.setPower(slidePower);
+        if ((slidePower > 0.001) || (slidePower < 0.001)){
+            if (clawPosition != SKYSTONEConstants.tighten){
+                Log.d("Protect Claw", "Claw was loose when moving so it got closed");
+            }
+            clawPosition = SKYSTONEConstants.tighten;
+        }
 
         //Claw rotation
+        int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();
         if(gamepad2.dpad_right){
             clawRotator = SKYSTONEConstants.right90;
         }
@@ -127,6 +134,11 @@ public class SKYSTONETeleOp extends OpMode
             clawRotator = SKYSTONEConstants.oppositeSide;
         }
 
+        if (clawRotator != SKYSTONEConstants.straight && (horizSlidePosition > SKYSTONEConstants.safeSlide)){
+            clawRotator = SKYSTONEConstants.straight;
+            Log.d("Protected Claw Rotation", "Rotation Servo set straight because it was not in safe distance");
+            telemetry.addData("Protected Claw Rotation", "Rotation Servo Set Straight");
+        }
 
         //Claw controls
         if(gamepad2.y) {
@@ -193,7 +205,7 @@ public class SKYSTONETeleOp extends OpMode
             + " rb: "+ myRobot.rb.getCurrentPosition()
             + " left elevator: " + myRobot.leftElevator.getCurrentPosition()
             + " right elevator: " + myRobot.rightElevator.getCurrentPosition()
-            + " slide motor: " + myRobot.clawSlide.getCurrentPosition()
+            + " slide motor: " + horizSlidePosition
         );
 
     }
