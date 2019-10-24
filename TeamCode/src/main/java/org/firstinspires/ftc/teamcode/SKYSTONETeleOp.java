@@ -112,7 +112,7 @@ public class SKYSTONETeleOp extends OpMode
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
         myRobot.clawSlide.setPower(slidePower);
-        if ((slidePower > 0.001) || (slidePower < 0.001)){
+        if ((slidePower > 0.001) || (slidePower < -0.001)){
             if (clawPosition != SKYSTONEConstants.tighten){
                 Log.d("Protect Claw", "Claw was loose when moving so it got closed");
             }
