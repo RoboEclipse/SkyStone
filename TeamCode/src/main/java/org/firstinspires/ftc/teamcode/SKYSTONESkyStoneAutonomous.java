@@ -101,10 +101,10 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             getSkystonePosition(vuforiaMethods, detections);
             //Move accordingly
             if(skyStonePosition.equals("Left")){
-                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance, speed);
+                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.leftShiftDistance, speed);
             }
             else if(skyStonePosition.equals("Right")){
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance, speed);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.rightShiftDistance, speed);
             }
             Log.d("Status: ", "Detected " + skyStonePosition);
             //Drive second length and pick up stone
@@ -121,7 +121,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             methods.encoderTurn(-90, -0.5, 3);
             Log.d("Status: ", "Turned");
             //Cross bridge
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.rightShiftDistance, speed);
             Log.d("Status: ", "Crossed Bridge");
             //Loosen claw and return
             myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);

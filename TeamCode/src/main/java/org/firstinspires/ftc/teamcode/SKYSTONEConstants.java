@@ -21,7 +21,8 @@ public class SKYSTONEConstants {
     public static double _bBridgeCrossDistance = 55;
     public static double _cBridgeReturnDistance = -40;
     //Shared Constants
-    public static double shiftDistance = 8;
+    public static double rightShiftDistance = 5;
+    public static double leftShiftDistance = 8;
     public static int raiseTicks = 600;
     public static int lowerTicks = -300;
     public static int extendSlide = -870;
