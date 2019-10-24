@@ -27,4 +27,6 @@ class SKYSTONEConfiguration {
     final String rightDistance = "rightDistance";
     final String backLeftDistance = "backLeftDistance";
     final String backRightDistance = "backRightDistance";
+    final String backDistance = "backDistance";
+    final String elevatorHeight = "elevatorHeight";
 }

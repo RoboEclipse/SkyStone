@@ -24,7 +24,7 @@ public class SKYSTONEConstants {
     public static double shiftDistance = 8;
     public static int raiseTicks = 600;
     public static int lowerTicks = -300;
-    public static int extendSlide = -900;
+    public static int extendSlide = -800;
     public static int safeSlide = -450; //Value when the rotator claw can turn without crashing into the sides
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
     public static double zero = 0.495; //Angled straight

@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
@@ -19,7 +20,7 @@ public class SKYSTONEClass {
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
     CRServo collectionRotationServo;
-    DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance;
+    DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance;
     //Software
     private Telemetry telemetry;
 
@@ -45,6 +46,7 @@ public class SKYSTONEClass {
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
+        backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
@@ -186,5 +188,9 @@ public class SKYSTONEClass {
             }
         }
         return false;
+    }
+
+    double getBackDistance(){
+        return backDistance.getDistance(DistanceUnit.CM);
     }
 }
