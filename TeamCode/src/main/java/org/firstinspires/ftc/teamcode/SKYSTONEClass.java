@@ -20,7 +20,7 @@ public class SKYSTONEClass {
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
     CRServo collectionRotationServo;
-    DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance;
+    DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     //Software
     private Telemetry telemetry;
 
@@ -47,6 +47,7 @@ public class SKYSTONEClass {
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
+        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
         //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
@@ -192,5 +193,8 @@ public class SKYSTONEClass {
 
     double getBackDistance(){
         return backDistance.getDistance(DistanceUnit.CM);
+    }
+    double getElevatorDistance(){
+        return elevatorDistance.getDistance(DistanceUnit.CM);
     }
 }

@@ -95,7 +95,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             //Extend slide
             myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
             Log.d("Status:", "Slide extended");
-            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
             Log.d("Status:", "First distance traveled");
             sleep(1000);
             getSkystonePosition(vuforiaMethods, detections);
@@ -108,7 +108,7 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
             }
             Log.d("Status: ", "Detected " + skyStonePosition);
             //Drive second length and pick up stone
-            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/2, speed);
+            methods.encoderStraightDriveInches(3*SKYSTONEConstants._aSkyStoneDistance/4, speed);
             Log.d("Status: ", "Second distance traveled");
             methods.pickUpStone();
             Log.d("Status: ", "Stone Picked Up");

@@ -309,7 +309,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.clawRotation.setPosition(SKYSTONEConstants.left90);
         myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
         sleep(1000);
-        myRobot.runWithEncoder(0.5, SKYSTONEConstants.lowerTicks, myRobot.rightElevator, myRobot.leftElevator);
+        myRobot.rightElevator.setPower(-0.2);
+        myRobot.leftElevator.setPower(-0.2);
+        sleep(1000);
+        myRobot.rightElevator.setPower(0);
+        myRobot.leftElevator.setPower(0);
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);
         sleep(1000);
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
