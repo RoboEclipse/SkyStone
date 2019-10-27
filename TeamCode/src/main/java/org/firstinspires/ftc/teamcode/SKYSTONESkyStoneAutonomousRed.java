@@ -91,7 +91,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
         Log.d("Status:", "First distance traveled");
         //Raise elevator
-        myRobot.runWithEncoder(0.5, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
+        myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
         Log.d("Status:", "Elevator Raised");
         //Extend slide
         myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
@@ -101,10 +101,10 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         //TODO: Adjust shift values
         //Move accordingly
         if(skyStonePosition.equals("Left")){
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
         }
         else if(skyStonePosition.equals("Right")){
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, speed);
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
         }
         Log.d("Status: ", "Detected " + skyStonePosition);
         //Drive second length and pick up stone
@@ -112,14 +112,16 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 2, speed);
         Log.d("Status: ", "Second distance traveled");
         methods.pickUpStone();
+        sleep(1000);
         Log.d("Status: ", "Stone Picked Up");
         //methods.encoderStrafeDriveInchesRight(-3, speed);
         //Re-center claw
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-        Log.d("Status: ", "Claw Re-Centered");
+        //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+        //Log.d("Status: ", "Claw Re-Centered");
         //methods.encoderStraightDriveInches(15, speed);
+        myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
         //Turn
-        methods.encoderTurn(-90, -1, 3);
+        methods.encoderTurn(-90, -0.3, 3);
         Log.d("Status: ", "Turned");
         //Cross bridge
         if(skyStonePosition.equals("Left")){
@@ -135,7 +137,6 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         Log.d("Status: ", "Crossed Bridge");
         //Loosen claw and return
         myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-        sleep(100);
         Log.d("Status: ", "Dropped block");
         methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
         Log.d("Status: ", "Returned");

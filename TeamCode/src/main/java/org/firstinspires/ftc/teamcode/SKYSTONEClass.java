@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -166,13 +167,14 @@ public class SKYSTONEClass {
         rightElevator.setPower(power);
     }
     void runWithEncoder(double power, int ticks, DcMotor...motors){
+        ElapsedTime time = new ElapsedTime();
         for(DcMotor motor : motors){
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setTargetPosition(ticks);
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motor.setPower(power);
         }
-        while(anyBusy(motors)){
+        while(anyBusy(5, ticks, motors) && time.milliseconds()<2500){
             for(DcMotor motor : motors){
                 Log.d("Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
             }
@@ -182,9 +184,9 @@ public class SKYSTONEClass {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
-    boolean anyBusy(DcMotor...motors){
+    boolean anyBusy(int tolerance, int targetPosition, DcMotor...motors){
         for(DcMotor motor : motors){
-            if(motor.isBusy()){
+            if(Math.abs(targetPosition-motor.getCurrentPosition())>tolerance){
                 return true;
             }
         }
