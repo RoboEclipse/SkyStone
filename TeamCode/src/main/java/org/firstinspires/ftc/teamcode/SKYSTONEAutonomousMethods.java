@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -124,19 +126,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void encoderTurn(double targetAngle, double power, double tolerance){
         double currentAngle = getHorizontalAngle();
         double startDifference = Math.abs(targetAngle-currentAngle);
-        double currentDifference;
+        double error = startDifference;
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
-        while(getHorizontalAngle()<targetAngle-tolerance || getHorizontalAngle()>targetAngle+tolerance /*&& opModeisActive()*/){
+        while(error>tolerance /*&& opModeisActive()*/){
             currentAngle = getHorizontalAngle();
-            currentDifference = Math.abs(targetAngle-currentAngle);
             if(power>0){
-                drivePower = 0.1 + currentDifference/startDifference*power*0.9;
+                drivePower = 0.1 + error/startDifference*power*0.9;
             }
             else {
-                drivePower = -0.1 + currentDifference/startDifference*power*0.9;
+                drivePower = -0.1 + error/startDifference*power*0.9;
             }
+            error = Math.abs(targetAngle-currentAngle);
             runMotors(drivePower, -drivePower);
         }
         runMotors(0,0);
@@ -159,21 +161,26 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
-        while (myRobot.getBackDistance()>distance+tolerance|| myRobot.getBackDistance()<distance-tolerance){
+        double curDistance = myRobot.getBackDistance();
+        double error = Math.abs(curDistance-distance);
+        while (error>tolerance){
             double adjust;
             if(power>0){
-                adjust = 0.1 + 0.9*Math.abs(myRobot.getBackDistance()-distance)*power;
+                adjust = 0.1 + 0.9*error*power;
             }
             else{
-                adjust = -0.1 + 0.9*Math.abs(myRobot.getBackDistance()-distance)*power;
+                adjust = -0.1 + 0.9*error*power;
             }
-
+            curDistance = myRobot.getBackDistance();
+            error = Math.abs(curDistance-distance);
             runMotors(adjust, adjust);
+
             telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
             telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
             telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
             telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
             telemetry.update();
+            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -306,7 +313,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //Complex Methods
     void pickUpStone(){
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.left90);
+        myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
         myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
         sleep(1000);
         myRobot.rightElevator.setPower(-0.2);

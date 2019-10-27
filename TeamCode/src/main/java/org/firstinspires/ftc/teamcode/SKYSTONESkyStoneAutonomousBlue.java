@@ -55,9 +55,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONESkyStoneAutonomous", group="Linear Opmode")
+@Autonomous(name="SKYSTONESkyStoneAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
+public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -87,56 +87,64 @@ public class SKYSTONESkyStoneAutonomous extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            //Raise elevator
-            myRobot.runWithEncoder(0.5, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
-            Log.d("Status:", "Elevator Raised");
-            //Extend slide
-            myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
-            Log.d("Status:", "Slide extended");
-            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
-            Log.d("Status:", "First distance traveled");
-            sleep(1000);
-            getSkystonePosition(vuforiaMethods, detections);
-            //Move accordingly
-            if(skyStonePosition.equals("Left")){
-                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.leftShiftDistance, speed);
-            }
-            else if(skyStonePosition.equals("Right")){
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.rightShiftDistance, speed);
-            }
-            Log.d("Status: ", "Detected " + skyStonePosition);
-            //Drive second length and pick up stone
-            methods.encoderStraightDriveInches(3*SKYSTONEConstants._aSkyStoneDistance/4, speed);
-            Log.d("Status: ", "Second distance traveled");
-            methods.pickUpStone();
-            Log.d("Status: ", "Stone Picked Up");
-            //methods.encoderStrafeDriveInchesRight(-3, speed);
-            //Re-center claw
-            myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-            Log.d("Status: ", "Claw Re-Centered");
-            //methods.encoderStraightDriveInches(15, speed);
-            //Turn
-            methods.encoderTurn(-90, -0.5, 3);
-            Log.d("Status: ", "Turned");
-            //Cross bridge
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.rightShiftDistance, speed);
-            Log.d("Status: ", "Crossed Bridge");
-            //Loosen claw and return
-            myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-            sleep(100);
-            Log.d("Status: ", "Dropped block");
-            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
-            Log.d("Status: ", "Returned");
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Offset", y);
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
-            telemetry.update();
-            break;
-        }
+
+        methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
+        Log.d("Status:", "First distance traveled");
+        //Raise elevator
+        myRobot.runWithEncoder(0.5, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
+        Log.d("Status:", "Elevator Raised");
+        //Extend slide
+        myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+        Log.d("Status:", "Slide extended");
+        getSkystonePosition(vuforiaMethods, detections);
         vuforiaMethods.deactivateDetection();
+        //TODO: Adjust shift values
+        //Move accordingly
+        if(skyStonePosition.equals("Left")){
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, speed);
+        }
+        else if(skyStonePosition.equals("Right")){
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, speed);
+        }
+        Log.d("Status: ", "Detected " + skyStonePosition);
+        //Drive second length and pick up stone
+        //TODO: Use Distance Sensor
+        methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 2, speed);
+        Log.d("Status: ", "Second distance traveled");
+        methods.pickUpStone();
+        Log.d("Status: ", "Stone Picked Up");
+        //methods.encoderStrafeDriveInchesRight(-3, speed);
+        //Re-center claw
+        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+        Log.d("Status: ", "Claw Re-Centered");
+        //methods.encoderStraightDriveInches(15, speed);
+        //Turn
+        methods.encoderTurn(90, -1, 3);
+        Log.d("Status: ", "Turned");
+        //Cross bridge
+        if(skyStonePosition.equals("Left")){
+            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
+        }
+        else if(skyStonePosition.equals("Right")){
+            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
+        }
+        else{
+            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
+        }
+
+        Log.d("Status: ", "Crossed Bridge");
+        //Loosen claw and return
+        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
+        sleep(100);
+        Log.d("Status: ", "Dropped block");
+        methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
+        Log.d("Status: ", "Returned");
+        // Show the elapsed game time and wheel power.
+        telemetry.addData("Offset", y);
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("SkyStone", "Location: " + skyStonePosition);
+        telemetry.update();
+
     }
 
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
