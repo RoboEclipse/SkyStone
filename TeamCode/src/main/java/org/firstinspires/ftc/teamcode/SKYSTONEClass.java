@@ -197,4 +197,16 @@ public class SKYSTONEClass {
     double getElevatorDistance(){
         return elevatorDistance.getDistance(DistanceUnit.CM);
     }
+    void elevatorDistanceDrive(int power, int ticks, double distance){
+        leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        multiSetTargetPosition(ticks, leftElevator, rightElevator);
+        leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        double error = Math.abs(getElevatorDistance()-distance);
+        while (anyBusy() && error<2){
+            error = Math.abs(getElevatorDistance()-distance);
+            Log.d("ElevatorError: ", error + "");
+        }
+    }
 }
