@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <Robot type="FirstInspires-FTC">
-    <Webcam name="Webcam 1" serialNumber="24027019" />
     <LynxUsbDevice name="Expansion Hub Portal 1" serialNumber="DQ16U8VK" parentModuleAddress="3">
         <LynxModule name="Expansion Hub 2" port="2">
             <RevRoboticsCoreHexMotor name="slidingMotor" port="0" />
@@ -21,6 +20,9 @@
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <REV_VL53L0X_RANGE_SENSOR name="leftDistance" port="1" bus="0" />
             <REV_VL53L0X_RANGE_SENSOR name="rightDistance" port="0" bus="1" />
+            <REV_VL53L0X_RANGE_SENSOR name="elevatorHeight" port="0" bus="2" />
+            <REV_VL53L0X_RANGE_SENSOR name="backDistance" port="0" bus="3" />
         </LynxModule>
     </LynxUsbDevice>
+    <Webcam name="Webcam 1" serialNumber="24027019" />
 </Robot>

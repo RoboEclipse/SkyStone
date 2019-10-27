@@ -205,6 +205,8 @@ public class SKYSTONEClass {
         multiSetTargetPosition(ticks, leftElevator, rightElevator);
         leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftElevator.setPower(power);
+        rightElevator.setPower(power);
         double error = Math.abs(getElevatorDistance()-distance);
         while (anyBusy() && error<2){
             error = Math.abs(getElevatorDistance()-distance);
