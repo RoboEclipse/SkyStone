@@ -107,6 +107,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             else if(skyStonePosition.equals("Right")){
                 methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
             }
+            telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Status: ", "Detected " + skyStonePosition);
             //Drive second length and pick up stone
             //TODO: Use Distance Sensor
