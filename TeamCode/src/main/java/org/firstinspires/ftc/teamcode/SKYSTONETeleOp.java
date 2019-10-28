@@ -45,8 +45,8 @@ public class SKYSTONETeleOp extends OpMode
     private SKYSTONEClass myRobot = new SKYSTONEClass();
     private double clawRotator = SKYSTONEConstants.straight;
     private double clawPosition = 0;
-    private double leftFoundationPosition = 0.6;
-    private double rightFoundationPosition = 0.6;
+    private double leftFoundationPosition = SKYSTONEConstants.lUp;
+    private double rightFoundationPosition = SKYSTONEConstants.rUp;
     private double collectorPower = 0;
     /*
      * Code to run ONCE when the driver hits INIT
@@ -121,16 +121,16 @@ public class SKYSTONETeleOp extends OpMode
 
         //Claw rotation
         int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();
-        if(gamepad2.dpad_right){
+        if(gamepad2.dpad_left){
             clawRotator = SKYSTONEConstants.right90;
         }
-        else if(gamepad2.dpad_left) {
+        else if(gamepad2.dpad_right) {
             clawRotator = SKYSTONEConstants.left90;
         }
-        else if(gamepad2.dpad_up){
+        else if(gamepad2.dpad_down){
             clawRotator = SKYSTONEConstants.straight;
         }
-        else if(gamepad2.dpad_down){
+        else if(gamepad2.dpad_up){
             clawRotator = SKYSTONEConstants.oppositeSide;
         }
 
@@ -149,10 +149,10 @@ public class SKYSTONETeleOp extends OpMode
         }
 
         //Collector Servos
-        if(gamepad2.left_trigger>0.7){
+        if(gamepad2.right_trigger>0.7){
             collectorPower = 0.75;
         }
-        else if(gamepad2.right_trigger>0.7){
+        else if(gamepad2.left_trigger>0.7){
             collectorPower = -0.75;
         }
         else{

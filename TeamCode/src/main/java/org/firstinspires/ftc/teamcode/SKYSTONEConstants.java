@@ -41,6 +41,6 @@ public class SKYSTONEConstants {
     public static double lDown = 0.6; //At most .65
     public static double lUp = 0.25;
     //Skystone Right Foundation Claw
-    public static double rDown = 0.6; //At least .5
-    public static double rUp = 0.88;
+    public static double rDown = 0.25; //At least .5
+    public static double rUp = 0.55;
 }
