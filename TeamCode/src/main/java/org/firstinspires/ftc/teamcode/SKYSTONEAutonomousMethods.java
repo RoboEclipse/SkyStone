@@ -89,11 +89,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //Methods
     void encoderStraightDriveInches(double inches, double power){
+        ElapsedTime time = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         multiSetTargetPosition(inches*SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (anyBusy() /*&& opModeisActive()*/){
+        while (anyBusy() && time.milliseconds()<4000 /*&& opModeisActive()*/){
             telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
             telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
             telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
@@ -316,9 +317,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
         myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
         sleep(1000);
-        myRobot.rightElevator.setPower(-0.2);
-        myRobot.leftElevator.setPower(-0.2);
-        sleep(1000);
+        myRobot.rightElevator.setPower(-0.3);
+        myRobot.leftElevator.setPower(-0.3);
+        sleep(1500);
         myRobot.rightElevator.setPower(0);
         myRobot.leftElevator.setPower(0);
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);

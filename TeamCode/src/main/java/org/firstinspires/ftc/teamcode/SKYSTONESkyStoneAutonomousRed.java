@@ -64,7 +64,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
     double y = 0;
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
-    String skyStonePosition = "Center";
+    String skyStonePosition = "Left";
 
     @Override
     public void runOpMode() {
@@ -87,65 +87,72 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        while(opModeIsActive()){
+            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
+            Log.d("Status:", "First distance traveled");
+            //Raise elevator
+            myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);
+            //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
+            Log.d("Status:", "Elevator Raised");
+            //Extend slide
+            myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+            Log.d("Status:", "Slide extended");
+            getSkystonePosition(vuforiaMethods, detections);
 
-        methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
-        Log.d("Status:", "First distance traveled");
-        //Raise elevator
-        myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 12);
-        //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
-        Log.d("Status:", "Elevator Raised");
-        //Extend slide
-        myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
-        Log.d("Status:", "Slide extended");
-        getSkystonePosition(vuforiaMethods, detections);
+            //TODO: Adjust shift values
+            //Move accordingly
+            if(skyStonePosition.equals("Left")){
+                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
+            }
+            else if(skyStonePosition.equals("Right")){
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
+            }
+            Log.d("Status: ", "Detected " + skyStonePosition);
+            //Drive second length and pick up stone
+            //TODO: Use Distance Sensor
+            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 2, speed);
+            Log.d("Status: ", "Second distance traveled");
+            methods.pickUpStone();
+            sleep(1000);
+            Log.d("Status: ", "Stone Picked Up");
+            //methods.encoderStrafeDriveInchesRight(-3, speed);
+            //Re-center claw
+            //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+            //Log.d("Status: ", "Claw Re-Centered");
+            //methods.encoderStraightDriveInches(15, speed);
+            //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
+            //Turn
+            methods.encoderStraightDriveInches(-8, speed);
+            methods.encoderTurn(-90, -0.3, 3);
+            Log.d("Status: ", "Turned");
+            //Cross bridge
+            if(skyStonePosition.equals("Left")){
+                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
+            }
+            else if(skyStonePosition.equals("Right")){
+                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
+            }
+            else{
+                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
+            }
+
+            Log.d("Status: ", "Crossed Bridge");
+            //Loosen claw and return
+            myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
+            Log.d("Status: ", "Dropped block");
+            myRobot.elevatorDistanceDrive(1, 100, 8, 2);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance/4, speed);
+            myRobot.elevatorDistanceDrive(-0.5, 100, 4, 1);
+            methods.encoderStraightDriveInches(3*SKYSTONEConstants._cBridgeReturnDistance/4, speed);
+            Log.d("Status: ", "Returned");
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Offset", y);
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
+            telemetry.update();
+            break;
+        }
         vuforiaMethods.deactivateDetection();
-        //TODO: Adjust shift values
-        //Move accordingly
-        if(skyStonePosition.equals("Left")){
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
-        }
-        else if(skyStonePosition.equals("Right")){
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
-        }
-        Log.d("Status: ", "Detected " + skyStonePosition);
-        //Drive second length and pick up stone
-        //TODO: Use Distance Sensor
-        methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 2, speed);
-        Log.d("Status: ", "Second distance traveled");
-        methods.pickUpStone();
-        sleep(1000);
-        Log.d("Status: ", "Stone Picked Up");
-        //methods.encoderStrafeDriveInchesRight(-3, speed);
-        //Re-center claw
-        //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-        //Log.d("Status: ", "Claw Re-Centered");
-        //methods.encoderStraightDriveInches(15, speed);
-        //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
-        //Turn
-        methods.encoderTurn(-90, -0.3, 3);
-        Log.d("Status: ", "Turned");
-        //Cross bridge
-        if(skyStonePosition.equals("Left")){
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
-        }
-        else if(skyStonePosition.equals("Right")){
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
-        }
-        else{
-            methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
-        }
-
-        Log.d("Status: ", "Crossed Bridge");
-        //Loosen claw and return
-        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-        Log.d("Status: ", "Dropped block");
-        methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
-        Log.d("Status: ", "Returned");
-        // Show the elapsed game time and wheel power.
-        telemetry.addData("Offset", y);
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("SkyStone", "Location: " + skyStonePosition);
-        telemetry.update();
 
     }
 
@@ -156,12 +163,12 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             Log.d("SkystonePosition", "Right");
             telemetry.addData("SkystonePosition", "Right");
         }
-        else if(y<-6){
-            skyStonePosition = "Left";
-            Log.d("SkystonePosition", "Left");
+        else if(Math.abs(y)<6){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center");
         }
         else{
-            Log.d("SkyStonePosition", "Center");
+            Log.d("SkyStonePosition", "Left");
         }
     }
 

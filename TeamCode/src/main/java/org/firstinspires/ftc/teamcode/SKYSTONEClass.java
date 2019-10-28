@@ -54,6 +54,10 @@ public class SKYSTONEClass {
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
+        leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -199,18 +203,24 @@ public class SKYSTONEClass {
     double getElevatorDistance(){
         return elevatorDistance.getDistance(DistanceUnit.CM);
     }
-    void elevatorDistanceDrive(int power, int ticks, double distance){
+    void elevatorDistanceDrive(double power, int ticks, double distance, double tolerance){
+        /*
         leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         multiSetTargetPosition(ticks, leftElevator, rightElevator);
         leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        */
         leftElevator.setPower(power);
         rightElevator.setPower(power);
         double error = Math.abs(getElevatorDistance()-distance);
-        while (anyBusy() && error<2){
+        while (error>tolerance){
             error = Math.abs(getElevatorDistance()-distance);
             Log.d("ElevatorError: ", error + "");
         }
+        leftElevator.setPower(0);
+        rightElevator.setPower(0);
+        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
