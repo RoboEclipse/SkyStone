@@ -236,7 +236,8 @@ public class SKYSTONEClass {
             e.printStackTrace();
         }
         clawSlide.setPower(0);
-        leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
-        rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+        //TODO: Replace with driveWithEncoder
+        //leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+        //rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
     }
 }

@@ -183,7 +183,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
             telemetry.update();
             curDistance = myRobot.getBackDistance();
-            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust + "CurrentDistance" + curDistance);
+            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
