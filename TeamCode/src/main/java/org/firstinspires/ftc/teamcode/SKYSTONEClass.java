@@ -223,4 +223,12 @@ public class SKYSTONEClass {
         leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    void resetAutonomous() {
+        clawRotation.setPosition(SKYSTONEConstants.straight);
+        clawServo.setPosition(SKYSTONEConstants.tighten);
+        clawSlide.setPower(0.3);
+        leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+        rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+    }
 }
