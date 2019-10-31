@@ -163,14 +163,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
         double curDistance = myRobot.getBackDistance();
+        double startDistance = curDistance;
         double error = Math.abs(curDistance-distance);
+        double adjust;
         while (error>tolerance){
-            double adjust;
             if(power>0){
-                adjust = 0.1 + 0.9*error*power;
+                adjust = 0.1 + 0.9*(error/startDistance)*power;
             }
             else{
-                adjust = -0.1 + 0.9*error*power;
+                adjust = -0.1 + 0.9*(error/startDistance)*power;
             }
             curDistance = myRobot.getBackDistance();
             error = Math.abs(curDistance-distance);

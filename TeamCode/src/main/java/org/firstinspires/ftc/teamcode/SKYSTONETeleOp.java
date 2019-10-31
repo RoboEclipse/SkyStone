@@ -189,6 +189,7 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("leftFoundationPosition", leftFoundationPosition);
         telemetry.addData("CollectorPower", collectorPower);
         telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
+        telemetry.addData("BackDistance", myRobot.getBackDistance());
         myRobot.readEncoders();
 
         //Log

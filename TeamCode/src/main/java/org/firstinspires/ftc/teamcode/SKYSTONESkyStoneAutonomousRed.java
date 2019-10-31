@@ -40,6 +40,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
+import java.util.function.IntBinaryOperator;
 
 
 /**
@@ -96,6 +97,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             Log.d("Status:", "Elevator Raised");
             //Extend slide
             myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+
             Log.d("Status:", "Slide extended");
             getSkystonePosition(vuforiaMethods, detections);
 
@@ -107,11 +109,14 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             else if(skyStonePosition.equals("Right")){
                 methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
             }
+            myRobot.clawSlide.setPower(-0.2);
             telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Status: ", "Detected " + skyStonePosition);
+
             //Drive second length and pick up stone
             //TODO: Use Distance Sensor
-            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 2, speed);
+            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 1, 1);
+            myRobot.clawSlide.setPower(0);
             Log.d("Status: ", "Second distance traveled");
             methods.pickUpStone();
             sleep(1000);
@@ -124,6 +129,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
             //Turn
             methods.encoderStraightDriveInches(-8, speed);
+            myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
             methods.encoderTurn(-90, -0.3, 3);
             Log.d("Status: ", "Turned");
             //Cross bridge
@@ -141,10 +147,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             //Loosen claw and return
             myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
             Log.d("Status: ", "Dropped block");
-            myRobot.elevatorDistanceDrive(1, 100, 8, 2);
-            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance/4, speed);
-            myRobot.elevatorDistanceDrive(-0.5, 100, 4, 1);
-            methods.encoderStraightDriveInches(3*SKYSTONEConstants._cBridgeReturnDistance/4, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             Log.d("Status: ", "Returned");
             // Show the elapsed game time and wheel power.
             telemetry.addData("Offset", y);
