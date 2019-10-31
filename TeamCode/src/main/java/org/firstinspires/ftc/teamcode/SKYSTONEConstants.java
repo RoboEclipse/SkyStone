@@ -43,4 +43,6 @@ public class SKYSTONEConstants {
     //Skystone Right Foundation Claw
     public static double rDown = 0.25; //At least .5
     public static double rUp = 0.55;
+    //Skystone Reset
+    public static int startingElevatorHeight = 10;
 }
