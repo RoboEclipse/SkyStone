@@ -316,7 +316,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Complex Methods
     void pickUpStone(){
         myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
-        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
+        myRobot.clawServo.setPosition(SKYSTONEConstants.autoLoosen);
         sleep(1000);
         myRobot.rightElevator.setPower(-0.3);
         myRobot.leftElevator.setPower(-0.3);

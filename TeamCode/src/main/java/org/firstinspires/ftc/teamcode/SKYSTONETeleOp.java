@@ -172,7 +172,7 @@ public class SKYSTONETeleOp extends OpMode
         }
 
         //Reset to Autonomous starting position
-        if(gamepad1.a){
+        if(gamepad1.x){
             myRobot.resetAutonomous();
         }
 

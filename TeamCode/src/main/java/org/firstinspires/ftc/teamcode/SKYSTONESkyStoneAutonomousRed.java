@@ -89,6 +89,8 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive()){
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
             Log.d("Status:", "First distance traveled");
             //Raise elevator
@@ -104,10 +106,10 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             //TODO: Adjust shift values
             //Move accordingly
             if(skyStonePosition.equals("Left")){
-                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
+                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
             }
             else if(skyStonePosition.equals("Right")){
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.3);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
             }
             myRobot.clawSlide.setPower(-0.2);
             telemetry.addData("Detected: ", skyStonePosition);
@@ -128,9 +130,10 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             //methods.encoderStraightDriveInches(15, speed);
             //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
             //Turn
+            myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 9,2);
             methods.encoderStraightDriveInches(-8, speed);
             myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-            methods.encoderTurn(-90, -0.3, 3);
+            methods.encoderTurn(-90, -1, 3);
             Log.d("Status: ", "Turned");
             //Cross bridge
             if(skyStonePosition.equals("Left")){
