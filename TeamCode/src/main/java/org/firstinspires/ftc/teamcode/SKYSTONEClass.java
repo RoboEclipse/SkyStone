@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
+import static java.lang.Thread.sleep;
+
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
@@ -228,6 +230,12 @@ public class SKYSTONEClass {
         clawRotation.setPosition(SKYSTONEConstants.straight);
         clawServo.setPosition(SKYSTONEConstants.tighten);
         clawSlide.setPower(0.3);
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        clawSlide.setPower(0);
         leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
         rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
     }
