@@ -85,7 +85,17 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         vuforiaMethods.activateDetection();
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        waitForStart();
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
         runtime.reset();
 
         while(opModeIsActive()){
@@ -111,7 +121,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             else if(skyStonePosition.equals("Right")){
                 methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
             }
-            myRobot.clawSlide.setPower(-0.2);
+            myRobot.clawSlide.setPower(-0.3);
             telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Status: ", "Detected " + skyStonePosition);
 

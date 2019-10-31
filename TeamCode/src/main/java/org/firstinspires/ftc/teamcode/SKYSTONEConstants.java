@@ -16,7 +16,7 @@ public class SKYSTONEConstants {
     public static double cSkybridgeClear = 20;
     public static double dSkyStoneAlign = -10;
     //Skystone Constants
-    public static double _pickUpDistance = 26;
+    public static double _pickUpDistance = 29;
     public static double _depotDistance = -24;
     public static double _aSkyStoneDistance = 18;
     public static double _bBridgeCrossDistance = 55;

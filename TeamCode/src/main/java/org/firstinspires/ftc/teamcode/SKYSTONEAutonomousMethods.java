@@ -163,18 +163,18 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
         double curDistance = myRobot.getBackDistance();
-        double startDistance = curDistance;
-        double error = Math.abs(curDistance-distance);
+        //double startDistance = curDistance;
+        double error = curDistance-distance;
         double adjust;
-        while (error>tolerance){
-            if(power>0){
-                adjust = 0.1 + 0.9*(error/startDistance)*power;
+        while (Math.abs(error)>tolerance){
+            /*
+            adjust = 0.1*error/Math.abs(error) + 0.9*(Math.min(Math.abs(error),10))/10*power;
+            if(error*power<0){
+                adjust*=-1;
             }
-            else{
-                adjust = -0.1 + 0.9*(error/startDistance)*power;
-            }
-            curDistance = myRobot.getBackDistance();
-            error = Math.abs(curDistance-distance);
+             */
+            error = curDistance-distance;
+            adjust = Math.max(Math.min(error, 20),-20)/20*power;
             runMotors(adjust, adjust);
 
             telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
@@ -182,7 +182,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
             telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
             telemetry.update();
-            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust);
+            curDistance = myRobot.getBackDistance();
+            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust + "CurrentDistance" + curDistance);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -320,7 +321,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(1000);
         myRobot.rightElevator.setPower(-0.3);
         myRobot.leftElevator.setPower(-0.3);
-        sleep(1500);
+        sleep(1250);
         myRobot.rightElevator.setPower(0);
         myRobot.leftElevator.setPower(0);
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);
