@@ -20,7 +20,7 @@ public class SKYSTONEConstants {
     public static double _depotDistance = -24;
     public static double _aSkyStoneDistance = 18;
     public static double _bBridgeCrossDistance = 42;
-    public static double _cBridgeReturnDistance = -40;
+    public static double _cBridgeReturnDistance = -35;
     //Shared Constants
     public static double shiftDistance = 7.5;
     public static double extraShift = 0;
