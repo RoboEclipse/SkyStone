@@ -117,7 +117,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(3, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
+        while (notCloseEnough(7, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");

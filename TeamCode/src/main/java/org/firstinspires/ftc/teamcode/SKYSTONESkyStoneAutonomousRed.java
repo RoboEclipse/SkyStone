@@ -114,10 +114,10 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             Log.d("Skystone Status: ", "Detected " + skyStonePosition);
             //Move accordingly
             if(skyStonePosition.equals("Left")){
-                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
+                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 1);
             }
             else if(skyStonePosition.equals("Right")) {
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + SKYSTONEConstants.extraShift, 0.5);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + SKYSTONEConstants.extraShift, 1);
             }
             //Extend slide End
             myRobot.runWithEncoderEnd(SKYSTONEConstants.extendSlide, myRobot.clawSlide);
@@ -178,7 +178,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
         //Turn
         myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 9,2);
-        methods.encoderStraightDriveInches(-8, speed);
+        methods.encoderStraightDriveInches(8, speed);
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         methods.encoderTurnNoStop(-90, 1, 5);
         Log.d("Skystone Status: ", "Turned");
@@ -196,7 +196,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             returnDistance = SKYSTONEConstants._bBridgeCrossDistance;
             //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
         }
-        methods.straighteningEncoderDriveInchesNoStop(returnDistance, 90, 5, 1);
+        methods.straighteningEncoderDriveInchesNoStop(returnDistance, -90, 5, 1);
     }
     /*
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
