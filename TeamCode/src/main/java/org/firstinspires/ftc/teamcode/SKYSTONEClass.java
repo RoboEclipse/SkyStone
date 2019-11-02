@@ -13,7 +13,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
+import java.util.List;
 import java.util.Locale;
 
 import static java.lang.Thread.sleep;
@@ -239,5 +241,24 @@ public class SKYSTONEClass {
         //TODO: Replace with driveWithEncoder
         //leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
         //rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+    }
+
+    String getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        String skyStonePosition = "Left";
+        double y = vuforiaMethods.loopDetection(telemetry, detections);
+        telemetry.addData("Offset: ", y);
+        if(y > SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right: " + y);
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center: " + y);
+        }
+        else{
+            Log.d("SkyStonePosition", "Left: " + y);
+        }
+        return skyStonePosition;
     }
 }

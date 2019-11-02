@@ -62,7 +62,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    double y = 0;
+    //double y = 0;
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
     String skyStonePosition = "Left";
@@ -111,7 +111,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             myRobot.runWithEncoder(1, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
 
             Log.d("Status:", "Slide extended");
-            getSkystonePosition(vuforiaMethods, detections);
+            skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
             myRobot.clawSlide.setPower(-0.3);
             telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Status: ", "Detected " + skyStonePosition);
@@ -162,7 +162,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance, speed);
             Log.d("Status: ", "Returned");
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Offset", y);
+            //telemetry.addData("Offset", y);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("SkyStone", "Location: " + skyStonePosition);
             telemetry.update();
@@ -171,7 +171,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
         vuforiaMethods.deactivateDetection();
 
     }
-
+    /*
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
         if(y > SKYSTONEConstants.stoneDiff){
@@ -187,7 +187,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             Log.d("SkyStonePosition", "Left: " + y);
         }
     }
-
+    */
     /*private void dashboardRecordPosition(int deltax, int deltay) {
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("cat", 3.7);

@@ -132,8 +132,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
         while(Math.abs(error)>tolerance /*&& opModeisActive()*/){
-            /*
+
             currentAngle = getHorizontalAngle();
+            /*
             if(power>0){
                 drivePower = 0.1 + error/startDifference*power*0.9;
             }
@@ -141,9 +142,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 drivePower = -0.1 + error/startDifference*power*0.9;
             }*
              */
-            drivePower = Math.max(Math.min(error/90, 1),-1)*power;
             error = targetAngle-currentAngle;
+            drivePower = Math.max(Math.min(error/90, 1),-1)*power;
             runMotors(drivePower, -drivePower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -180,7 +182,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             adjust = Math.max(Math.min(error, 20),-20)/20*power;
             runMotors(adjust, adjust);
             curDistance = myRobot.getBackDistance();
-            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
+            Log.d("Skystone: ", "DistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
