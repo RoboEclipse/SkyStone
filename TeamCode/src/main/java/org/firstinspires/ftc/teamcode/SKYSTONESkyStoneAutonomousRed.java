@@ -142,7 +142,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 9,2);
             methods.encoderStraightDriveInches(-8, speed);
             myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-            methods.encoderTurn(-90, 0.5, 2);
+            methods.encoderTurn(-90, -0.5, 2);
             Log.d("Status: ", "Turned");
             //Cross bridge
             if(skyStonePosition.equals("Left")){
