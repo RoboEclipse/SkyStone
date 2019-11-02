@@ -192,6 +192,31 @@ public class SKYSTONEClass {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
+
+    void runWithEncoderBegin(double power, int ticks, DcMotor...motors){
+        for(DcMotor motor : motors) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setTargetPosition(ticks);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setPower(power);
+        }
+    }
+
+    void runWithEncoderEnd(int ticks, DcMotor...motors){
+        ElapsedTime time = new ElapsedTime();
+        while(anyBusy(5, ticks, motors) && time.milliseconds()<2500){
+            for(DcMotor motor : motors){
+                Log.d("Skystone Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
+            }
+        }
+        for(DcMotor motor : motors){
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+
+
+
     boolean anyBusy(int tolerance, int targetPosition, DcMotor...motors){
         for(DcMotor motor : motors){
             if(Math.abs(targetPosition-motor.getCurrentPosition())>tolerance){

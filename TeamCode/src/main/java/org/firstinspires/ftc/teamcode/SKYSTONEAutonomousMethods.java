@@ -126,7 +126,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
         double currentAngle = getHorizontalAngle();
-        double startDifference = Math.abs(targetAngle-currentAngle);
+        double startDifference = currentAngle-targetAngle;
         double error = startDifference;
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -142,7 +142,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 drivePower = -0.1 + error/startDifference*power*0.9;
             }*
              */
-            error = targetAngle-currentAngle;
+            error = currentAngle-targetAngle;
             drivePower = Math.max(Math.min(error/90, 1),-1)*power;
             runMotors(drivePower, -drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
