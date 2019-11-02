@@ -53,7 +53,7 @@ public class SKYSTONEClass {
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
-        //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
@@ -228,6 +228,9 @@ public class SKYSTONEClass {
 
     double getBackDistance(){
         return backDistance.getDistance(DistanceUnit.CM);
+    }
+    double getLeftDistance() {
+        return leftDistance.getDistance(DistanceUnit.CM);
     }
     double getElevatorDistance(){
         return elevatorDistance.getDistance(DistanceUnit.CM);
