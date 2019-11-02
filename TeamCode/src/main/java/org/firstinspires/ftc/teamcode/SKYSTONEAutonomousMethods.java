@@ -179,12 +179,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             error = curDistance-distance;
             adjust = Math.max(Math.min(error, 20),-20)/20*power;
             runMotors(adjust, adjust);
-
-            telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
-            telemetry.update();
             curDistance = myRobot.getBackDistance();
             Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }

@@ -149,12 +149,12 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
 
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
-        if(y > 6){
+        if(y > SKYSTONEConstants.stoneDiff){
             skyStonePosition = "Right";
             Log.d("SkystonePosition", "Right");
             telemetry.addData("SkystonePosition", "Right");
         }
-        else if(y<-6){
+        else if(y<-SKYSTONEConstants.stoneDiff){
             skyStonePosition = "Left";
             Log.d("SkystonePosition", "Left");
         }

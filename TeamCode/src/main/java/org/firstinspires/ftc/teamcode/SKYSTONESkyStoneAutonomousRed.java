@@ -112,18 +112,17 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
 
             Log.d("Status:", "Slide extended");
             getSkystonePosition(vuforiaMethods, detections);
-
+            myRobot.clawSlide.setPower(-0.3);
+            telemetry.addData("Detected: ", skyStonePosition);
+            Log.d("Status: ", "Detected " + skyStonePosition);
             //TODO: Adjust shift values
             //Move accordingly
             if(skyStonePosition.equals("Left")){
                 methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
             }
-            else if(skyStonePosition.equals("Right")){
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 0.5);
+            else if(skyStonePosition.equals("Right")) {
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + SKYSTONEConstants.extraShift, 0.5);
             }
-            myRobot.clawSlide.setPower(-0.3);
-            telemetry.addData("Detected: ", skyStonePosition);
-            Log.d("Status: ", "Detected " + skyStonePosition);
 
             //Drive second length and pick up stone
             //TODO: Use Distance Sensor
@@ -143,7 +142,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 9,2);
             methods.encoderStraightDriveInches(-8, speed);
             myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-            methods.encoderTurn(-90, -1, 3);
+            methods.encoderTurn(-90, -0.95, 2);
             Log.d("Status: ", "Turned");
             //Cross bridge
             if(skyStonePosition.equals("Left")){
@@ -175,17 +174,17 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
 
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
-        if(y > 6){
+        if(y > SKYSTONEConstants.stoneDiff){
             skyStonePosition = "Right";
-            Log.d("SkystonePosition", "Right");
+            Log.d("SkystonePosition", "Right: " + y);
             telemetry.addData("SkystonePosition", "Right");
         }
-        else if(Math.abs(y)<6){
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
             skyStonePosition = "Center";
-            Log.d("SkystonePosition", "Center");
+            Log.d("SkystonePosition", "Center: " + y);
         }
         else{
-            Log.d("SkyStonePosition", "Left");
+            Log.d("SkyStonePosition", "Left: " + y);
         }
     }
 
