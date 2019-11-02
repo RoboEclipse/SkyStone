@@ -131,15 +131,18 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
-        while(error>tolerance /*&& opModeisActive()*/){
+        while(Math.abs(error)>tolerance /*&& opModeisActive()*/){
+            /*
             currentAngle = getHorizontalAngle();
             if(power>0){
                 drivePower = 0.1 + error/startDifference*power*0.9;
             }
             else {
                 drivePower = -0.1 + error/startDifference*power*0.9;
-            }
-            error = Math.abs(targetAngle-currentAngle);
+            }*
+             */
+            drivePower = Math.max(Math.min(error/90, 1),-1)*power;
+            error = targetAngle-currentAngle;
             runMotors(drivePower, -drivePower);
         }
         runMotors(0,0);
