@@ -119,7 +119,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
         Log.d("Status: ", "Claw Re-Centered");
         //methods.encoderStraightDriveInches(15, speed);
         //Turn
-        methods.encoderTurn(90, -1, 3);
+        methods.encoderTurn(90, 1, 3);
         Log.d("Status: ", "Turned");
         //Cross bridge
         if(skyStonePosition.equals("Left")){

@@ -126,8 +126,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
         double currentAngle = getHorizontalAngle();
-        double startDifference = currentAngle-targetAngle;
-        double error = startDifference;
+        //double startDifference = currentAngle-targetAngle;
+        double error = targetAngle-currentAngle;
+        error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
@@ -142,8 +143,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 drivePower = -0.1 + error/startDifference*power*0.9;
             }*
              */
-            error = currentAngle-targetAngle;
-            drivePower = Math.max(Math.min(error/90, 1),-1)*power;
+            error = loopAround(targetAngle-currentAngle);
+            drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
             runMotors(drivePower, -drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
@@ -220,34 +221,30 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     double getHorizontalAngle(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.firstAngle;
-        if(output>180){
-            output-=360;
+        output = loopAround(output);
+        return output;
+    }
+
+    private double loopAround(double output) {
+        if (output > 180) {
+            output -= 360;
         }
-        if(output<-180){
-            output+=360;
+        if (output < -180) {
+            output += 360;
         }
         return output;
     }
+
     double getRoll(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.secondAngle;
-        if(output>180){
-            output-=360;
-        }
-        if(output<-180){
-            output+=360;
-        }
+        output = loopAround(output);
         return output;
     }
     double getVerticalAngle(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.thirdAngle;
-        if(output>180){
-            output-=360;
-        }
-        if(output<-180){
-            output+=360;
-        }
+        output = loopAround(output);
         return output;
     }
     boolean opModeStatus(){
