@@ -117,7 +117,7 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
                 methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 1);
             }
             else if(skyStonePosition.equals("Right")) {
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + SKYSTONEConstants.extraShift, 1);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + 1.25, 1);
             }
             //Extend slide End
             myRobot.runWithEncoderEnd(SKYSTONEConstants.extendSlide, myRobot.clawSlide);
@@ -156,9 +156,10 @@ public class SKYSTONESkyStoneAutonomousRed extends LinearOpMode {
             Log.d("Skystone Status: ", "Get Second Stone");
             crossBridge(methods, myRobot, speed);
             Log.d("Skystone Status: ", "Deliver Second Stone");
-            methods.encoderStraightDriveNoStop(18, 1);
             myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance + 4, 1);
+            methods.encoderStraightDriveNoStop(25, 1);
+            myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance + 10, 1);
 
             Log.d("Skystone Status: ", "Returned");
             // Show the elapsed game time and wheel power.

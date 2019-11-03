@@ -85,19 +85,19 @@ public class SKYSTONETeleOp extends OpMode
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
             ly=-1;
-            speedMultiplier = 0.75;
+            speedMultiplier = 0.5;
         }
         else if(gamepad1.dpad_down){
             ly=1;
-            speedMultiplier = 0.75;
+            speedMultiplier = 0.5;
         }
         if(gamepad1.dpad_left){
             lx=1;
-            speedMultiplier = 0.75;
+            speedMultiplier = 0.5;
         }
         else if(gamepad1.dpad_right){
             lx=-1;
-            speedMultiplier = 0.75;
+            speedMultiplier = 0.5;
         }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
