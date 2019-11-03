@@ -49,14 +49,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomous", group="Linear Opmode")
+@Autonomous(name="SKYSTONEFoundationAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomous extends LinearOpMode {
+public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private int x;
-    private int y;
+    // private int x;
+    // private int y;
     FtcDashboard dashboard;
 
     @Override
@@ -68,8 +68,9 @@ public class SKYSTONEFoundationAutonomous extends LinearOpMode {
 
             }
         };
+        SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
-        final double speed = 0.3;
+        final double speed = 0.75;
         methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -80,23 +81,39 @@ public class SKYSTONEFoundationAutonomous extends LinearOpMode {
         while (opModeIsActive()) {
             TelemetryPacket packet;
             packet = new TelemetryPacket();
-            packet.put("cat", 3.8);
+            /* packet.put("cat", 3.8);
             //packet.fieldOverlay().setFill("blue").fillRect(-);
 
             dashboard.sendTelemetryPacket(packet);
-            methods.encoderStraightDriveInches(SKYSTONEConstants.aFoundationDistance, speed);
+            */
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            methods.encoderStraightDriveInches(1, 0.3);
+            sleep(500);
 
-            x = 0;
-            y = 0;
+            // x = 0;
+            // y = 0;
             // dashboardRecordPosition(144, 144);
 
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.aFoundationDistance + 10, speed);
+            methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
+            methods.encoderStrafeDriveInchesRight(15, speed);
+            myRobot.runMotors(-0.6, -0.6);
+            sleep(1500);
+            myRobot.runMotors(0,0);
 
 
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.bFoundationClear, speed);
-            methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.cSkybridgeClear, speed);
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.dSkyStoneAlign,speed);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            sleep(500);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClear, speed);
+            //methods.encoderTurn(-90, speed, 3);
+            methods.encoderStraightDriveInches(-2, 0.75);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
+            //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
             methods.encoderStraightDriveInches(-30,speed);

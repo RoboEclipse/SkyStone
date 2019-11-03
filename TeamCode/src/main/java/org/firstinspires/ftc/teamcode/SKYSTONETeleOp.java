@@ -134,7 +134,7 @@ public class SKYSTONETeleOp extends OpMode
             clawRotator = SKYSTONEConstants.oppositeSide;
         }
 
-        if (clawRotator != SKYSTONEConstants.straight && (horizSlidePosition > SKYSTONEConstants.safeSlide)){
+        if (clawRotator != SKYSTONEConstants.straight/* && (horizSlidePosition > SKYSTONEConstants.safeSlide)*/){
             clawRotator = SKYSTONEConstants.straight;
             Log.d("Protected Claw Rotation", "Rotation Servo set straight because it was not in safe distance");
             telemetry.addData("Protected Claw Rotation", "Rotation Servo Set Straight");
@@ -172,10 +172,10 @@ public class SKYSTONETeleOp extends OpMode
         }
 
         //Reset to Autonomous starting position
-        if(gamepad1.x){
+        /* if(gamepad1.x){
             myRobot.resetAutonomous();
             clawRotator = SKYSTONEConstants.straight;
-        }
+        }*/
 
 
         //Autonomous Tests

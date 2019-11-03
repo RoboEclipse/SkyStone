@@ -91,7 +91,7 @@ public class SKYSTONEClass {
     private boolean anyBusy(){
         return lb.isBusy() || lf.isBusy() || rb.isBusy() || rf.isBusy();
     }
-    private void runMotors (double leftPower, double rightPower){
+    void runMotors (double leftPower, double rightPower){
         lb.setPower(leftPower);
         lf.setPower(leftPower);
         rb.setPower(rightPower);
