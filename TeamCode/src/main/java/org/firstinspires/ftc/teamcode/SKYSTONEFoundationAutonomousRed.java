@@ -93,7 +93,7 @@ public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             methods.encoderStraightDriveInches(1, 0.3);
-            sleep(1000);
+            sleep(500);
 
             // x = 0;
             // y = 0;
@@ -108,7 +108,7 @@ public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
 
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(1000);
+            sleep(500);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
             //methods.encoderTurn(-90, speed, 3);
             methods.encoderStraightDriveInches(-2, 0.75);
