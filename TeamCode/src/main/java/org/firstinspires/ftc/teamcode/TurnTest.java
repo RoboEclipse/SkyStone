@@ -74,6 +74,12 @@ public class TurnTest extends LinearOpMode {
     private DcMotor rightDrive = null;
 
     SKYSTONEClass myRobot = new SKYSTONEClass();
+    SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
+        @Override
+        public void runOpMode() throws InterruptedException {
+
+        }
+    };
 
     void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
         myRobot.initialize(hardwareMap, telemetry);
@@ -101,7 +107,7 @@ public class TurnTest extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        initialize(hardwareMap, telemetry);
+        methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -109,7 +115,8 @@ public class TurnTest extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             // Show the elapsed game time and wheel power.
-            encoderTurn(90, 1, 5);
+            //encoderTurn(0, 1, 5);
+            methods.straighteningEncoderDriveInches(18,0,5,0.3);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;
@@ -144,19 +151,21 @@ public class TurnTest extends LinearOpMode {
         while (Math.abs(errorDistance)>tolerance){
             double currentAngle = getHorizontalAngle();
             double errorAngle = targetAngle-currentAngle;
-            double PCoefficient = 1/90;
+            double PCoefficient = 1.0/45;
             errorAngle = loopAround(errorAngle);
             double steer = errorAngle*PCoefficient;
             if (distance < 0) {
                 steer *= -1.0;
             }
-            double leftSpeed = power - steer;
-            double rightSpeed = power + steer;
+            double leftSpeed = power + steer;
+            double rightSpeed = power - steer;
             errorDistance = curDistance-distance;
             runMotors(leftSpeed, rightSpeed);
             curDistance = leftFrontEncoder();
             telemetry.addData("Skystone: ", "DistanceDrive Error: " + errorDistance +
                     " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + power);
+            Log.d("Skystone: ", "DistanceDrive Error: " + errorDistance +
+                    " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + power + "Angle" + currentAngle);
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
