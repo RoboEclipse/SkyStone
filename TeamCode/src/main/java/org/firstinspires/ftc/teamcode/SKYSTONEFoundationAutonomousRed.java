@@ -49,9 +49,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomous", group="Linear Opmode")
+@Autonomous(name="SKYSTONEFoundationAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomous extends LinearOpMode {
+public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
