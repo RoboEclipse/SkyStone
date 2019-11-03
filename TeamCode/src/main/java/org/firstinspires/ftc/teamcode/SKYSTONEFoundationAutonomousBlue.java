@@ -100,7 +100,7 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
             // dashboardRecordPosition(144, 144);
 
             methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
-            methods.encoderStrafeDriveInchesRight(15, speed);
+            methods.encoderStrafeDriveInchesRight(-15, speed);
             myRobot.runMotors(-0.6, -0.6);
             sleep(1500);
             myRobot.runMotors(0,0);

@@ -134,11 +134,11 @@ public class SKYSTONETeleOp extends OpMode
             clawRotator = SKYSTONEConstants.oppositeSide;
         }
 
-        if (clawRotator != SKYSTONEConstants.straight/* && (horizSlidePosition > SKYSTONEConstants.safeSlide)*/){
+        /* if (clawRotator != SKYSTONEConstants.straight && (horizSlidePosition > SKYSTONEConstants.safeSlide)){
             clawRotator = SKYSTONEConstants.straight;
             Log.d("Protected Claw Rotation", "Rotation Servo set straight because it was not in safe distance");
             telemetry.addData("Protected Claw Rotation", "Rotation Servo Set Straight");
-        }
+        }*/
 
         //Claw controls
         if(gamepad2.y) {
