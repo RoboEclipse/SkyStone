@@ -55,8 +55,8 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private int x;
-    private int y;
+    // private int x;
+    // private int y;
     FtcDashboard dashboard;
 
     @Override
@@ -88,15 +88,15 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
             */
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
             methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             methods.encoderStraightDriveInches(1, 0.3);
             sleep(1000);
 
-            x = 0;
-            y = 0;
+            // x = 0;
+            // y = 0;
             // dashboardRecordPosition(144, 144);
 
             methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
@@ -109,9 +109,10 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(1000);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClear, speed);
             //methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.dSkybridge, speed);
+            methods.encoderStraightDriveInches(-2, 0.75);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
             //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);

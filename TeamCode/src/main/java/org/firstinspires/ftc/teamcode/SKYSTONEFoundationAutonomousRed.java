@@ -55,8 +55,8 @@ public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private int x;
-    private int y;
+    // private int x;
+    // private int y;
     FtcDashboard dashboard;
 
     @Override
@@ -95,8 +95,8 @@ public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
             methods.encoderStraightDriveInches(1, 0.3);
             sleep(1000);
 
-            x = 0;
-            y = 0;
+            // x = 0;
+            // y = 0;
             // dashboardRecordPosition(144, 144);
 
             methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
@@ -111,7 +111,8 @@ public class SKYSTONEFoundationAutonomousRed extends LinearOpMode {
             sleep(1000);
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
             //methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.dSkybridge, speed);
+            methods.encoderStraightDriveInches(-2, 0.75);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
             //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
