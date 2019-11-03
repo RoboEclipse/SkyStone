@@ -100,7 +100,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(3, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 /*&& opModeisActive()*/){
+        while (notCloseEnough(10, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 /*&& opModeisActive()*/){
             Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -117,7 +117,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(7, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
+        while (notCloseEnough(3, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -218,24 +218,20 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         while (Math.abs(errorDistance)>tolerance){
             double currentAngle = getHorizontalAngle();
             double steer = getCorrection(currentAngle, targetAngle);
-            if (distance < 0) {
-                steer *= -1.0;
-            }
-            double leftSpeed = power + steer;
-            double rightSpeed = power - steer;
+            adjust = Math.max(Math.min(errorDistance, 20),-20)/20*power;
+            double leftSpeed = adjust + steer;
+            double rightSpeed = adjust - steer;
             errorDistance = targetDistance-curDistance;
             runMotors(leftSpeed, rightSpeed);
             curDistance = leftFrontEncoder();
             Log.d("Skystone: ", "DistanceDrive Error: " + errorDistance +
-                    " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + power);
-            Log.d("Skystone: ", "DistanceDrive Error: " + errorDistance +
-                    " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + power + "Angle" + currentAngle);
+                    " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + adjust + "Angle" + currentAngle);
         }
     }
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/45;
+        double PCoefficient = 1.0/90;
         return errorAngle*PCoefficient;
     }
 
@@ -261,10 +257,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
              */
             double curAngle = getHorizontalAngle();
-            double steer = getCorrection(curAngle, targetAngle);
-            if(curDistance>0){
-                steer*=-1;
-            }
+            //double steer = getCorrection(curAngle, targetAngle);
+            double steer = 0;
             error = curDistance-distance;
             adjust = -Math.max(Math.min(error, 20),-20)/20*power;
             runMotors(adjust + steer, adjust - steer);
@@ -402,10 +396,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void pickUpStone(){
         myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
         myRobot.clawServo.setPosition(SKYSTONEConstants.autoLoosen);
-        sleep(1000);
+        sleep(800);
         myRobot.rightElevator.setPower(-0.3);
         myRobot.leftElevator.setPower(-0.3);
-        sleep(1000);
+        sleep(500);
         myRobot.rightElevator.setPower(0);
         myRobot.leftElevator.setPower(0);
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);
