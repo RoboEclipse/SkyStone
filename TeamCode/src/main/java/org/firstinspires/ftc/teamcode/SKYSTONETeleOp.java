@@ -56,6 +56,8 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.initialize(hardwareMap, telemetry);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
+
+        myRobot.initializeBR(hardwareMap);
     }
 
     /*
@@ -197,6 +199,7 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
         telemetry.addData("BackDistance", myRobot.getBackDistance());
         myRobot.readEncoders();
+        myRobot.readEncodersBR();
 
         //Log
         Log.d("ElevatorPower", String.valueOf(elevatorPower));

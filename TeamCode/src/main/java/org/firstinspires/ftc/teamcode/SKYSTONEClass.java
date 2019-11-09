@@ -20,12 +20,21 @@ import java.util.Locale;
 
 import static java.lang.Thread.sleep;
 
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.RevBulkData;
+import org.openftc.revextensions2.ExpansionHubMotor;
+
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
+
+    ExpansionHubEx expansionHub;
+    RevBulkData bulkData;
+    ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
+
     //Software
     private Telemetry telemetry;
 
@@ -73,6 +82,15 @@ public class SKYSTONEClass {
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
+    void initializeBR (HardwareMap hardwareMap){
+        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
+
+        lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
+        lfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
+        rbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
+        rfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
+
+    }
 
 
     //Methods
@@ -97,6 +115,18 @@ public class SKYSTONEClass {
         rb.setPower(rightPower);
         rf.setPower(rightPower);
     }
+
+    void readEncodersBR(){
+        bulkData = expansionHub.getBulkInputData();
+        telemetry.addData(
+                "Encoders from Bulk Read", "lf: " + bulkData.getMotorCurrentPosition(lfBR)
+                        + " lb: " + bulkData.getMotorCurrentPosition(lbBR)
+                        + " rf: " + bulkData.getMotorCurrentPosition(rfBR)
+                        + " rb: "+ bulkData.getMotorCurrentPosition(rbBR)
+        );
+
+    }
+
     //Drive Stuff
     //Preferably Do Not Touch
     void drive(double direction, double velocity, double rotationVelocity) {
