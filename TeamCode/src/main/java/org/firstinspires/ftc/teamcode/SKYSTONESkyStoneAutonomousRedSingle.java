@@ -147,13 +147,13 @@ public class SKYSTONESkyStoneAutonomousRedSingle extends LinearOpMode {
             Log.d("Status: ", "Turned");
             //Cross bridge
             if(skyStonePosition.equals("Left")){
-                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
+                methods.encoderStraightDriveNoStop(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
             }
             else if(skyStonePosition.equals("Right")){
-                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
+                methods.encoderStraightDriveNoStop(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
             }
             else{
-                methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
+                methods.encoderStraightDriveNoStop(SKYSTONEConstants._bBridgeCrossDistance, speed);
             }
 
             Log.d("Status: ", "Crossed Bridge");

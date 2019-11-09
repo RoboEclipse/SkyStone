@@ -39,7 +39,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     BNO055IMU imu;
     Orientation angles;
     //Software
-    private Telemetry telemetry;
+    //private Telemetry telemetry;
 
     //Classes
     public SKYSTONEClass myRobot = new SKYSTONEClass();
@@ -100,7 +100,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(10, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 /*&& opModeisActive()*/){
+        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
             Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -117,7 +117,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(3, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
+        while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -141,7 +141,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
-        while(Math.abs(error)>tolerance /*&& opModeisActive()*/){
+        while(Math.abs(error)>tolerance && opModeIsActive()){
 
             currentAngle = getHorizontalAngle();
             /*

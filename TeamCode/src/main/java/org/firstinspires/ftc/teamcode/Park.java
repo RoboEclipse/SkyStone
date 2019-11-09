@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -44,14 +43,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+ *q
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomousRed", group="Linear Opmode")
+@Autonomous(name="Park", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
+public class Park extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -85,49 +84,8 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            TelemetryPacket packet;
-            packet = new TelemetryPacket();
-            /* packet.put("cat", 3.8);
-            //packet.fieldOverlay().setFill("blue").fillRect(-);
-
-            dashboard.sendTelemetryPacket(packet);
-            */
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
-            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            methods.encoderStraightDriveInches(1, 0.3);
-            sleep(500);
-
-            // x = 0;
-            // y = 0;
-            // dashboardRecordPosition(144, 144);
-
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
-            methods.encoderStrafeDriveInchesRight(15, speed);
-            myRobot.runMotors(-0.6, -0.6);
-            sleep(1500);
-            myRobot.runMotors(0,0);
-
-
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(500);
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
-            //methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-2, 0.75);
-            methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
-            //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
-            /*
-            methods.encoderStrafeDriveInchesRight(5, speed);
-            methods.encoderStraightDriveInches(-30,speed);
-            methods.encoderStraightDriveInches(35, speed);
-            methods.encoderStrafeDriveInchesRight(-5,speed);
-            methods.encoderStrafeDriveInchesRight(5,speed);
-            methods.encoderStraightDriveInches(-20,speed);
-            */
+            methods.encoderStraightDriveInches(-20, 1);
+            methods.encoderStrafeDriveInchesRight(18, 1);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();

@@ -58,7 +58,7 @@ import java.util.function.IntBinaryOperator;
 
 @Autonomous(name="SKYSTONESkyStoneAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
+public class SKYSTONESkyStoneAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -70,12 +70,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
-
-            }
-        };
+        SKYSTONEAutonomousMethods methods = this;
         SKYSTONEClass myRobot = methods.myRobot;
         SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
@@ -89,6 +84,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
             synchronized (this) {
                 try {
                     telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -102,31 +98,33 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             //Extend Slide Begin
-            myRobot.runWithEncoderBegin(0.6, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
+            myRobot.runWithEncoderBegin(0.9, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
             methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
             Log.d("Skystone Status:", "First distance traveled");
             //Raise elevator
             myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);
-            //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
+            //myRobot.runWithEncoder(1]====], SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
             Log.d("Skystone Status:", "Elevator Raised");
             skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
             telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Skystone Status: ", "Detected " + skyStonePosition);
             //Move accordingly
+            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 0.5, 1);
             if(skyStonePosition.equals("Left")){
                 methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 1);
             }
             else if(skyStonePosition.equals("Right")) {
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + 3, 1);
+                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + 1.25, 1);
             }
             //Extend slide End
             myRobot.runWithEncoderEnd(SKYSTONEConstants.extendSlide, myRobot.clawSlide);
             Log.d("Skystone Status:", "Slide extended");
             //Continue extend until max length
             myRobot.clawSlide.setPower(-0.3);
+            //methods.encoderTurnNoStop(0,1,3);
             //Drive second length and pick up stone
             //TODO: Use Distance Sensor
-            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 1, 1);
+
             myRobot.clawSlide.setPower(0);
             Log.d("Skystone Status: ", "Second distance traveled");
             methods.pickUpStone();
@@ -137,15 +135,18 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
             //Loosen claw and return
             myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
             Log.d("Skystone Status: ", "Dropped block");
-            double wallDistance= SKYSTONEConstants.leftWallDistance;;
+            double wallDistance= SKYSTONEConstants.leftWallDistance;
+            wallDistance += 2*SKYSTONEConstants.shiftDistance;
+            /*
             if(skyStonePosition.equals("Right")){
                 wallDistance += 2*SKYSTONEConstants.shiftDistance;
                 //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
             }
             else if (skyStonePosition.equals("Center")){
-                wallDistance += SKYSTONEConstants.shiftDistance;
+                wallDistance += SKYSTONEConstants.shiftDistance-5;
                 //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             }
+            */
             methods.frontDistanceEncoderDrive(wallDistance, 2, 1, 90);
             Log.d("Skystone Status: ", "Drive Back for Second Stone");
             methods.encoderTurn(0,1,2);
@@ -156,9 +157,9 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
             Log.d("Skystone Status: ", "Get Second Stone");
             crossBridge(methods, myRobot, speed);
             Log.d("Skystone Status: ", "Deliver Second Stone");
-            methods.encoderStraightDriveNoStop(18, 1);
             myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance + 4, 1);
+            methods.encoderStraightDriveNoStop(25, 1);
+            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance + 10, 1);
 
             Log.d("Skystone Status: ", "Returned");
             // Show the elapsed game time and wheel power.
@@ -181,7 +182,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends LinearOpMode {
         //methods.encoderStraightDriveInches(15, speed);
         //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
         //Turn
-        myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 10,2);
+        myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 7,2);
         methods.encoderStraightDriveInches(-8, speed);
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         methods.encoderTurnNoStop(90, 1, 5);

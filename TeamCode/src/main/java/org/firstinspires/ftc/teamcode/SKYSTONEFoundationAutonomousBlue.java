@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="SKYSTONEFoundationAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
+public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -62,19 +62,25 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
-
-            }
-        };
+        SKYSTONEAutonomousMethods methods = this;
         SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
         methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        waitForStart();
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.update();
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
@@ -86,6 +92,7 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
 
             dashboard.sendTelemetryPacket(packet);
             */
+            //sleep(15000);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
@@ -101,17 +108,19 @@ public class SKYSTONEFoundationAutonomousBlue extends LinearOpMode {
 
             methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             methods.encoderStrafeDriveInchesRight(-15, speed);
-            myRobot.runMotors(-0.6, -0.6);
-            sleep(1500);
+            myRobot.runMotors(-0.5, -0.5);
+            sleep(1700);
             myRobot.runMotors(0,0);
-
+            methods.encoderStraightDriveInches(1, 0.75);
 
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
             methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClear, speed);
             //methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-2, 0.75);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+
             methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
             //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*

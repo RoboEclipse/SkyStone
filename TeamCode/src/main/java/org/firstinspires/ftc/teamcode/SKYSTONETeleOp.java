@@ -45,9 +45,10 @@ public class SKYSTONETeleOp extends OpMode
     private SKYSTONEClass myRobot = new SKYSTONEClass();
     private double clawRotator = SKYSTONEConstants.straight;
     private double clawPosition = 0;
-    private double leftFoundationPosition = SKYSTONEConstants.lUp;
-    private double rightFoundationPosition = SKYSTONEConstants.rUp;
+    private double leftFoundationPosition = SKYSTONEConstants.lDown;
+    private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
+    private double frontClawPosition = 1.0;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -159,6 +160,14 @@ public class SKYSTONETeleOp extends OpMode
             collectorPower = 0;
         }
 
+        //Side Claw test{
+        if(gamepad2.right_bumper){
+            frontClawPosition = 1;
+        }
+        if(gamepad2.left_bumper){
+            frontClawPosition = 0.5;
+        }
+        myRobot.moveFrontClaw(frontClawPosition         );
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
@@ -194,8 +203,8 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("ClawPosition", clawPosition);
         telemetry.addData("leftFoundationPosition", leftFoundationPosition);
         telemetry.addData("CollectorPower", collectorPower);
-        telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
-        telemetry.addData("BackDistance", myRobot.getBackDistance());
+        //telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
+        //telemetry.addData("BackDistance", myRobot.getBackDistance());
         myRobot.readEncoders();
 
         //Log
@@ -248,8 +257,10 @@ public class SKYSTONETeleOp extends OpMode
             timer.reset();
             stage=0;
         }
-
-
     }
+
+    void autoFoundationPull(){
+
+    };
 }
 

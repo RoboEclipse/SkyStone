@@ -41,7 +41,7 @@ public class SKYSTONEConstants {
     //Skystone Tele-op Stacking Grabber Claw
     public static double tighten = 0.15;
     public static double loosen = 0.50;
-    public static double autoLoosen = 0.8;
+    public static double autoLoosen = 1;
     //Skystone Left Foundation Claw
     public static double lDown = 0.6; //At most .65
     public static double lUp = 0.25;

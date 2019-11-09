@@ -23,7 +23,7 @@ import static java.lang.Thread.sleep;
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     //Software
@@ -50,6 +50,8 @@ public class SKYSTONEClass {
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        frontClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
+        backClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
@@ -168,6 +170,9 @@ public class SKYSTONEClass {
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
+    }
+    void moveFrontClaw (double position){
+        frontClaw.setPosition(position);
     }
     //Motor Movement
     void runElevatorMotors(double power){
@@ -289,4 +294,6 @@ public class SKYSTONEClass {
         }
         return skyStonePosition;
     }
+
+
 }
