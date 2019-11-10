@@ -20,7 +20,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     BNO055IMU imu;
     Orientation angles;
     //Software
-    private Telemetry telemetry;
+    //private Telemetry telemetry;
 
     //Classes
     public SKYSTONEClass myRobot = new SKYSTONEClass();
@@ -59,7 +59,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod(hardwareMap);
         } else {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+            Log.d("Sorry!", "This device is not compatible with TFOD");
         }
 */
         /*
@@ -70,20 +70,25 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //Methods
     void encoderStraightDriveInches(double inches, double power){
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        multiSetTargetPosition(inches*SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
-        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
-        runMotors(power, power);
-        while (anyBusy() /*&& opModeisActive()*/){
-            telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
-            telemetry.update();
-        }
+        encoderStraightDriveNoStop(inches, power);
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    void encoderStraightDriveNoStop(double inches, double power) {
+        ElapsedTime time = new ElapsedTime();
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
+        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
+        runMotors(power, power);
+        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
+            Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
+            Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
+            Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
+            Log.d("Right Back: ", myRobot.rb.getCurrentPosition()+"");
+        }
+    }
+
     //Negative = Left, Positive = Right
     void encoderStrafeDriveInchesRight(double inches, double power){
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -93,38 +98,48 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (anyBusy() /*&& opModeisActive()*/){
-            telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
-            telemetry.update();
+        while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
+            Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
+            Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
+            Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
+            Log.d("SkyStone Right Back: ", myRobot.rb.getCurrentPosition()+"");
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
+        encoderTurnNoStop(targetAngle, power, tolerance);
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    void encoderTurnNoStop(double targetAngle, double power, double tolerance) {
         double currentAngle = getHorizontalAngle();
-        double startDifference = Math.abs(targetAngle-currentAngle);
-        double error = startDifference;
+        //double startDifference = currentAngle-targetAngle;
+        double error = targetAngle-currentAngle;
+        error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(drivePower, -drivePower);
-        while(error>tolerance /*&& opModeisActive()*/){
+        while(Math.abs(error)>tolerance && opModeIsActive()){
+
             currentAngle = getHorizontalAngle();
+            /*
             if(power>0){
                 drivePower = 0.1 + error/startDifference*power*0.9;
             }
             else {
                 drivePower = -0.1 + error/startDifference*power*0.9;
-            }
-            error = Math.abs(targetAngle-currentAngle);
+            }*
+             */
+            error = loopAround(targetAngle-currentAngle);
+            drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
             runMotors(drivePower, -drivePower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     int leftFrontEncoder(){
         return myRobot.lf.getCurrentPosition();
     }
@@ -139,37 +154,99 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void backDistanceEncoderDrive(double distance, double tolerance, double power){
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(power, power);
-        double curDistance = myRobot.getBackDistance();
-        double error = Math.abs(curDistance-distance);
-        while (error>tolerance){
-            double adjust;
-            if(power>0){
-                adjust = 0.1 + 0.9*error*power;
-            }
-            else{
-                adjust = -0.1 + 0.9*error*power;
-            }
-            curDistance = myRobot.getBackDistance();
-            error = Math.abs(curDistance-distance);
-            runMotors(adjust, adjust);
-
-            telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
-            telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
-            telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
-            telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
-            telemetry.update();
-            Log.d("DistanceDrive Error: ", error + " Adjust: " + adjust);
-        }
+        backDistanceEncoderDriveNoStop(distance, tolerance, power);
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
+    void backDistanceEncoderDriveNoStop(double distance, double tolerance, double power) {
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(power, power);
+        double curDistance = myRobot.getBackDistance();
+        //double startDistance = curDistance;
+        double error = curDistance-distance;
+        double adjust;
+        while (Math.abs(error)>tolerance){
+            /*
+            adjust = 0.1*error/Math.abs(error) + 0.9*(Math.min(Math.abs(error),10))/10*power;
+            if(error*power<0){
+                adjust*=-1;
+            }
+             */
+            error = curDistance-distance;
+            adjust = Math.max(Math.min(error, 20),-20)/20*power;
+            runMotors(adjust, adjust);
+            curDistance = myRobot.getBackDistance();
+            Log.d("Skystone: ", "DistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
+        }
+    }
+    void straighteningEncoderDriveInches(double distance, double targetAngle, double tolerance, double power){
+        straighteningEncoderDriveInchesNoStop(distance, targetAngle, tolerance, power);
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
+    void straighteningEncoderDriveInchesNoStop(double distance, double targetAngle, double tolerance, double power) {
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(power, power);
+        double curDistance = leftFrontEncoder();
+        double targetDistance = distance* SKYSTONEConstants.TICKS_PER_INCH;
+        //double startDistance = curDistance;
+        double errorDistance = targetDistance-curDistance;
+        double adjust;
+        while (Math.abs(errorDistance)>tolerance){
+            double currentAngle = getHorizontalAngle();
+            double steer = getCorrection(currentAngle, targetAngle);
+            adjust = Math.max(Math.min(errorDistance, 20),-20)/20*power;
+            double leftSpeed = adjust + steer;
+            double rightSpeed = adjust - steer;
+            errorDistance = targetDistance-curDistance;
+            runMotors(leftSpeed, rightSpeed);
+            curDistance = leftFrontEncoder();
+            Log.d("Skystone: ", "DistanceDrive Error: " + errorDistance +
+                    " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + adjust + "Angle" + currentAngle);
+        }
+    }
 
+    private double getCorrection(double currentAngle, double targetAngle){
+        double errorAngle = loopAround(targetAngle-currentAngle);
+        double PCoefficient = 1.0/90;
+        return errorAngle*PCoefficient;
+    }
 
+    void frontDistanceEncoderDrive(double distance, double tolerance, double power, double targetAngle){
+        frontDistanceEncoderDriveNoStop(distance, tolerance, power, targetAngle);
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    void frontDistanceEncoderDriveNoStop(double distance, double tolerance, double power, double targetAngle) {
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(power, power);
+        double curDistance = myRobot.getLeftDistance();
+        //double startDistance = curDistance;
+        double error = curDistance-distance;
+        double adjust;
+        while (Math.abs(error)>tolerance){
+            /*
+            adjust = 0.1*error/Math.abs(error) + 0.9*(Math.min(Math.abs(error),10))/10*power;
+            if(error*power<0){
+                adjust*=-1;
+            }
+             */
+            double curAngle = getHorizontalAngle();
+            //double steer = getCorrection(curAngle, targetAngle);
+            double steer = 0;
+            error = curDistance-distance;
+            adjust = -Math.max(Math.min(error, 20),-20)/20*power;
+            runMotors(adjust + steer, adjust - steer);
+            curDistance = myRobot.getLeftDistance();
+            Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
+        }
+    }
     //Attachments
 
 
@@ -189,6 +266,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     private boolean anyBusy(){
         return myRobot.lb.isBusy() || myRobot.lf.isBusy() || myRobot.rb.isBusy() || myRobot.rf.isBusy();
     }
+    private boolean notCloseEnough(int tolerance, DcMotor...motors){
+        for(DcMotor motor : motors){
+            if(Math.abs(motor.getCurrentPosition()-motor.getTargetPosition()) > tolerance){
+                return true;                
+            }
+        }
+        return false;
+    }
     void runMotors (double leftPower, double rightPower){
         myRobot.lb.setPower(leftPower);
         myRobot.lf.setPower(leftPower);
@@ -199,34 +284,30 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     double getHorizontalAngle(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.firstAngle;
-        if(output>180){
-            output-=360;
+        output = loopAround(output);
+        return output;
+    }
+
+    private double loopAround(double output) {
+        if (output > 180) {
+            output -= 360;
         }
-        if(output<-180){
-            output+=360;
+        if (output < -180) {
+            output += 360;
         }
         return output;
     }
+
     double getRoll(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.secondAngle;
-        if(output>180){
-            output-=360;
-        }
-        if(output<-180){
-            output+=360;
-        }
+        output = loopAround(output);
         return output;
     }
     double getVerticalAngle(){
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.thirdAngle;
-        if(output>180){
-            output-=360;
-        }
-        if(output<-180){
-            output+=360;
-        }
+        output = loopAround(output);
         return output;
     }
     boolean opModeStatus(){
@@ -274,15 +355,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                Log.d("# Object Detected", updatedRecognitions.size());
 
                 // step through the list of recognitions and display boundary info.
                 int i = 0;
                 for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                    Log.d(String.format("label (%d)", i), recognition.getLabel());
+                    Log.d(String.format("  left,top (%d)", i), "%.03f , %.03f",
                             recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                    Log.d(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                             recognition.getRight(), recognition.getBottom());
                 }
             }
@@ -295,11 +376,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Complex Methods
     void pickUpStone(){
         myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
-        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-        sleep(1000);
-        myRobot.rightElevator.setPower(-0.2);
-        myRobot.leftElevator.setPower(-0.2);
+        myRobot.clawServo.setPosition(SKYSTONEConstants.autoLoosen);
         sleep(800);
+        myRobot.rightElevator.setPower(-0.3);
+        myRobot.leftElevator.setPower(-0.3);
+        sleep(700);
         myRobot.rightElevator.setPower(0);
         myRobot.leftElevator.setPower(0);
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);

@@ -13,13 +13,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
+import java.util.List;
 import java.util.Locale;
+
+import static java.lang.Thread.sleep;
 
 public class SKYSTONEClass {
     //Hardware
     DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     //Software
@@ -46,14 +50,20 @@ public class SKYSTONEClass {
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        frontClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
+        backClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
-        //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
+        leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -83,7 +93,7 @@ public class SKYSTONEClass {
     private boolean anyBusy(){
         return lb.isBusy() || lf.isBusy() || rb.isBusy() || rf.isBusy();
     }
-    private void runMotors (double leftPower, double rightPower){
+    void runMotors (double leftPower, double rightPower){
         lb.setPower(leftPower);
         lf.setPower(leftPower);
         rb.setPower(rightPower);
@@ -161,6 +171,9 @@ public class SKYSTONEClass {
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
     }
+    void moveFrontClaw (double position){
+        frontClaw.setPosition(position);
+    }
     //Motor Movement
     void runElevatorMotors(double power){
         leftElevator.setPower(power);
@@ -184,6 +197,31 @@ public class SKYSTONEClass {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
+
+    void runWithEncoderBegin(double power, int ticks, DcMotor...motors){
+        for(DcMotor motor : motors) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setTargetPosition(ticks);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setPower(power);
+        }
+    }
+
+    void runWithEncoderEnd(int ticks, DcMotor...motors){
+        ElapsedTime time = new ElapsedTime();
+        while(anyBusy(5, ticks, motors) && time.milliseconds()<2500){
+            for(DcMotor motor : motors){
+                Log.d("Skystone Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
+            }
+        }
+        for(DcMotor motor : motors){
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+
+
+
     boolean anyBusy(int tolerance, int targetPosition, DcMotor...motors){
         for(DcMotor motor : motors){
             if(Math.abs(targetPosition-motor.getCurrentPosition())>tolerance){
@@ -196,19 +234,66 @@ public class SKYSTONEClass {
     double getBackDistance(){
         return backDistance.getDistance(DistanceUnit.CM);
     }
+    double getLeftDistance() {
+        return leftDistance.getDistance(DistanceUnit.CM);
+    }
     double getElevatorDistance(){
         return elevatorDistance.getDistance(DistanceUnit.CM);
     }
-    void elevatorDistanceDrive(int power, int ticks, double distance){
+    void elevatorDistanceDrive(double power, int ticks, double distance, double tolerance){
+        /*
         leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         multiSetTargetPosition(ticks, leftElevator, rightElevator);
         leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        */
+        leftElevator.setPower(power);
+        rightElevator.setPower(power);
         double error = Math.abs(getElevatorDistance()-distance);
-        while (anyBusy() && error<2){
+        while (error>tolerance){
             error = Math.abs(getElevatorDistance()-distance);
             Log.d("ElevatorError: ", error + "");
         }
+        leftElevator.setPower(0);
+        rightElevator.setPower(0);
+        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+    void resetAutonomous() {
+        clawRotation.setPosition(SKYSTONEConstants.straight);
+        clawServo.setPosition(SKYSTONEConstants.tighten);
+        clawSlide.setPower(0.3);
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        clawSlide.setPower(0);
+        //TODO: Replace with driveWithEncoder
+        //leftElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+        //rightElevator.setTargetPosition(SKYSTONEConstants.startingElevatorHeight);
+    }
+
+    String getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        String skyStonePosition = "Left";
+        double y = vuforiaMethods.loopDetection(telemetry, detections);
+        telemetry.addData("Offset: ", y);
+        if(y > SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right: " + y);
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center: " + y);
+        }
+        else{
+            Log.d("SkyStonePosition", "Left: " + y);
+        }
+        return skyStonePosition;
+    }
+
+
 }
