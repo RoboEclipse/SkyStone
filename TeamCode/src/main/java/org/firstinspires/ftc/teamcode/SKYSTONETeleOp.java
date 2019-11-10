@@ -86,19 +86,19 @@ public class SKYSTONETeleOp extends OpMode
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
             ly=-1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.3;
         }
         else if(gamepad1.dpad_down){
             ly=1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.3;
         }
         if(gamepad1.dpad_left){
             lx=1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.3;
         }
         else if(gamepad1.dpad_right){
             lx=-1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.3;
         }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
@@ -165,9 +165,9 @@ public class SKYSTONETeleOp extends OpMode
             frontClawPosition = 1;
         }
         if(gamepad2.left_bumper){
-            frontClawPosition = 0.5;
+            frontClawPosition = 0.57;
         }
-        myRobot.moveFrontClaw(frontClawPosition         );
+        myRobot.moveFrontClaw(frontClawPosition);
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
