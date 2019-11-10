@@ -231,7 +231,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/90;
+        double PCoefficient = 1.0/30;
         return errorAngle*PCoefficient;
     }
 

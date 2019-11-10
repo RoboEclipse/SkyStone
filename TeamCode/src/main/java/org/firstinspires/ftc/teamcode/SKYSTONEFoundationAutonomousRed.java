@@ -92,19 +92,16 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
             dashboard.sendTelemetryPacket(packet);
             */
+            //Raise up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            //Strafe right to align to foundation
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            //Drive to foundation
             methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            //Grab foundation
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            methods.encoderStraightDriveInches(1, 0.3);
-            sleep(500);
-
-            // x = 0;
-            // y = 0;
-            // dashboardRecordPosition(144, 144);
-
             methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             methods.encoderStrafeDriveInchesRight(15, speed);
             myRobot.runMotors(-0.6, -0.6);
