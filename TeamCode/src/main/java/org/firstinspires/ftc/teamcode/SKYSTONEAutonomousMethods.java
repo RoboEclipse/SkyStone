@@ -42,10 +42,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //private Telemetry telemetry;
 
     //Classes
-    public SKYSTONEClass myRobot = new SKYSTONEClass();
+
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
     private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
-
+    SKYSTONEClass myRobot = new SKYSTONEClass();
+    private SKYSTONEDrivetrainClass drivetrain = myRobot;
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
@@ -97,31 +98,31 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void encoderStraightDriveNoStop(double inches, double power) {
         ElapsedTime time = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
+        multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, drivetrain.lb, drivetrain.lf, drivetrain.rb, drivetrain.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
-            Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
-            Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
-            Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
-            Log.d("Right Back: ", myRobot.rb.getCurrentPosition()+"");
+        while (notCloseEnough(20, drivetrain.lf, drivetrain.rf, drivetrain.lb, drivetrain.rb) && time.milliseconds()<4000 && opModeIsActive()){
+            Log.d("Left Front: ", drivetrain.lf.getCurrentPosition()+"");
+            Log.d("Left Back: ", drivetrain.lb.getCurrentPosition()+"");
+            Log.d("Right Front: ", drivetrain.rf.getCurrentPosition()+"");
+            Log.d("Right Back: ", drivetrain.rb.getCurrentPosition()+"");
         }
     }
 
     //Negative = Left, Positive = Right
     void encoderStrafeDriveInchesRight(double inches, double power){
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        myRobot.lf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.lb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        drivetrain.lf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        drivetrain.lb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        drivetrain.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        drivetrain.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
-            Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
-            Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
-            Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
-            Log.d("SkyStone Right Back: ", myRobot.rb.getCurrentPosition()+"");
+        while (notCloseEnough(8, drivetrain.lf, drivetrain.lb, drivetrain.rf, drivetrain.rb) && opModeIsActive()){
+            Log.d("SkyStone Left Front: ", drivetrain.lf.getCurrentPosition()+"");
+            Log.d("SkyStone Left Back: ", drivetrain.lb.getCurrentPosition()+"");
+            Log.d("SkyStone Right Front: ", drivetrain.rf.getCurrentPosition()+"");
+            Log.d("SkyStone Right Back: ", drivetrain.rb.getCurrentPosition()+"");
         }
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -160,16 +161,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     int leftFrontEncoder(){
-        return myRobot.lf.getCurrentPosition();
+        return drivetrain.lf.getCurrentPosition();
     }
     int leftBackEncoder(){
-        return myRobot.lb.getCurrentPosition();
+        return drivetrain.lb.getCurrentPosition();
     }
     int rightFrontEncoder(){
-        return myRobot.rf.getCurrentPosition();
+        return drivetrain.rf.getCurrentPosition();
     }
     int rightBackEncoder(){
-        return myRobot.rb.getCurrentPosition();
+        return drivetrain.rb.getCurrentPosition();
     }
 
     void backDistanceEncoderDrive(double distance, double tolerance, double power){
@@ -272,10 +273,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //private void
     //Shortcuts
     private void setModeAllDrive(DcMotor.RunMode mode){
-        myRobot.lb.setMode(mode);
-        myRobot.lf.setMode(mode);
-        myRobot.rb.setMode(mode);
-        myRobot.rf.setMode(mode);
+        drivetrain.lb.setMode(mode);
+        drivetrain.lf.setMode(mode);
+        drivetrain.rb.setMode(mode);
+        drivetrain.rf.setMode(mode);
     }
     private void multiSetTargetPosition(double ticks, DcMotor...motors){
         for(DcMotor motor:motors){
@@ -283,7 +284,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
     private boolean anyBusy(){
-        return myRobot.lb.isBusy() || myRobot.lf.isBusy() || myRobot.rb.isBusy() || myRobot.rf.isBusy();
+        return drivetrain.lb.isBusy() || drivetrain.lf.isBusy() || drivetrain.rb.isBusy() || drivetrain.rf.isBusy();
     }
     private boolean notCloseEnough(int tolerance, DcMotor...motors){
         for(DcMotor motor : motors){
@@ -294,10 +295,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return false;
     }
     void runMotors (double leftPower, double rightPower){
-        myRobot.lb.setPower(leftPower);
-        myRobot.lf.setPower(leftPower);
-        myRobot.rb.setPower(rightPower);
-        myRobot.rf.setPower(rightPower);
+        drivetrain.lb.setPower(leftPower);
+        drivetrain.lf.setPower(leftPower);
+        drivetrain.rb.setPower(rightPower);
+        drivetrain.rf.setPower(rightPower);
     }
     //IMU Stuff
     double getHorizontalAngle(){

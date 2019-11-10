@@ -20,9 +20,9 @@ import java.util.Locale;
 
 import static java.lang.Thread.sleep;
 
-public class SKYSTONEClass {
+public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
-    DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
+    DcMotor clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
@@ -31,6 +31,7 @@ public class SKYSTONEClass {
 
     //Classes
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
+    //SKYSTONEDrivetrainClass drivetrain = new SKYSTONEDrivetrainClass();
     //private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 
     //Backend
@@ -39,10 +40,7 @@ public class SKYSTONEClass {
         FtcDashboard dashboard = FtcDashboard.getInstance();
 
         //HardwareMaps
-        lb = hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
-        lf = hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
-        rb = hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
-        rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
+        initializeDriveTrain(hardwareMap, telemetry_);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
@@ -64,15 +62,9 @@ public class SKYSTONEClass {
         rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lb.setDirection(DcMotorSimple.Direction.REVERSE);
-        lf.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
 
