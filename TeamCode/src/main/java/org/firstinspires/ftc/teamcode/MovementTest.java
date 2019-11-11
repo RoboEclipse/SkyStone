@@ -60,7 +60,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 @Autonomous(name="MovementTest", group="Linear Opmode")
-public class MovementTest extends LinearOpMode {
+public class MovementTest extends SKYSTONEAutonomousMethods {
 
     BNO055IMU imu;
     Orientation angles;
@@ -85,7 +85,7 @@ public class MovementTest extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        methods.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -95,9 +95,9 @@ public class MovementTest extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             //encoderTurn(0, 1, 5);
             //methods.frontDistanceEncoderDrive(20,5, 1, -0);
-            methods.encoderStraightDriveInches(20, 1);
-            methods.encoderStrafeDriveInchesRight(20, 1);
-            methods.encoderTurn(90, 1,3);
+            encoderStraightDriveInches(20, 1);
+            encoderStrafeDriveInchesRight(20, 1);
+            encoderTurn(90, 1,3);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;

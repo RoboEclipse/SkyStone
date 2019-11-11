@@ -80,8 +80,8 @@ public class SKYSTONETeleOp extends OpMode
     @Override
     public void loop() {
         //Drive motor controls
-        double lx = gamepad1.left_stick_x;
-        double ly = -gamepad1.left_stick_y;
+        double lx = -gamepad1.left_stick_x;
+        double ly = gamepad1.left_stick_y;
         double speedMultiplier = 1;
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){

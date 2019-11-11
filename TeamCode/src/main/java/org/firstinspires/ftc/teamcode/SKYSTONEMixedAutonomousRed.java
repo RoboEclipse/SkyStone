@@ -54,7 +54,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONESkyStoneAutonomousRed", group="Linear Opmode")
+@Autonomous(name="SKYSTONEMixedAutonomousRed", group="Linear Opmode")
 //@Disabled
 public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
 
