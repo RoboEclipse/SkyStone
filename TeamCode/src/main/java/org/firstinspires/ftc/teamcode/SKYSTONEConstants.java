@@ -30,17 +30,18 @@ public class SKYSTONEConstants {
     public static int raiseTicks = 600;
     public static int lowerTicks = -300;
     public static int extendSlide = -850;
+
     public static int safeSlide = -450; //Value when the rotator claw can turn without crashing into the sides
     public static int stoneDiff = 3;
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
-    public static double zero = 0.495; //Angled straight
-    public static double right90 = 0.385; //90 degrees right from straight
-    public static double left90 = 0.605; //90 degrees left from straight
-    public static double straight = 0.495; //Straight
-    public static double oppositeSide = 0.72; //Make it straight but on the other side or back side
+    public static double zero = 0.488; //Angled straight
+    public static double right90 = 0.376; //90 degrees right from straight
+    public static double left90 = 0.6; //90 degrees left from straight
+    public static double straight = 0.488; //Straight
+    public static double oppositeSide = 0.713; //Make it straight but on the other side or back side
     //Skystone Tele-op Stacking Grabber Claw
     public static double tighten = 0.15;
-    public static double loosen = 0.50;
+    public static double loosen = 0.8;
     public static double autoLoosen = 1;
     //Skystone Left Foundation Claw
     public static double lDown = 0.6; //At most .65
@@ -48,6 +49,9 @@ public class SKYSTONEConstants {
     //Skystone Right Foundation Claw
     public static double rDown = 0.25; //At least .5
     public static double rUp = 0.55;
+    //Front side claw
+    public static double frontClawDown = 0.57;
+    public static double frontClawUp = 1;
     //Skystone Reset
     public static int startingElevatorHeight = 10;
 }
