@@ -93,15 +93,16 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive backwards with raw power
             runMotors(-0.2, -0.2);
             // Changed left power to -0.2 from -0.6
-            sleep(800);
+            sleep(1400);
             // Changed sleep from 1500 to 800
             runMotors(0,0);
 
             //Clear the foundation
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
             //Drive forward to get off the wall
-            runMotors(-0.2, 0.2);
-            sleep(300);
+            //runMotors(-0.2, 0.2);
+            //sleep(300);
             runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);

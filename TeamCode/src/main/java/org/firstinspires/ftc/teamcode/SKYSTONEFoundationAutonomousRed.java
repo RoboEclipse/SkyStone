@@ -117,7 +117,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
             //Clear the foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
             //Drive forward to get off the wall
             //methods.encoderStraightDriveInches(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
