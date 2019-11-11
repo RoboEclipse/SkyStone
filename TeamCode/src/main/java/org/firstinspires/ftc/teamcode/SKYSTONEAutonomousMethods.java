@@ -111,10 +111,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Negative = Left, Positive = Right
     void encoderStrafeDriveInchesRight(double inches, double power){
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        myRobot.lf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.lb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
         while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
@@ -140,7 +140,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(drivePower, -drivePower);
+        runMotors(-drivePower, drivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
 
             currentAngle = getHorizontalAngle();
@@ -154,7 +154,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
              */
             error = loopAround(targetAngle-currentAngle);
             drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
-            runMotors(drivePower, -drivePower);
+            runMotors(-drivePower, drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -177,7 +177,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-
+    //TODO: Investigate how the changes effect these
     void backDistanceEncoderDriveNoStop(double distance, double tolerance, double power) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
