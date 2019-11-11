@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -82,7 +81,7 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            /*
+
             //Strafe right to align to foundation
             encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
@@ -92,15 +91,17 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Strafe right to ensure the foundation is flush with the wall
             encoderStrafeDriveInchesRight(15, speed);
             //Drive backwards with raw power
-            runMotors(-0.6, -0.6);
-            sleep(1500);
+            runMotors(-0.2, -0.2);
+            // Changed left power to -0.2 from -0.6
+            sleep(800);
+            // Changed sleep from 1500 to 800
             runMotors(0,0);
 
             //Clear the foundation
             encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
             //Drive forward to get off the wall
             runMotors(-0.2, 0.2);
-            sleep(300);
+            sleep(800);
             runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
@@ -109,8 +110,9 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             methods.encoderStrafeDriveInchesRight(-5,speed);
             methods.encoderStrafeDriveInchesRight(5,speed);
             methods.encoderStraightDriveInches(-20,speed);
-            */
             encoderStraightDriveInches(20,speed);
+            */
+
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
