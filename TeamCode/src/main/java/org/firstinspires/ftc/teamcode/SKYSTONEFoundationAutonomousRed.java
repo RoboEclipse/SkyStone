@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -107,8 +106,10 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Strafe right to ensure the foundation is flush with the wall
             methods.encoderStrafeDriveInchesRight(15, speed);
             //Drive backwards with raw power
-            myRobot.runMotors(-0.6, -0.6);
-            sleep(1500);
+            myRobot.runMotors(-0.2, -0.2);
+            // Changed from -0.6 to -0.2
+            sleep(800);
+            // Changed from 1500 t0 800
             myRobot.runMotors(0,0);
 
             //Lift up foundation servos
@@ -116,7 +117,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
             //Clear the foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
             //Drive forward to get off the wall
             //methods.encoderStraightDriveInches(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);

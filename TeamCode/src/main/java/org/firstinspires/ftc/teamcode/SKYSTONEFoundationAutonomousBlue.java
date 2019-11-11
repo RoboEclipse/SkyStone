@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -122,12 +121,12 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClear, speed);
+            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart1, speed);
             //methods.encoderTurn(-90, speed, 3);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
 
-            methods.encoderStraightDriveInches(SKYSTONEConstants.dSkybridge, speed);
+            methods.encoderStraightDriveInches(SKYSTONEConstants.eSkybridge, speed);
             //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
