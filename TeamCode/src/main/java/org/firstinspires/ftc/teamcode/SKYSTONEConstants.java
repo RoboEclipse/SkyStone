@@ -33,11 +33,11 @@ public class SKYSTONEConstants {
     public static int safeSlide = -450; //Value when the rotator claw can turn without crashing into the sides
     public static int stoneDiff = 3;
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
-    public static double zero = 0.495; //Angled straight
-    public static double right90 = 0.385; //90 degrees right from straight
-    public static double left90 = 0.605; //90 degrees left from straight
-    public static double straight = 0.495; //Straight
-    public static double oppositeSide = 0.72; //Make it straight but on the other side or back side
+    public static double zero = 0.488; //Angled straight
+    public static double right90 = 0.376; //0 degrees right from straight
+    public static double left90 = 0.6; //90 degrees left from straight
+    public static double straight = 0.488; //Straight
+    public static double oppositeSide = 0.713; //Make it straight but on the other side or back side
     //Skystone Tele-op Stacking Grabber Claw
     public static double tighten = 0.15;
     public static double loosen = 0.50;
