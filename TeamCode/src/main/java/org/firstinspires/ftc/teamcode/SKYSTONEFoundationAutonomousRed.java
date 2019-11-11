@@ -108,7 +108,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive backwards with raw power
             myRobot.runMotors(-0.2, -0.2);
             // Changed from -0.6 to -0.2
-            sleep(800);
+            sleep(300);
             // Changed from 1500 t0 800
             myRobot.runMotors(0,0);
 

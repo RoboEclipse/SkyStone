@@ -101,7 +101,7 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClear, speed);
             //Drive forward to get off the wall
             runMotors(-0.2, 0.2);
-            sleep(800);
+            sleep(300);
             runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
