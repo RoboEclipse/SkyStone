@@ -116,9 +116,9 @@ public class TurnTest extends LinearOpMode {
         while (opModeIsActive()) {
             // Show the elapsed game time and wheel power.
             //encoderTurn(0, 1, 5);
-            methods.frontDistanceEncoderDrive(20,5, 1, -0);
-            //methods.straighteningEncoderDriveInches(36,-90,5,1);
-            //methods.straighteningEncoderDriveInches(-36, -90, 5, 1);
+            //methods.frontDistanceEncoderDrive(20,5, 1, -0);
+            methods.straighteningEncoderDriveInches(70,0,5,1);
+            methods.straighteningEncoderDriveInches(-70, 0, 5, 1);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;

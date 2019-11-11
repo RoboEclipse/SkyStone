@@ -33,14 +33,12 @@ import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
-import java.util.function.IntBinaryOperator;
 
 
 /**
@@ -56,9 +54,9 @@ import java.util.function.IntBinaryOperator;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONESkyStoneAutonomousRed", group="Linear Opmode")
+@Autonomous(name="SKYSTONEMixedAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONESkyStoneAutonomousRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -70,12 +68,12 @@ public class SKYSTONESkyStoneAutonomousRed extends SKYSTONEAutonomousMethods {
     @Override
     public void runOpMode() {
 
-        SKYSTONEAutonomousMethods methods = this;
-        SKYSTONEClass myRobot = methods.myRobot;
+        //SKYSTONEAutonomousMethods methods = this;
+        //SKYSTONEClass myRobot = this.myRobot;
         SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
-        methods.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         vuforiaMethods.activateDetection();
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
@@ -99,83 +97,47 @@ public class SKYSTONESkyStoneAutonomousRed extends SKYSTONEAutonomousMethods {
             //Put down foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            //Extend Slide Begin
-            myRobot.runWithEncoderBegin(0.9, SKYSTONEConstants.extendSlide, myRobot.clawSlide);
-            //Move forward first segment
-            methods.encoderStraightDriveInches(SKYSTONEConstants._aSkyStoneDistance/4, speed);
-            Log.d("Skystone Status:", "First distance traveled");
-            //Raise elevator
-            myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);
-            //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks, myRobot.rightElevator, myRobot.leftElevator);
-            Log.d("Skystone Status:", "Elevator Raised");
+            //Strafe sideways to allow the webcam to see.
+            encoderStrafeDriveInchesRight(5, 1);
+            //Detect the stone position
             sleep(800);
             skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
             telemetry.addData("Detected: ", skyStonePosition);
             Log.d("Skystone Status: ", "Detected " + skyStonePosition);
-            //Move accordingly
-            myRobot.runWithEncoderEnd(SKYSTONEConstants.extendSlide, myRobot.clawSlide);
-            myRobot.clawSlide.setPower(-0.35);
-            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 0.5, 1);
-
+            //Drive forward or back to align to SkyStone
             if(skyStonePosition.equals("Left")){
-                methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.shiftDistance+SKYSTONEConstants.extraShift, 1);
+                encoderStraightDriveInches(6, 1);
             }
-            else if(skyStonePosition.equals("Right")) {
-                methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.shiftDistance + 1.25, 1);
-            }
-            //Extend slide End
-            myRobot.clawSlide.setPower(0);
-            Log.d("Skystone Status:", "Slide extended");
-            //Continue extend until max length
-
-            //Drive second length and pick up stone
-            //TODO: Use Distance Sensor
-            //methods.encoderTurnNoStop(0,1,2);
-
-
-            Log.d("Skystone Status: ", "Second distance traveled");
-            methods.pickUpStone();
-            sleep(800);
-            crossBridge(methods, myRobot, speed);
-
-            Log.d("Skystone Status: ", "Crossed Bridge");
-            //Loosen claw and return
-            myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-            Log.d("Skystone Status: ", "Dropped block");
-            double wallDistance= SKYSTONEConstants.leftWallDistance;
-            wallDistance += 2*SKYSTONEConstants.shiftDistance;
-            /*
             if(skyStonePosition.equals("Right")){
-                wallDistance += 2*SKYSTONEConstants.shiftDistance;
-                //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
+                encoderStraightDriveInches(-6,1);
             }
-            else if (skyStonePosition.equals("Center")){
-                wallDistance += SKYSTONEConstants.shiftDistance-5;
-                //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
+            //Strafe the rest of the distance
+            encoderStrafeDriveInchesRight(15, 1);
+            //Grab the SkyStone
+            myRobot.frontClaw.setPosition(SKYSTONEConstants.frontClawDown);
+            //Strafe to the left to ensure stone doesn't get caught on bridge
+            encoderStrafeDriveInchesRight(-2, 1);
+            //Drive backwards
+            double dropDistance = -30;
+            if(skyStonePosition.equals("Left")){
+                dropDistance -= SKYSTONEConstants.shiftDistance;
             }
-            */
-            methods.frontDistanceEncoderDrive(wallDistance, 2, 1, -90);
-            Log.d("Skystone Status: ", "Drive Back for Second Stone");
-            methods.encoderTurn(0,1,2);
-            myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);
-            methods.backDistanceEncoderDrive(SKYSTONEConstants._pickUpDistance, 1, 1);
-            methods.pickUpStone();
-            sleep(800);
-            Log.d("Skystone Status: ", "Get Second Stone");
-            crossBridge(methods, myRobot, speed);
-            myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-            Log.d("Skystone Status: ", "Deliver Second Stone");
-            methods.encoderStraightDriveNoStop(25, 1);
-
-
-            methods.encoderStraightDriveInches(SKYSTONEConstants._cBridgeReturnDistance + 10, 1);
-
-            Log.d("Skystone Status: ", "Returned");
-            // Show the elapsed game time and wheel power.
-            //telemetry.addData("Offset", y);
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("SkyStone", "Location: " + skyStonePosition);
-            telemetry.update();
+            if(skyStonePosition.equals("Right")){
+                dropDistance += SKYSTONEConstants.shiftDistance;
+            }
+            encoderStraightDriveInches(dropDistance, 1);
+            //Drop off stone
+            myRobot.frontClaw.setPosition(SKYSTONEConstants.frontClawUp);
+            //Drive further
+            encoderStraightDriveInches(-10, 1);
+            //Turn to face foundation
+            encoderTurn(-90, 1, 2);
+            //Drive forward
+            encoderStraightDriveInches(-10, 1);
+            //Grab foundation
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            //Wait for eric f lol.
             break;
         }
         vuforiaMethods.deactivateDetection();

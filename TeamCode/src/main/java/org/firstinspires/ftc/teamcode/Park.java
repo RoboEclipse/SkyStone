@@ -43,14 +43,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+ *q
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomousRed", group="Linear Opmode")
+@Autonomous(name="Park", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
+public class Park extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -84,55 +84,8 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            TelemetryPacket packet;
-            packet = new TelemetryPacket();
-            /* packet.put("cat", 3.8);
-            //packet.fieldOverlay().setFill("blue").fillRect(-);
-
-            dashboard.sendTelemetryPacket(packet);
-            */
-            //Raise up foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            //Strafe right to align to foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
-            //Drive to foundation
-            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
-            //Grab foundation
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            //Drive back with encoder to increase consistency
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
-            //Strafe right to ensure the foundation is flush with the wall
-            methods.encoderStrafeDriveInchesRight(15, speed);
-            //Drive backwards with raw power
-            myRobot.runMotors(-0.2, -0.2);
-            // Changed from -0.6 to -0.2
-            sleep(800);
-            // Changed from 1500 t0 800
-            myRobot.runMotors(0,0);
-
-            //Lift up foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(500);
-            //Clear the foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
-            //Drive forward to get off the wall
-            //methods.encoderStraightDriveInches(-2, 0.75);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            myRobot.runMotors(-0.2, 0.2);
-            sleep(300);
-            myRobot.runMotors(0,0);
-            /*
-            methods.encoderStrafeDriveInchesRight(5, speed);
-            methods.encoderStraightDriveInches(-30,speed);
-            methods.encoderStraightDriveInches(35, speed);
-            methods.encoderStrafeDriveInchesRight(-5,speed);
-            methods.encoderStrafeDriveInchesRight(5,speed);
-            methods.encoderStraightDriveInches(-20,speed);
-            */
+            methods.encoderStraightDriveInches(-20, 1);
+            methods.encoderStrafeDriveInchesRight(18, 1);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();

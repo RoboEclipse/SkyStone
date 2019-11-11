@@ -25,9 +25,10 @@ import org.openftc.revextensions2.RevBulkData;
 import org.openftc.revextensions2.ExpansionHubMotor;
 
 public class SKYSTONEClass {
+public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
-    DcMotor lb, lf, rb, rf, clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo;
+    DcMotor clawSlide, leftElevator, rightElevator;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
 
@@ -40,6 +41,7 @@ public class SKYSTONEClass {
 
     //Classes
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
+    //SKYSTONEDrivetrainClass drivetrain = new SKYSTONEDrivetrainClass();
     //private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 
     //Backend
@@ -48,10 +50,11 @@ public class SKYSTONEClass {
         FtcDashboard dashboard = FtcDashboard.getInstance();
 
         //HardwareMaps
-        lb = hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
-        lf = hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
-        rb = hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
-        rf = hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
+        initializeDriveTrain(hardwareMap, telemetry_);
+        lb.setDirection(DcMotorSimple.Direction.FORWARD);
+        lf.setDirection(DcMotorSimple.Direction.FORWARD);
+        rb.setDirection(DcMotorSimple.Direction.REVERSE);
+        rf.setDirection(DcMotorSimple.Direction.REVERSE);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
@@ -59,6 +62,8 @@ public class SKYSTONEClass {
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        frontClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
+        backClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
@@ -199,6 +204,9 @@ public class SKYSTONEClass {
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
     }
+    void moveFrontClaw (double position){
+        frontClaw.setPosition(position);
+    }
     //Motor Movement
     void runElevatorMotors(double power){
         leftElevator.setPower(power);
@@ -319,4 +327,6 @@ public class SKYSTONEClass {
         }
         return skyStonePosition;
     }
+
+
 }

@@ -39,13 +39,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     BNO055IMU imu;
     Orientation angles;
     //Software
-    private Telemetry telemetry;
+    //private Telemetry telemetry;
 
     //Classes
-    public SKYSTONEClass myRobot = new SKYSTONEClass();
+
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
     private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
-
+    SKYSTONEClass myRobot = new SKYSTONEClass();
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
@@ -100,7 +100,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(10, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 /*&& opModeisActive()*/){
+        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
             Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -111,13 +111,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Negative = Left, Positive = Right
     void encoderStrafeDriveInchesRight(double inches, double power){
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        myRobot.lf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.lb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(3, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) /*&& opModeisActive()*/){
+        while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -140,8 +140,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(drivePower, -drivePower);
-        while(Math.abs(error)>tolerance /*&& opModeisActive()*/){
+        runMotors(-drivePower, drivePower);
+        while(Math.abs(error)>tolerance && opModeIsActive()){
 
             currentAngle = getHorizontalAngle();
             /*
@@ -154,7 +154,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
              */
             error = loopAround(targetAngle-currentAngle);
             drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
-            runMotors(drivePower, -drivePower);
+            runMotors(-drivePower, drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -177,7 +177,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-
+    //TODO: Investigate how the changes effect these
     void backDistanceEncoderDriveNoStop(double distance, double tolerance, double power) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -231,7 +231,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/90;
+        double PCoefficient = 1.0/30;
         return errorAngle*PCoefficient;
     }
 
