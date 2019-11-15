@@ -20,6 +20,8 @@ import java.util.Locale;
 
 import static java.lang.Thread.sleep;
 
+
+
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
@@ -41,10 +43,12 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
 
         //HardwareMaps
         initializeDriveTrain(hardwareMap, telemetry_);
+        /*
         lb.setDirection(DcMotorSimple.Direction.FORWARD);
         lf.setDirection(DcMotorSimple.Direction.FORWARD);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
+        */
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
@@ -101,9 +105,10 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         SKYSTONEClass.Wheels w = getWheels(direction, velocity, rotationVelocity);
         lf.setPower(w.lf);
         rf.setPower(w.rf);
+        rf.setPower(w.rf);
         lb.setPower(w.lr);
         rb.setPower(w.rr);
-        telemetry.addData("Powers", String.format(Locale.US, "%.2f %.2f %.2f %.2f", w.lf, w.rf, w.lr, w.rr));
+        telemetry.addData("Powers", String.format(Locale.US, "lf %.2f lr %.2f rf %.2f rr %.2f", w.lf, w.lr, w.rf, w.rr));
     }
     private static class Wheels {
         double lf, lr, rf, rr;

@@ -13,8 +13,8 @@ public class SKYSTONEConstants {
     //Foundation Constants
     public static double aFoundationAim = 10;
     public static double bFoundationDistance = 35;
-    public static double cFoundationClearPart1 = -50;
-    public static double cFoundationClearPart2 = -10;
+    public static double cFoundationClearPart1 = -40;
+    public static double cFoundationClearPart2 = -20;
     public static double eSkybridge = 10;
     public static double fBridgeCross = 10;
     public static double fSkyStoneAlign = -10;

@@ -131,14 +131,14 @@ public class TurnTest extends LinearOpMode {
         error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(drivePower, -drivePower);
+        runMotors(-drivePower, drivePower);
         while(Math.abs(error)>tolerance /*&& opModeisActive()*/) {
 
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle - currentAngle);
             drivePower = Math.max(Math.min(error / 90, 1), -1) * Math.abs(power);
-            runMotors(drivePower, -drivePower);
-            telemetry.addData("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
+            runMotors(-drivePower, drivePower);
+            telemetry.addData("Skystone: ", "encoderTurn Error: " + error + " Power: " + drivePower + "CurrentAngle: " + currentAngle);
         }
     }
 

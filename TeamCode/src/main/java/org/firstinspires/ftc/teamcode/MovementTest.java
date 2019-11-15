@@ -60,12 +60,9 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEAutonomousMethods methods = this;
-        SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        methods.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
@@ -86,7 +83,11 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
             encoderStraightDriveInches(20, 1);
             encoderStrafeDriveInchesRight(20,1);
-            encoderTurn(90,1,2);
+            encoderTurn(90,1,3);
+            encoderTurn(0,1,3);
+            straighteningEncoderDriveInches(30, 0, 3, 1);
+            straighteningEncoderDriveInches(-30, 0, 3, 1);
+            straighteningEncoderDriveInches(30, 0, 3, 1);
             break;
         }
     }

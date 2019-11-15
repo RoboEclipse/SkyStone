@@ -111,10 +111,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Negative = Left, Positive = Right
     void encoderStrafeDriveInchesRight(double inches, double power){
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        myRobot.lf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.lb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
-        myRobot.rb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lf.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.lb.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
+        myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
         while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
@@ -126,6 +126,29 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    void distanceStraightDriveNoStop(double inches, double power) {
+        ElapsedTime time = new ElapsedTime();
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
+            myRobot.lf.setPower(power);
+            myRobot.lb.setPower(-power);
+            myRobot.rf.setPower(-power);
+            myRobot.rb.setPower(power);
+            Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
+            Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
+            Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
+            Log.d("Right Back: ", myRobot.rb.getCurrentPosition()+"");
+        }
+    }
+
+    //Negative = Left, Positive = Right
+    void distanceStrafeDriveInchesRight(double inches, double power){
+        distanceStraightDriveNoStop(inches, power);
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
         encoderTurnNoStop(targetAngle, power, tolerance);
@@ -153,7 +176,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }*
              */
             error = loopAround(targetAngle-currentAngle);
-            drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
+            drivePower = Math.max(Math.min(error/30, 1),-1)*Math.abs(power);
             runMotors(-drivePower, drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
@@ -211,16 +234,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
         double curDistance = leftFrontEncoder();
-        double targetDistance = distance* SKYSTONEConstants.TICKS_PER_INCH;
+        double targetDistance = distance*SKYSTONEConstants.TICKS_PER_INCH;
         //double startDistance = curDistance;
         double errorDistance = targetDistance-curDistance;
         double adjust;
-        while (Math.abs(errorDistance)>tolerance){
+        while (Math.abs(errorDistance)>tolerance && opModeIsActive()){
             double currentAngle = getHorizontalAngle();
             double steer = getCorrection(currentAngle, targetAngle);
-            adjust = Math.max(Math.min(errorDistance, 20),-20)/20*power;
-            double leftSpeed = adjust + steer;
-            double rightSpeed = adjust - steer;
+            adjust = Math.max(Math.min(errorDistance, 40),-40)/40*power;
+            double leftSpeed = adjust - steer;
+            double rightSpeed = adjust + steer;
             errorDistance = targetDistance-curDistance;
             runMotors(leftSpeed, rightSpeed);
             curDistance = leftFrontEncoder();
