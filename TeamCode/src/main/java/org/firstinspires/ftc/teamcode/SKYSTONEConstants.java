@@ -11,10 +11,10 @@ public class SKYSTONEConstants {
     private static double TICKS_PER_WHEEL_ROTATION = TICKS_PER_ROTATION*GEAR_RATIO;
     static double TICKS_PER_INCH = TICKS_PER_WHEEL_ROTATION/(4* Math.PI);
     //Foundation Constants
-    public static double aFoundationAim = 10;
-    public static double bFoundationDistance = 35;
-    public static double cFoundationClearPart1 = -40;
-    public static double cFoundationClearPart2 = -20;
+    public static double aFoundationAim = -10;
+    public static double bFoundationDistance = -35;
+    public static double cFoundationClearPart1 = 40;
+    public static double cFoundationClearPart2 = 20;
     public static double eSkybridge = 10;
     public static double fBridgeCross = 10;
     public static double fSkyStoneAlign = -10;
