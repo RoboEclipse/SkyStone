@@ -42,7 +42,7 @@ public class SKYSTONEConstants {
     public static double straight = 0.488; //Straight
     public static double oppositeSide = 0.713; //Make it straight but on the other side or back side
     //Skystone Tele-op Stacking Grabber Claw
-    public static double tighten = 0.15;
+    public static double tighten = 0.05;
     public static double loosen = 0.8;
     public static double autoLoosen = 1;
     //Skystone Left Foundation Claw

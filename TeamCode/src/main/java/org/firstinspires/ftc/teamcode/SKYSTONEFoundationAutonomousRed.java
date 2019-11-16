@@ -108,7 +108,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive backwards with raw power
             myRobot.runMotors(-0.2, -0.2);
             // Changed from -0.6 to -0.2
-            sleep(800);
+            sleep(1400);
             // Changed from 1500 t0 800
             myRobot.runMotors(0,0);
 
@@ -117,13 +117,14 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
             //Clear the foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
             //Drive forward to get off the wall
             //methods.encoderStraightDriveInches(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            myRobot.runMotors(-0.2, 0.2);
-            sleep(300);
+            //myRobot.runMotors(-0.2, 0.2);
+            //sleep(300);
             myRobot.runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
