@@ -83,13 +83,13 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
 
             //Strafe right to align to foundation
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
             encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             //Drive back with encoder to increase consistency
             encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             //Strafe right to ensure the foundation is flush with the wall
-            encoderStrafeDriveInchesRight(15, speed);
+            encoderStrafeDriveInchesRight(-15, speed);
             //Drive backwards with raw power
             runMotors(-0.2, -0.2);
             // Changed left power to -0.2 from -0.6
@@ -98,8 +98,8 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             runMotors(0,0);
 
             //Clear the foundation
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart2, speed);
             //Drive forward to get off the wall
             //runMotors(-0.2, 0.2);
             //sleep(300);
