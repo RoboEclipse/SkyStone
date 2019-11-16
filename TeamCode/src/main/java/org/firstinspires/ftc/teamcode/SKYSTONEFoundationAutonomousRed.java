@@ -102,9 +102,10 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             sleep(500);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            methods.encoderStrafeDriveInchesRight(-10, speed);
             //Drive back with encoder to increase consistency
             methods.frontDistanceEncoderDrive(1,2, -1, 0);
-            myRobot.runMotors(-0.2, -0.2);
+            // myRobot.runMotors(-0.2, -0.2);
             sleep(250);
             myRobot.runMotors(0, 0);
             //methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);

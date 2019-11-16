@@ -85,20 +85,20 @@ public class SKYSTONETeleOp extends OpMode
         double speedMultiplier = 1;
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
-            ly=-1;
+            ly=1;
             speedMultiplier = 0.3;
         }
         else if(gamepad1.dpad_down){
-            ly=1;
+            ly=-1;
             speedMultiplier = 0.3;
         }
         if(gamepad1.dpad_left){
             lx=1;
-            speedMultiplier = 0.3;
+            speedMultiplier = 0.5;
         }
         else if(gamepad1.dpad_right){
             lx=-1;
-            speedMultiplier = 0.3;
+            speedMultiplier = 0.5;
         }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
@@ -113,12 +113,12 @@ public class SKYSTONETeleOp extends OpMode
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
         myRobot.clawSlide.setPower(slidePower);
-        if ((slidePower > 0.001) || (slidePower < -0.001)){
+        /*if ((slidePower > 0.001) || (slidePower < -0.001)){
             if (clawPosition != SKYSTONEConstants.tighten){
                 Log.d("Protect Claw", "Claw was loose when moving so it got closed");
             }
             clawPosition = SKYSTONEConstants.tighten;
-        }
+        }*/
 
         //Claw rotation
         int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();
