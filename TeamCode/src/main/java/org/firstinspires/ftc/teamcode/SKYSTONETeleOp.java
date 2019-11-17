@@ -49,6 +49,7 @@ public class SKYSTONETeleOp extends OpMode
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
     private double frontClawPosition = 1.0;
+    private boolean isPushed = false;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -112,7 +113,7 @@ public class SKYSTONETeleOp extends OpMode
         double elevatorPower = -gamepad2.left_stick_y;
         myRobot.runElevatorMotors(elevatorPower);
 
-        //Slide controls
+        // Slide controls
         double slidePower = gamepad2.right_stick_y;
         myRobot.clawSlide.setPower(slidePower);
         /*if ((slidePower > 0.001) || (slidePower < -0.001)){
@@ -121,6 +122,16 @@ public class SKYSTONETeleOp extends OpMode
             }
             clawPosition = SKYSTONEConstants.tighten;
         }*/
+
+        //Capstone Controls
+
+        if(gamepad1.x) {
+            myRobot.capServo.setPosition(0.25);
+            isPushed = true;
+        } else if (gamepad1.y) {
+            myRobot.capServo.setPosition(1);
+            isPushed = false;
+        }
 
         //Claw rotation
         int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();

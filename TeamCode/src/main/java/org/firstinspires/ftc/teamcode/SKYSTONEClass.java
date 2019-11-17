@@ -5,7 +5,6 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -30,7 +29,7 @@ import org.openftc.revextensions2.ExpansionHubMotor;
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontClaw, backClaw, capServo;
     CRServo collectionRotationServo;
     DistanceSensor leftDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
 
@@ -67,6 +66,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
+        capServo = hardwareMap.servo.get(skystoneNames.cappingServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         frontClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
         backClaw = hardwareMap.servo.get(skystoneNames.frontClaw);
@@ -196,6 +196,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
     }
+    void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double position){
         frontClaw.setPosition(position);
     }

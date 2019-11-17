@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -92,7 +91,7 @@ public class Park extends SKYSTONEAutonomousMethods {
             break;
         }
     }
-
+}
     /*private void dashboardRecordPosition(int deltax, int deltay) {
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("cat", 3.7);
@@ -102,4 +101,4 @@ public class Park extends SKYSTONEAutonomousMethods {
         x = x + deltax;
         y = y + deltay;
     }*/
-}
+
