@@ -131,7 +131,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             //Drive further
             encoderStraightDriveInches(10, 1);
             //Turn to face foundation
-            encoderTurn(90, 1, 2);
+            encoderTurn(-90, 1, 2);
             //Drive forward
             encoderStraightDriveInches(-10, 1);
             //Grab foundation

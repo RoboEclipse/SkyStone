@@ -25,6 +25,8 @@ import org.openftc.revextensions2.RevBulkData;
 import org.openftc.revextensions2.ExpansionHubMotor;
 
 
+
+
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
@@ -51,10 +53,12 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
 
         //HardwareMaps
         initializeDriveTrain(hardwareMap, telemetry_);
+        /*
         lb.setDirection(DcMotorSimple.Direction.FORWARD);
         lf.setDirection(DcMotorSimple.Direction.FORWARD);
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
+        */
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
@@ -76,26 +80,11 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lb.setDirection(DcMotorSimple.Direction.REVERSE);
-        lf.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    void initializeBR (HardwareMap hardwareMap){
-        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
-
-        lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
-        lfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
-        rbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
-        rfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
-
-    }
 
 
     //Methods
@@ -138,9 +127,10 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         SKYSTONEClass.Wheels w = getWheels(direction, velocity, rotationVelocity);
         lf.setPower(w.lf);
         rf.setPower(w.rf);
+        rf.setPower(w.rf);
         lb.setPower(w.lr);
         rb.setPower(w.rr);
-        telemetry.addData("Powers", String.format(Locale.US, "%.2f %.2f %.2f %.2f", w.lf, w.rf, w.lr, w.rr));
+        telemetry.addData("Powers", String.format(Locale.US, "lf %.2f lr %.2f rf %.2f rr %.2f", w.lf, w.lr, w.rf, w.rr));
     }
     private static class Wheels {
         double lf, lr, rf, rr;

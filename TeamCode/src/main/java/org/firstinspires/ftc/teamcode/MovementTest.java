@@ -29,21 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -60,34 +49,34 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 @Autonomous(name="MovementTest", group="Linear Opmode")
+//@Disabled
 public class MovementTest extends SKYSTONEAutonomousMethods {
-
-    BNO055IMU imu;
-    Orientation angles;
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    // private int x;
+    // private int y;
+    FtcDashboard dashboard;
 
-    SKYSTONEClass myRobot = new SKYSTONEClass();
-    SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-        @Override
-        public void runOpMode() throws InterruptedException {
-
-        }
-    };
-
-    void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
-        myRobot.initialize(hardwareMap, telemetry);
-
-        this.telemetry = telemetry;
-    }
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+        dashboard = FtcDashboard.getInstance();
+        final double speed = 0.75;
         initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        //methods.waitForStart2();
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.update();
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
@@ -103,4 +92,14 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
             break;
         }
     }
+
+    /*private void dashboardRecordPosition(int deltax, int deltay) {
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("cat", 3.7);
+        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
+
+        dashboard.sendTelemetryPacket(packet);
+        x = x + deltax;
+        y = y + deltay;
+    }*/
 }

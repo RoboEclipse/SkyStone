@@ -64,7 +64,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
         SKYSTONEAutonomousMethods methods = this;
         SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
-        final double speed = 0.75;
+        final double speed = 0.5;
         methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -99,17 +99,22 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive to foundation
             methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             //Grab foundation
+            sleep(500);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            methods.encoderStrafeDriveInchesRight(-10, speed);
             //Drive back with encoder to increase consistency
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
+            methods.frontDistanceEncoderDrive(1,2, -1, 0);
+            // myRobot.runMotors(-0.2, -0.2);
+            sleep(250);
+            myRobot.runMotors(0, 0);
+            //methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             //Strafe right to ensure the foundation is flush with the wall
             methods.encoderStrafeDriveInchesRight(15, speed);
             //Drive backwards with raw power
-            myRobot.runMotors(-0.2, -0.2);
+            //myRobot.runMotors(-0.2, -0.2);
             // Changed from -0.6 to -0.2
-            sleep(800);
-            // Changed from 1500 t0 800
+            sleep(1400);
             myRobot.runMotors(0,0);
 
             //Lift up foundation servos
@@ -117,13 +122,14 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
             //Clear the foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
             //Drive forward to get off the wall
             //methods.encoderStraightDriveInches(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            myRobot.runMotors(-0.2, 0.2);
-            sleep(300);
+            //myRobot.runMotors(-0.2, 0.2);
+            //sleep(300);
             myRobot.runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);

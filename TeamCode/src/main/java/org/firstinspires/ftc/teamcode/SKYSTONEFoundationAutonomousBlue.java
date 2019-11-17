@@ -60,12 +60,9 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEAutonomousMethods methods = this;
-        SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        methods.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
@@ -96,9 +93,9 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             //Strafe right so hooks are at center of foundation
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
-            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             //Lower hooks to grab foundation
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
@@ -106,27 +103,27 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             // y = 0;
             // dashboardRecordPosition(144, 144);
             //Drive most of distance with encoders to increase consistency
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
+            encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             //Run the rest with raw power
-            methods.encoderStraightDriveInches(1, 0.3);
+            encoderStraightDriveInches(1, 0.3);
             sleep(500);
             //Strafe to side to get foundation in zone
-            methods.encoderStrafeDriveInchesRight(-15, speed);
+            encoderStrafeDriveInchesRight(-15, speed);
             //Back up to make sure robot is fully in
             myRobot.runMotors(-0.5, -0.5);
             sleep(1700);
             myRobot.runMotors(0,0);
-            methods.encoderStraightDriveInches(1, 0.75);
+            encoderStraightDriveInches(1, 0.75);
 
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart1, speed);
             //methods.encoderTurn(-90, speed, 3);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
 
-            methods.encoderStraightDriveInches(SKYSTONEConstants.eSkybridge, speed);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge, speed);
             //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
