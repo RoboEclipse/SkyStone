@@ -81,14 +81,13 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            // Show the elapsed game time and wheel power.
-            //encoderTurn(0, 1, 5);
-            //methods.frontDistanceEncoderDrive(20,5, 1, -0);
             encoderStraightDriveInches(20, 1);
-            encoderStrafeDriveInchesRight(20, 1);
-            encoderTurn(90, 1,3);
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
+            encoderStrafeDriveInchesRight(20,1);
+            encoderTurn(90,1,3);
+            encoderTurn(0,1,3);
+            straighteningEncoderDriveInches(30, 0, 3, 1);
+            straighteningEncoderDriveInches(-30, 0, 3, 1);
+            straighteningEncoderDriveInches(30, 0, 3, 1);
             break;
         }
     }

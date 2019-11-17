@@ -98,7 +98,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             //Strafe sideways to allow the webcam to see.
-            encoderStrafeDriveInchesRight(5, 1);
+            encoderStraightDriveInches(SKYSTONEConstants.mixedSkyStoneDistance1, 1);
             //Detect the stone position
             sleep(800);
             skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
@@ -106,25 +106,27 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             Log.d("Skystone Status: ", "Detected " + skyStonePosition);
             //Drive forward or back to align to SkyStone
             if(skyStonePosition.equals("Left")){
-                encoderStraightDriveInches(6, 1);
+                encoderStrafeDriveInchesRight(-SKYSTONEConstants.mixedAdjustDistance, 1);
             }
             if(skyStonePosition.equals("Right")){
-                encoderStraightDriveInches(-6,1);
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.mixedAdjustDistance,1);
             }
             //Strafe the rest of the distance
-            encoderStrafeDriveInchesRight(15, 1);
+            encoderStraightDriveInches(SKYSTONEConstants.mixedSkyStoneDistance2, 1);
             //Grab the SkyStone
             myRobot.frontClaw.setPosition(SKYSTONEConstants.frontClawDown);
             sleep(800);
-            //Strafe to the left to ensure stone doesn't get caught on bridge
-            encoderStrafeDriveInchesRight(-2, 1);
+            //Strafe backwards
+            encoderStraightDriveInches(-5, 1);
+            //Turn
+            encoderTurn(90, 1.0, 3);
             //Drive backwards
-            double dropDistance = -50;
+            double dropDistance = SKYSTONEConstants.mixedBridgeCross;
             if(skyStonePosition.equals("Left")){
-                dropDistance -= SKYSTONEConstants.shiftDistance;
+                dropDistance -= SKYSTONEConstants.mixedAdjustDistance;
             }
             if(skyStonePosition.equals("Right")){
-                dropDistance += SKYSTONEConstants.shiftDistance;
+                dropDistance += SKYSTONEConstants.mixedAdjustDistance;
             }
             encoderStraightDriveInches(dropDistance, 1);
             //Drop off stone
@@ -133,7 +135,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive further
             encoderStraightDriveInches(-20, 1);
             //Turn to face foundation
-            encoderTurn(90, 1, 2);
+            encoderTurn(180, 1, 2);
             //Drive forward
             encoderStraightDriveInches(-10, 1);
             //Grab foundation

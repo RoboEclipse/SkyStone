@@ -33,14 +33,12 @@ import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
-import java.util.function.IntBinaryOperator;
 
 
 /**
@@ -147,7 +145,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends SKYSTONEAutonomousMethods {
                 //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             }
             */
-            methods.frontDistanceEncoderDrive(wallDistance, 2, 1, 90);
+            methods.distanceEncoderDrive(wallDistance, 2, 1, 90, myRobot.leftDistance);
             Log.d("Skystone Status: ", "Drive Back for Second Stone");
             methods.encoderTurn(0,1,2);
             myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);
