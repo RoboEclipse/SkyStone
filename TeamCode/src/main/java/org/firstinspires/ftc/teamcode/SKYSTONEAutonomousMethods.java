@@ -6,32 +6,16 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
@@ -258,17 +242,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return errorAngle*PCoefficient;
     }
 
-    void frontDistanceEncoderDrive(double distance, double tolerance, double power, double targetAngle){
-        frontDistanceEncoderDriveNoStop(distance, tolerance, power, targetAngle);
+    void distanceEncoderDrive(double distance, double tolerance, double power, double targetAngle, DistanceSensor sensor){
+        distanceEncoderDriveNoStop(distance, tolerance, power, targetAngle, sensor);
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    void frontDistanceEncoderDriveNoStop(double distance, double tolerance, double power, double targetAngle) {
+    void distanceEncoderDriveNoStop(double distance, double tolerance, double power, double targetAngle, DistanceSensor sensor) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
-        double curDistance = myRobot.getLeftDistance();
+        double curDistance = sensor.getDistance(DistanceUnit.CM);
         //double startDistance = curDistance;
         double error = curDistance-distance;
         double adjust;
@@ -280,12 +264,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
              */
             double curAngle = getHorizontalAngle();
-            //double steer = getCorrection(curAngle, targetAngle);
-            double steer = 0;
+            double steer = getCorrection(curAngle, targetAngle);
             error = curDistance-distance;
-            adjust = -Math.max(Math.min(error, 20),-20)/20*power;
-            runMotors(adjust + steer, adjust - steer);
-            curDistance = myRobot.getLeftDistance();
+            adjust = Math.max(Math.min(error, 20),-20)/20*power;
+            runMotors(adjust - steer, adjust + steer);
+            curDistance = sensor.getDistance(DistanceUnit.CM);
             Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }
     }

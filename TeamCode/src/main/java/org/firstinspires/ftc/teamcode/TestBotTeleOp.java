@@ -73,14 +73,18 @@ public class TestBotTeleOp extends OpMode
      */
     @Override
     public void loop() {
-        double leftDrive = gamepad1.left_stick_y;
-        double rightDrive = gamepad1.right_stick_y;
+        double leftDrive = -gamepad1.left_stick_y;
+        double rightDrive = -gamepad1.right_stick_y;
         myRobot.lf.setPower(leftDrive);
         myRobot.lb.setPower(leftDrive);
         myRobot.rf.setPower(rightDrive);
         myRobot.rb.setPower(rightDrive);
         telemetry.addData("Left Power: ", leftDrive);
         telemetry.addData("Right Power: ", rightDrive);
+        telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
+        telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
+        telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
+        telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
         telemetry.update();
     }
 

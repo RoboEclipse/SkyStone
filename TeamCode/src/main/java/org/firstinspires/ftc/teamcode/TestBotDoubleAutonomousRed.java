@@ -30,8 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -48,30 +50,46 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomousRed", group="Linear Opmode")
+@Autonomous(name="TestBotDoubleAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private DistanceSensor frontSensor;
+    private DistanceSensor backSensor;
     // private int x;
     // private int y;
+    double speed = 1;
     FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
 
-        SKYSTONEAutonomousMethods methods = this;
-        SKYSTONEClass myRobot = methods.myRobot;
-        dashboard = FtcDashboard.getInstance();
-        final double speed = 0.5;
-        methods.initialize(hardwareMap, telemetry);
+        SKYSTONEDrivetrainClass drivetrain = myRobot;
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
+
+        frontSensor = hardwareMap.get(DistanceSensor.class, "frontDistance");
+        backSensor = hardwareMap.get(DistanceSensor.class, "backDistance");
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
@@ -84,64 +102,33 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            TelemetryPacket packet;
-            packet = new TelemetryPacket();
-            /* packet.put("cat", 3.8);
-            //packet.fieldOverlay().setFill("blue").fillRect(-);
-
-            dashboard.sendTelemetryPacket(packet);
-            */
-            //Raise up foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            //Strafe right to align to foundation
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
-            //Drive to foundation
-            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
-            //Grab foundation
-            sleep(500);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            methods.encoderStrafeDriveInchesRight(-10, speed);
-            //Drive back with encoder to increase consistency
-            methods.distanceEncoderDrive(1,2, -1, 0, myRobot.leftDistance);
-            // myRobot.runMotors(-0.2, -0.2);
-            sleep(250);
-            myRobot.runMotors(0, 0);
-            //methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
-            //Strafe right to ensure the foundation is flush with the wall
-            methods.encoderStrafeDriveInchesRight(15, speed);
-            //Drive backwards with raw power
-            //myRobot.runMotors(-0.2, -0.2);
-            // Changed from -0.6 to -0.2
-            sleep(1400);
-            myRobot.runMotors(0,0);
-
-            //Lift up foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(500);
-            //Clear the foundation
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
-            //Drive forward to get off the wall
-            //methods.encoderStraightDriveInches(-2, 0.75);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            //myRobot.runMotors(-0.2, 0.2);
-            //sleep(300);
-            myRobot.runMotors(0,0);
-            /*
-            methods.encoderStrafeDriveInchesRight(5, speed);
-            methods.encoderStraightDriveInches(-30,speed);
-            methods.encoderStraightDriveInches(35, speed);
-            methods.encoderStrafeDriveInchesRight(-5,speed);
-            methods.encoderStrafeDriveInchesRight(5,speed);
-            methods.encoderStraightDriveInches(-20,speed);
-            */
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
+            //Drive forwards to allow the webcam to see.
+            encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
+            //Drive the rest of the distance
+            //encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance2, 1);
+            distanceEncoderDrive(5,1,1,0, frontSensor);
+            //Drive backwards
+            encoderStraightDriveInches(-3, 1);
+            //Turn
+            encoderTurn(-90, 1.0, 3);
+            //Drive forwards
+            double dropDistance = SKYSTONEConstants.doubleBridgeCross;
+            encoderStraightDriveInches(dropDistance, 1);
+            //Drive backwards
+            distanceEncoderDrive(15,1,-1,-90,backSensor);
+            //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
+            //Turn
+            encoderTurn(0,1,3);
+            //Drive Forwards
+            distanceEncoderDrive(5,1,1,0, frontSensor);
+            //Drive Backwards
+            encoderStraightDriveInches(-3,1);
+            //Turn
+            encoderTurn(-90,1,3);
+            //Drive Forwards
+            encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
+            //Drive Backwards
+            encoderStraightDriveInches(-10,1);
             break;
         }
     }
