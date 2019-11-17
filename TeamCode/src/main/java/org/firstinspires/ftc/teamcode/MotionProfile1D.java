@@ -48,12 +48,13 @@ public class MotionProfile1D {
     }
 
     //maybe rename to "update"?
-    public void loop(double newTime){
+    public void loop(double newTime, double distance){
         this.oldTime=this.currentTime;
         this.currentTime=newTime;
 
-
-        this.currentDistance += this.currentVelocity * (this.currentTime-this.oldTime);
+        //used only for ideal circumstances (essentially never)
+        //this.currentDistance += this.currentVelocity * (this.currentTime-this.oldTime);
+        this.currentDistance=distance;
 
         double oldVelocity = this.currentVelocity;
         this.currentVelocity = Math.min(this.rateLimiter(this.maxVelocity, this.currentVelocity, this.maxAcceleration) + this.currentVelocity, this.calcSlowDown());

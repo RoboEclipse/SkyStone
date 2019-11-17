@@ -38,6 +38,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     RevBulkData bulkData;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
 
+    MotionProfile1D mp;
+
     //Software
     private Telemetry telemetry;
 
@@ -316,6 +318,40 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
             Log.d("SkyStonePosition", "Left: " + y);
         }
         return skyStonePosition;
+    }
+
+    //move foundation for endgame
+    void motionProfileFoundationMove(DcMotor...motors){
+        //constants
+        double distance = 30;
+        int ticks = (int) (distance * SKYSTONEConstants.TICKS_PER_INCH);
+
+        //create motion profile (units are inches or inches/second)
+        mp = new MotionProfile1D(distance, 10, 1, 0, 0);
+
+        //set motors to encoder mode
+        ElapsedTime time = new ElapsedTime();
+        for(DcMotor motor : motors){
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setTargetPosition(ticks);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        //set power of motors based on motion profile
+        while(anyBusy(5, ticks, motors) && time.milliseconds()<2500){
+            double averageDistance = 0;
+            for (DcMotor motor : motors){
+                averageDistance += motor.getCurrentPosition() / SKYSTONEConstants.TICKS_PER_INCH;
+                motor.setPower(mp.currentVelocity / SKYSTONEConstants.maxSpeed);
+            }
+            averageDistance/=4;
+            mp.loop(time.seconds(), averageDistance);
+        }
+
+        //stop using encoders
+        for(DcMotor motor : motors){
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
     }
 
 
