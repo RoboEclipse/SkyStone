@@ -48,18 +48,17 @@ public class SKYSTONETeleOp extends OpMode
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
-    private double frontClawPosition = 1.0;
-    private boolean isPushed = false;
+    private double frontClawPosition = 0.3;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
         myRobot.initialize(hardwareMap, telemetry);
+        myRobot.leftClaw.setPosition(.3);
+        myRobot.rightClaw.setPosition(.3);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
-
-        myRobot.initializeBR(hardwareMap);
     }
 
     /*
@@ -113,7 +112,7 @@ public class SKYSTONETeleOp extends OpMode
         double elevatorPower = -gamepad2.left_stick_y;
         myRobot.runElevatorMotors(elevatorPower);
 
-        // Slide controls
+        //Slide controls
         double slidePower = gamepad2.right_stick_y;
         myRobot.clawSlide.setPower(slidePower);
         /*if ((slidePower > 0.001) || (slidePower < -0.001)){
@@ -127,10 +126,8 @@ public class SKYSTONETeleOp extends OpMode
 
         if(gamepad1.x) {
             myRobot.capServo.setPosition(0.25);
-            isPushed = true;
         } else if (gamepad1.y) {
             myRobot.capServo.setPosition(1);
-            isPushed = false;
         }
 
         //Claw rotation
@@ -219,7 +216,6 @@ public class SKYSTONETeleOp extends OpMode
         //telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
         //telemetry.addData("BackDistance", myRobot.getBackDistance());
         myRobot.readEncoders();
-        myRobot.readEncodersBR();
 
         //Log
         Log.d("ElevatorPower", String.valueOf(elevatorPower));

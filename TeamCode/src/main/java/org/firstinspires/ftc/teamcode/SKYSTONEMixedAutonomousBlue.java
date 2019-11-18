@@ -114,7 +114,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             //Strafe the rest of the distance
             encoderStrafeDriveInchesRight(15, 1);
             //Grab the SkyStone
-            myRobot.frontClaw.setPosition(SKYSTONEConstants.frontClawDown);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.frontClawDown);
             //Strafe to the left to ensure stone doesn't get caught on bridge
             encoderStrafeDriveInchesRight(-2, 1);
             //Drive forwards
@@ -127,7 +127,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             }
             encoderStraightDriveInches(dropDistance, 1);
             //Drop off stone
-            myRobot.frontClaw.setPosition(SKYSTONEConstants.frontClawUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.frontClawUp);
             //Drive further
             encoderStraightDriveInches(10, 1);
             //Turn to face foundation

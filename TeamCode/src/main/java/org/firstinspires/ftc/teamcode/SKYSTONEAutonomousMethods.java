@@ -238,7 +238,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/30;
+        double PCoefficient = 1.0/10;
         return errorAngle*PCoefficient;
     }
 
@@ -252,7 +252,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
-        double curDistance = sensor.getDistance(DistanceUnit.CM);
+        double curDistance = sensor.getDistance(DistanceUnit.INCH);
         //double startDistance = curDistance;
         double error = curDistance-distance;
         double adjust;
@@ -268,7 +268,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             error = curDistance-distance;
             adjust = Math.max(Math.min(error, 20),-20)/20*power;
             runMotors(adjust - steer, adjust + steer);
-            curDistance = sensor.getDistance(DistanceUnit.CM);
+            curDistance = sensor.getDistance(DistanceUnit.INCH);
             Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }
     }

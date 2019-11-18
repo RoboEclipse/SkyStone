@@ -54,9 +54,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEMixedAutonomousRed", group="Linear Opmode")
+@Autonomous(name="SKYSTONEDoubleAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -94,54 +94,66 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
-            //Put down foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            //Strafe sideways to allow the webcam to see.
-            encoderStraightDriveInches(SKYSTONEConstants.mixedSkyStoneDistance1, 1);
-            //Detect the stone position
+            myRobot.leftClaw.setPosition(0.3);
+            myRobot.rightClaw.setPosition(0.3);
             sleep(800);
+            //Drive forwards to allow the webcam to see.
+            encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
             skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
-            telemetry.addData("Detected: ", skyStonePosition);
-            Log.d("Skystone Status: ", "Detected " + skyStonePosition);
-            //Drive forward or back to align to SkyStone
             if(skyStonePosition.equals("Left")){
-                encoderStrafeDriveInchesRight(-SKYSTONEConstants.mixedAdjustDistance, 1);
+                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance, 1);
             }
             if(skyStonePosition.equals("Right")){
-                encoderStrafeDriveInchesRight(SKYSTONEConstants.mixedAdjustDistance,1);
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance,1);
             }
-            //Strafe the rest of the distance
-            encoderStraightDriveInches(SKYSTONEConstants.mixedSkyStoneDistance2, 1);
-            //Grab the SkyStone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.frontClawDown);
+            //Drive the rest of the distance
+            distanceEncoderDrive(1,1,1,0, myRobot.frontDistance);
+            //Grab the stone
+            myRobot.leftClaw.setPosition(1);
+            myRobot.rightClaw.setPosition(1);
             sleep(800);
-            //Strafe backwards
+            //Drive backwards
             encoderStraightDriveInches(-5, 1);
             //Turn
-            encoderTurn(90, 1.0, 3);
-            //Drive backwards
-            double dropDistance = SKYSTONEConstants.mixedBridgeCross;
+            encoderTurn(-90, 1.0, 3);
+            //Drive forwards
+            double dropDistance = SKYSTONEConstants.doubleBridgeCross;
+            double wallDistance = SKYSTONEConstants.doubleWallDistance;
             if(skyStonePosition.equals("Left")){
-                dropDistance -= SKYSTONEConstants.mixedAdjustDistance;
+                dropDistance+=SKYSTONEConstants.doubleAdjustDistance;
+                wallDistance -= 8;
             }
             if(skyStonePosition.equals("Right")){
-                dropDistance += SKYSTONEConstants.mixedAdjustDistance;
+                dropDistance+=SKYSTONEConstants.doubleAdjustDistance;
+                wallDistance += 8;
             }
             encoderStraightDriveInches(dropDistance, 1);
-            //Drop off stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.frontClawUp);
-            sleep(500);
-            //Drive further
-            encoderStraightDriveInches(-20, 1);
-            //Turn to face foundation
-            encoderTurn(180, 1, 2);
-            //Drive forward
-            encoderStraightDriveInches(-10, 1);
-            //Grab foundation
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            //Wait for eric f lol.
+            //Release the stone
+            myRobot.leftClaw.setPosition(0.3);
+            //myRobot.rightClaw.setPosition(0.3);
+            sleep(800);
+            //Drive backwards
+            distanceEncoderDrive(wallDistance,1,-1,-90, myRobot.backDistance);
+            //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
+            //Turn
+            encoderTurn(0,1,3);
+            //Drive Forwards
+            distanceEncoderDrive(1,1,1,0, myRobot.frontDistance);
+            //Grab the stone
+            myRobot.leftClaw.setPosition(1);
+            sleep(800);
+            //Drive Backwards
+            encoderStraightDriveInches(-3,1);
+            //Turn
+            encoderTurn(-90,1,3);
+            //Drive Forwards
+            encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
+            //Release the stone
+            myRobot.leftClaw.setPosition(.3);
+            //myRobot.rightClaw.setPosition(1);
+            sleep(800);
+            //Drive Backwards
+            encoderStraightDriveInches(-10,1);
             break;
         }
         vuforiaMethods.deactivateDetection();

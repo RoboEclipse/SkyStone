@@ -145,7 +145,7 @@ public class SKYSTONESkyStoneAutonomousBlue extends SKYSTONEAutonomousMethods {
                 //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
             }
             */
-            methods.distanceEncoderDrive(wallDistance, 2, 1, 90, myRobot.leftDistance);
+            methods.distanceEncoderDrive(wallDistance, 2, 1, 90, myRobot.frontDistance);
             Log.d("Skystone Status: ", "Drive Back for Second Stone");
             methods.encoderTurn(0,1,2);
             myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 15,2);

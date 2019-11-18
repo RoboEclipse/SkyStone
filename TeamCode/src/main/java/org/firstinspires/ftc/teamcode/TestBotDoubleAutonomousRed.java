@@ -104,27 +104,29 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
             //Drive forwards to allow the webcam to see.
             encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance, 1);
             //Drive the rest of the distance
-            //encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance2, 1);
-            distanceEncoderDrive(5,1,1,0, frontSensor);
+            distanceEncoderDrive(1,1,1,0, frontSensor);
+            sleep(800);
             //Drive backwards
             encoderStraightDriveInches(-3, 1);
             //Turn
-            encoderTurn(-90, 1.0, 3);
+            encoderTurn(-90, 1.0, 2);
             //Drive forwards
-            double dropDistance = SKYSTONEConstants.doubleBridgeCross;
+            double dropDistance = SKYSTONEConstants.doubleBridgeCross+SKYSTONEConstants.doubleAdjustDistance;
+            double wallDistance = SKYSTONEConstants.doubleWallDistance-SKYSTONEConstants.doubleAdjustDistance;
             encoderStraightDriveInches(dropDistance, 1);
             //Drive backwards
-            distanceEncoderDrive(15,1,-1,-90,backSensor);
+            distanceEncoderDrive(wallDistance,1,-1,-90, backSensor);
             //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
             //Turn
-            encoderTurn(0,1,3);
+            encoderTurn(0,1,2);
             //Drive Forwards
-            distanceEncoderDrive(5,1,1,0, frontSensor);
+            distanceEncoderDrive(1,1,1,0, frontSensor);
             //Drive Backwards
             encoderStraightDriveInches(-3,1);
             //Turn
-            encoderTurn(-90,1,3);
+            encoderTurn(-90,1,2);
             //Drive Forwards
             encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
             //Drive Backwards
