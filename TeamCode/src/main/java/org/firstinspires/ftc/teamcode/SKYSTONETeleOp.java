@@ -88,19 +88,19 @@ public class SKYSTONETeleOp extends OpMode
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
             ly=1;
-            speedMultiplier = 0.3;
+            speedMultiplier = 0.4;
         }
         else if(gamepad1.dpad_down){
             ly=-1;
-            speedMultiplier = 0.3;
+            speedMultiplier = 0.4;
         }
         if(gamepad1.dpad_left){
             lx=-1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.6;
         }
         else if(gamepad1.dpad_right){
             lx=1;
-            speedMultiplier = 0.5;
+            speedMultiplier = 0.6;
         }
         double theta = Math.atan2(lx, ly);
         double v_theta = Math.sqrt(lx * lx + ly * ly);
@@ -125,9 +125,9 @@ public class SKYSTONETeleOp extends OpMode
         //Capstone Controls
 
         if(gamepad1.x) {
-            myRobot.capServo.setPosition(0.25);
+            myRobot.capServo.setPosition(SKYSTONEConstants.cDown);
         } else if (gamepad1.y) {
-            myRobot.capServo.setPosition(1);
+            myRobot.capServo.setPosition(SKYSTONEConstants.cUp);
         }
 
         //Claw rotation
