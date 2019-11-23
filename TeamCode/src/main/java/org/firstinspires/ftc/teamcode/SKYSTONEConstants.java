@@ -31,7 +31,7 @@ public class SKYSTONEConstants {
     //Double Constants
     public static double doubleSkyStoneDistance1 = 5;
     public static double doubleAdjustDistance = 8;
-    public static double doubleBridgeCross = 50;
+    public static double doubleBridgeCross = 47;
     public static double doubleWallDistance = 9;
 
     public static double _pickUpDistance = 27;
@@ -69,7 +69,7 @@ public class SKYSTONEConstants {
     public static double frontClawUp = 1;
     //Capstone Servo
     public static double cUp = 0.4;
-    public static double cDown = 0;
+    public static double cDown = 0.05;
     //Skystone Reset
     public static int startingElevatorHeight = 10;
 }

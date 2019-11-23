@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -40,6 +41,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class TestBotTeleOp extends OpMode
 {
+    float[] leftHsvValues = new float[3];
+    float[] rightHsvValues = new float[3];
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEDrivetrainClass myRobot = new SKYSTONEDrivetrainClass();
@@ -48,6 +51,7 @@ public class TestBotTeleOp extends OpMode
      */
     @Override
     public void init() {
+
         myRobot.initializeDriveTrain(hardwareMap, telemetry);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -85,7 +89,28 @@ public class TestBotTeleOp extends OpMode
         telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
         telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
         telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
+
+        int rightRed = myRobot.rightColor.red();
+        int rightBlue = myRobot.rightColor.blue();
+        int rightGreen = myRobot.rightColor.green();
+        int scale = 255;
+        int leftRed = myRobot.leftColor.red();
+        int leftBlue = myRobot.leftColor.blue();
+        int leftGreen = myRobot.leftColor.green();
+        Color.RGBToHSV((int) (leftRed)*scale,
+                (int) (leftGreen) * scale,
+                (int) (leftBlue) * scale,
+                leftHsvValues
+                );
+        Color.RGBToHSV((int) (rightRed) * scale,
+                (int) (rightGreen) * scale,
+                (int) (rightBlue) * scale,
+                rightHsvValues
+        );
+        telemetry.addData("LeftColor: ", "Red: " + leftRed + " Blue: " + leftBlue + " Green: " + leftGreen + " Hue: " + leftHsvValues[0]);
+        telemetry.addData("RightColor: ", "Red: " + rightRed + " Blue: " + rightBlue + " Green: " + rightGreen + " Hue: " + rightHsvValues[0]);
         telemetry.update();
+
     }
 
     /*

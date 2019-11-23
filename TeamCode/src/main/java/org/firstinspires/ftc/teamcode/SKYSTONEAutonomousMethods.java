@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -160,7 +162,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }*
              */
             error = loopAround(targetAngle-currentAngle);
-            drivePower = Math.max(Math.min(error/30, 1),-1)*Math.abs(power);
+            drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
             runMotors(-drivePower, drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
@@ -256,7 +258,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //double startDistance = curDistance;
         double error = curDistance-distance;
         double adjust;
-        while (Math.abs(error)>tolerance){
+        while (Math.abs(error)>tolerance && opModeIsActive()){
             /*
             adjust = 0.1*error/Math.abs(error) + 0.9*(Math.min(Math.abs(error),10))/10*power;
             if(error*power<0){
@@ -337,6 +339,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     boolean opModeStatus(){
         return opModeIsActive();
+    }
+    float hsv(ColorSensor sensor){
+        float[] values = new float[3];
+        int scale = 255;
+        Color.RGBToHSV(sensor.red()*scale,
+                sensor.green() * scale,
+                sensor.blue() * scale,
+                 values
+        );
+        return values[0];
     }
     //VuforiaDetectionStuff
 

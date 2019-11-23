@@ -61,6 +61,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
     // private int x;
     // private int y;
     double speed = 1;
+    String skysStonePosition = "Center";
     FtcDashboard dashboard;
 
     @Override
@@ -102,12 +103,25 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //Drive forwards to allow the webcam to see.
-            encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
-            encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance, 1);
             //Drive the rest of the distance
             distanceEncoderDrive(1,1,1,0, frontSensor);
-            sleep(800);
+            float leftHue = hsv(myRobot.leftColor);
+            float rightHue = hsv(myRobot.rightColor);
+            if(leftHue >= 115) {
+                skysStonePosition = "Left";
+            }
+            else if(rightHue >= 115) {
+                skysStonePosition  = "Right";
+            }
+            else {
+                skysStonePosition = "Center";
+            }
+            if(skysStonePosition.equals("Left")) {
+                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance,1);
+            }
+            if(skysStonePosition.equals("Right")) {
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance, 1);
+            }
             //Drive backwards
             encoderStraightDriveInches(-3, 1);
             //Turn
@@ -115,6 +129,14 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive forwards
             double dropDistance = SKYSTONEConstants.doubleBridgeCross+SKYSTONEConstants.doubleAdjustDistance;
             double wallDistance = SKYSTONEConstants.doubleWallDistance-SKYSTONEConstants.doubleAdjustDistance;
+            if(skysStonePosition.equals("Left")) {
+                wallDistance += (SKYSTONEConstants.doubleAdjustDistance);
+                dropDistance += (SKYSTONEConstants.doubleAdjustDistance);
+            }
+            if(skysStonePosition.equals("Right")) {
+                wallDistance -= (SKYSTONEConstants.doubleAdjustDistance);
+                dropDistance -= SKYSTONEConstants.doubleAdjustDistance;
+            }
             encoderStraightDriveInches(dropDistance, 1);
             //Drive backwards
             distanceEncoderDrive(wallDistance,1,-1,-90, backSensor);
@@ -130,7 +152,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive Forwards
             encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
             //Drive Backwards
-            encoderStraightDriveInches(-10,1);
+            encoderStraightDriveInches(-15,1);
             break;
         }
     }

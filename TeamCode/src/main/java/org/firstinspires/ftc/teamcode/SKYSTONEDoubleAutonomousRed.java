@@ -70,12 +70,9 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
-        SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
-        vuforiaMethods.activateDetection();
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -96,24 +93,31 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             myRobot.leftClaw.setPosition(0.3);
             myRobot.rightClaw.setPosition(0.3);
-            sleep(800);
-            //Drive forwards to allow the webcam to see.
-            encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
-            skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
-            if(skyStonePosition.equals("Left")){
-                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance, 1);
-            }
-            if(skyStonePosition.equals("Right")){
-                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance,1);
-            }
-            //Drive the rest of the distance
+            //Drive the distance
             distanceEncoderDrive(1,1,1,0, myRobot.frontDistance);
+            float leftHue = hsv(myRobot.leftColor);
+            float rightHue = hsv(myRobot.rightColor);
+            if(leftHue >= 115) {
+                skyStonePosition = "Left";
+            }
+            else if(rightHue >= 115) {
+                skyStonePosition  = "Right";
+            }
+            else {
+                skyStonePosition = "Center";
+            }
+            if(skyStonePosition.equals("Left")) {
+                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance,1);
+            }
+            if(skyStonePosition.equals("Right")) {
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance, 1);
+            }
             //Grab the stone
             myRobot.leftClaw.setPosition(1);
             myRobot.rightClaw.setPosition(1);
             sleep(800);
             //Drive backwards
-            encoderStraightDriveInches(-5, 1);
+            encoderStraightDriveInches(-8, 1);
             //Turn
             encoderTurn(-90, 1.0, 3);
             //Drive forwards
@@ -156,7 +160,6 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStraightDriveInches(-10,1);
             break;
         }
-        vuforiaMethods.deactivateDetection();
 
     }
 
