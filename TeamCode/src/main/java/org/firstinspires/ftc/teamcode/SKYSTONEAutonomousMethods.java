@@ -103,7 +103,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
-        while (notCloseEnough(8, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
+        while (notCloseEnough(20, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -162,7 +162,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }*
              */
             error = loopAround(targetAngle-currentAngle);
-            drivePower = Math.max(Math.min(error/90, 1),-1)*Math.abs(power);
+            drivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(power);
             runMotors(-drivePower, drivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
@@ -209,18 +209,18 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "DistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
         }
     }
-    void straighteningEncoderDriveInches(double distance, double targetAngle, double tolerance, double power){
-        straighteningEncoderDriveInchesNoStop(distance, targetAngle, tolerance, power);
+    void straighteningEncoderDriveInches(double inches, double targetAngle, double tolerance, double power){
+        straighteningEncoderDriveInchesNoStop(inches, targetAngle, tolerance, power);
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    void straighteningEncoderDriveInchesNoStop(double distance, double targetAngle, double tolerance, double power) {
+    void straighteningEncoderDriveInchesNoStop(double inches, double targetAngle, double tolerance, double power) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(power, power);
         double curDistance = leftFrontEncoder();
-        double targetDistance = distance*SKYSTONEConstants.TICKS_PER_INCH;
+        double targetDistance = inches*SKYSTONEConstants.TICKS_PER_INCH;
         //double startDistance = curDistance;
         double errorDistance = targetDistance-curDistance;
         double adjust;
@@ -268,7 +268,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             double curAngle = getHorizontalAngle();
             double steer = getCorrection(curAngle, targetAngle);
             error = curDistance-distance;
-            adjust = Math.max(Math.min(error, 20),-20)/20*power;
+            adjust = Math.max(Math.min(error, 10),-10)/10*power;
             runMotors(adjust - steer, adjust + steer);
             curDistance = sensor.getDistance(DistanceUnit.INCH);
             Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
