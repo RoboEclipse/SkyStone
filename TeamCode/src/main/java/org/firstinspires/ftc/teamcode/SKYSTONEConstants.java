@@ -69,7 +69,7 @@ public class SKYSTONEConstants {
     public static double frontClawUp = 1;
     //Capstone Servo
     public static double cUp = 0.4;
-    public static double cDown = 0;
+    public static double cDown = 0.05;
     //Skystone Reset
     public static int startingElevatorHeight = 10;
 }

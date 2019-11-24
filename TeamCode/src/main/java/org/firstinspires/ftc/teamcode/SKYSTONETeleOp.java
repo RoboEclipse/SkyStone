@@ -88,11 +88,11 @@ public class SKYSTONETeleOp extends OpMode
         double rotationMultiplier = .8;
         if(gamepad1.dpad_up){
             ly=1;
-            speedMultiplier = 0.4;
+            speedMultiplier = 0.3;
         }
         else if(gamepad1.dpad_down){
             ly=-1;
-            speedMultiplier = 0.4;
+            speedMultiplier = 0.3;
         }
         if(gamepad1.dpad_left){
             lx=-1;
