@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,6 +15,7 @@ import org.openftc.revextensions2.ExpansionHubMotor;
 
 public class SKYSTONEDrivetrainClass {
     DcMotor lb, lf, rb, rf;
+    ColorSensor leftColor, rightColor;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
     // The IMU sensor object
     BNO055IMU imu;
@@ -23,10 +25,16 @@ public class SKYSTONEDrivetrainClass {
         lf = hardwareMap.dcMotor.get("frontLeft");
         rb = hardwareMap.dcMotor.get("backRight");
         rf = hardwareMap.dcMotor.get("frontRight");
+        leftColor = hardwareMap.colorSensor.get("leftColor");
+        rightColor = hardwareMap.colorSensor.get("rightColor");
+
+
+        /*
         lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get("backLeft");
         lfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get("frontLeft");
         rbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get("backRight");
         rfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get("frontRight");
+        */
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

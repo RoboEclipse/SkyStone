@@ -70,19 +70,15 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
-        SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
-        vuforiaMethods.activateDetection();
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.addData("Distance", getHorizontalAngle() + "");
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
@@ -96,36 +92,47 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             myRobot.leftClaw.setPosition(0.3);
             myRobot.rightClaw.setPosition(0.3);
-            sleep(800);
-            //Drive forwards to allow the webcam to see.
-            encoderStraightDriveInches(SKYSTONEConstants.doubleSkyStoneDistance1, 1);
-            skyStonePosition = myRobot.getSkystonePosition(vuforiaMethods, detections);
-            if(skyStonePosition.equals("Left")){
-                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance, 1);
+            //Drive the distance
+            distanceEncoderDrive(1.5,0.5,1,0, myRobot.frontDistance);
+            float leftHue = hsv(myRobot.leftColor);
+            float rightHue = hsv(myRobot.rightColor);
+            if(leftHue >= 90) {
+                skyStonePosition = "Left";
             }
-            if(skyStonePosition.equals("Right")){
-                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance,1);
+            else if(rightHue >= 90) {
+                skyStonePosition  = "Right";
             }
-            //Drive the rest of the distance
-            distanceEncoderDrive(1,1,1,0, myRobot.frontDistance);
+            else {
+                skyStonePosition = "Center";
+            }
+            Log.d("SkyStone Position: ", skyStonePosition);
+            if(skyStonePosition.equals("Left")) {
+                encoderStrafeDriveInchesRight(0,1);
+            }
+            if(skyStonePosition.equals("Right")) {
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance+SKYSTONEConstants.doubleCenterDistance, 1);
+            }
+            if(skyStonePosition.equals("Center")){
+                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleCenterDistance, 1);
+            }
             //Grab the stone
             myRobot.leftClaw.setPosition(1);
             myRobot.rightClaw.setPosition(1);
             sleep(800);
             //Drive backwards
-            encoderStraightDriveInches(-5, 1);
+            encoderStraightDriveInches(-4, 1);
             //Turn
-            encoderTurn(-90, 1.0, 3);
+            encoderTurn(-88, 1.0, 1);
             //Drive forwards
             double dropDistance = SKYSTONEConstants.doubleBridgeCross;
             double wallDistance = SKYSTONEConstants.doubleWallDistance;
             if(skyStonePosition.equals("Left")){
                 dropDistance+=SKYSTONEConstants.doubleAdjustDistance;
-                wallDistance -= 8;
+                wallDistance -= 10;
             }
             if(skyStonePosition.equals("Right")){
-                dropDistance+=SKYSTONEConstants.doubleAdjustDistance;
-                wallDistance += 8;
+                dropDistance -= SKYSTONEConstants.doubleAdjustDistance;
+                wallDistance += 12;
             }
             encoderStraightDriveInches(dropDistance, 1);
             //Release the stone
@@ -133,63 +140,36 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //myRobot.rightClaw.setPosition(0.3);
             sleep(800);
             //Drive backwards
-            distanceEncoderDrive(wallDistance,1,-1,-90, myRobot.backDistance);
+            distanceEncoderDrive(wallDistance,0.5,-1,-88, myRobot.backDistance);
             //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
             //Turn
-            encoderTurn(0,1,3);
+            encoderTurn(0,1,1);
             //Drive Forwards
-            distanceEncoderDrive(1,1,1,0, myRobot.frontDistance);
+            distanceEncoderDrive(0,0.5,1,0, myRobot.frontDistance);
+            if(skyStonePosition.equals("Left")){
+                encoderStrafeDriveInchesRight(-1,0.5);
+            }
             //Grab the stone
             myRobot.leftClaw.setPosition(1);
             sleep(800);
             //Drive Backwards
-            encoderStraightDriveInches(-3,1);
+            encoderStraightDriveInches(-4,1);
             //Turn
-            encoderTurn(-90,1,3);
+            encoderTurn(-88,1,1);
             //Drive Forwards
-            encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
+            encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
             //Release the stone
             myRobot.leftClaw.setPosition(.3);
             //myRobot.rightClaw.setPosition(1);
             sleep(800);
             //Drive Backwards
-            encoderStraightDriveInches(-10,1);
+            encoderStraightDriveInches(-15,1);
             break;
         }
-        vuforiaMethods.deactivateDetection();
 
     }
 
-    private void crossBridge(SKYSTONEAutonomousMethods methods, SKYSTONEClass myRobot, double speed) {
-        Log.d("Skystone Status: ", "Stone Picked Up");
-        //methods.encoderStrafeDriveInchesRight(-3, speed);
-        //Re-center claw
-        //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-        //Log.d("Skystone Status: ", "Claw Re-Centered");
-        //methods.encoderStraightDriveInches(15, speed);
-        //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
-        //Turn
-        myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 7,2);
-        methods.encoderStraightDriveInches(-8, speed);
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-        methods.encoderTurnNoStop(-90, 1, 5);
-        Log.d("Skystone Status: ", "Turned");
-        //Cross bridge
-        double returnDistance;
-        if(skyStonePosition.equals("Left")){
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance;
-            //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
-        }
-        else if(skyStonePosition.equals("Right")){
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance;
-            //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
-        }
-        else{
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance;
-            //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
-        }
-        methods.encoderStraightDriveNoStop(returnDistance, 1);
-    }
+
     /*
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
