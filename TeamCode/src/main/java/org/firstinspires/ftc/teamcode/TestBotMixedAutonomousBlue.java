@@ -29,14 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 /**
@@ -52,9 +49,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TestBotMixedAutonomousRed", group="Linear Opmode")
+@Autonomous(name="TestBotMixedAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -114,7 +111,7 @@ public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //drive backwards to get stone out of line
             encoderStraightDriveInches(SKYSTONEAutonomousConstants.pullStoneOutDistance, 1);
             //Turn so that front is towards bridge
-            encoderTurn(-90, 1.0, 3);
+            encoderTurn(90, 1.0, 3);
             //Drive forwards
             double dropDistance = SKYSTONEAutonomousConstants.driveUnderBridgeDistance;
             /*if(skyStonePosition.equals("Left")){
@@ -125,7 +122,7 @@ public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             }*/
             encoderStraightDriveInches(dropDistance, 1);
             //turn to have back towards platform
-            encoderTurn(-180, 1.0, 3);
+            encoderTurn(180, 1.0, 3);
             //drive backwards to hit platform
             encoderStraightDriveInches(SKYSTONEAutonomousConstants.hitFoundationDistance, 1);
             telemetry.addData("grab foundation", 0);
@@ -140,7 +137,7 @@ public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStraightDriveInches(SKYSTONEAutonomousConstants.moveAwayFromStoneDistance, 1);
             //myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
             //turn to drop off foundation
-            encoderTurn(-270, 1.0, 3);
+            encoderTurn(270, 1.0, 3);
             //drive backwards to drop off foundation
             myRobot.runMotors(-0.5,-0.5);
             sleep(1000);
