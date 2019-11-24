@@ -128,7 +128,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             double wallDistance = SKYSTONEConstants.doubleWallDistance;
             if(skyStonePosition.equals("Left")){
                 dropDistance+=SKYSTONEConstants.doubleAdjustDistance;
-                wallDistance -= 8;
+                wallDistance -= 10;
             }
             if(skyStonePosition.equals("Right")){
                 dropDistance -= SKYSTONEConstants.doubleAdjustDistance;
