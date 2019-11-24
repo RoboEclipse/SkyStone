@@ -110,6 +110,16 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rf.setPower(rightPower);
     }
 
+    void initializeBR (HardwareMap hardwareMap){
+        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
+
+        lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
+        lfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
+        rbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
+        rfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
+
+    }
+
     void readEncodersBR(){
         bulkData = expansionHub.getBulkInputData();
         telemetry.addData(

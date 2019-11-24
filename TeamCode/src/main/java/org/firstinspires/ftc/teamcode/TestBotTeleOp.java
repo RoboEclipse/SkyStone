@@ -36,11 +36,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.RevBulkData;
+
 
 @TeleOp(name="TestBotTeleOp", group="Iterative Opmode")
 //@Disabled
 public class TestBotTeleOp extends OpMode
 {
+
+    ExpansionHubEx expansionHub;
+    RevBulkData bulkData;
+    double newTime;
     float[] leftHsvValues = new float[3];
     float[] rightHsvValues = new float[3];
     // Declare OpMode members.
@@ -53,6 +60,7 @@ public class TestBotTeleOp extends OpMode
     public void init() {
 
         myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -70,6 +78,7 @@ public class TestBotTeleOp extends OpMode
     @Override
     public void start() {
         runtime.reset();
+        newTime=0;
     }
 
     /*
@@ -77,18 +86,31 @@ public class TestBotTeleOp extends OpMode
      */
     @Override
     public void loop() {
+        double oldTime = newTime;
+        newTime = runtime.time();
+
+
         double leftDrive = -gamepad1.left_stick_y;
         double rightDrive = -gamepad1.right_stick_y;
         myRobot.lf.setPower(leftDrive);
         myRobot.lb.setPower(leftDrive);
         myRobot.rf.setPower(rightDrive);
         myRobot.rb.setPower(rightDrive);
+        telemetry.addData("Loop Hertz: ", 1/(newTime-oldTime));
         telemetry.addData("Left Power: ", leftDrive);
         telemetry.addData("Right Power: ", rightDrive);
         telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
         telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
         telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
         telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
+
+        bulkData = expansionHub.getBulkInputData();
+        telemetry.addData(
+                "Encoders from Bulk Read", "lf: " + bulkData.getMotorCurrentPosition(myRobot.lfBR)
+                        + " lb: " + bulkData.getMotorCurrentPosition(myRobot.lbBR)
+                        + " rf: " + bulkData.getMotorCurrentPosition(myRobot.rfBR)
+                        + " rb: "+ bulkData.getMotorCurrentPosition(myRobot.rbBR)
+        );
 
         int rightRed = myRobot.rightColor.red();
         int rightBlue = myRobot.rightColor.blue();
