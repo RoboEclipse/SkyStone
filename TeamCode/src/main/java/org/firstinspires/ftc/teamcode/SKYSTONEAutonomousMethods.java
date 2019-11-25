@@ -168,6 +168,42 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
 
+    void encoderTurnNoStopLeft(double targetAngle, double power, double tolerance) {
+        double currentAngle = getHorizontalAngle();
+        //double startDifference = currentAngle-targetAngle;
+        double error = targetAngle - currentAngle;
+        error = loopAround(error);
+        double drivePower = power;
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(drivePower, 0);
+        while (Math.abs(error) > tolerance && opModeIsActive()) {
+
+            currentAngle = getHorizontalAngle();
+            error = loopAround(targetAngle - currentAngle);
+            drivePower = Math.max(Math.min(error / 60, 1), -1) * Math.abs(power);
+            runMotors(drivePower, 0);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
+        }
+    }
+
+    void encoderTurnNoStopRight(double targetAngle, double power, double tolerance) {
+        double currentAngle = getHorizontalAngle();
+        //double startDifference = currentAngle-targetAngle;
+        double error = targetAngle - currentAngle;
+        error = loopAround(error);
+        double drivePower = power;
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(0, drivePower);
+        while (Math.abs(error) > tolerance && opModeIsActive()) {
+
+            currentAngle = getHorizontalAngle();
+            error = loopAround(targetAngle - currentAngle);
+            drivePower = Math.max(Math.min(error / 60, 1), -1) * Math.abs(power);
+            runMotors(0, drivePower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
+        }
+    }
+
     int leftFrontEncoder(){
         return myRobot.lf.getCurrentPosition();
     }
@@ -279,7 +315,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //private void
     //Shortcuts
-    private void setModeAllDrive(DcMotor.RunMode mode){
+    void setModeAllDrive(DcMotor.RunMode mode){
         myRobot.lb.setMode(mode);
         myRobot.lf.setMode(mode);
         myRobot.rb.setMode(mode);

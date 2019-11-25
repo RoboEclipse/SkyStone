@@ -30,7 +30,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, leftClaw, rightClaw, capServo;
-    CRServo collectionRotationServo;
+    CRServo collectionRotationServo, collectorBackServo;
     DistanceSensor frontDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
@@ -69,6 +69,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         leftClaw = hardwareMap.servo.get(skystoneNames.leftClaw);
         rightClaw = hardwareMap.servo.get(skystoneNames.rightClaw);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
+        collectorBackServo = hardwareMap.crservo.get(skystoneNames.collectorBackRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
         frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
@@ -203,6 +204,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
     void runCollectorServos(double collectorPower){
         collectionRotationServo.setPower(collectorPower);
+        collectorBackServo.setPower(collectorPower);
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double position){

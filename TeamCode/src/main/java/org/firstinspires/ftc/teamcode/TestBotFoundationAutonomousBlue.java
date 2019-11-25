@@ -55,9 +55,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TestBotFoundationAutonomousRed", group="Linear Opmode")
+@Autonomous(name="TestBotFoundationAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotFoundationAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -102,18 +102,18 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
 
             //Strafe right to align to foundation
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
             encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             //Turn the foundation
-            encoderTurnNoStopLeft(SKYSTONEConstants.cFoundationTurn, 1, 3);
+            encoderTurnNoStopRight(SKYSTONEConstants.cFoundationTurn, 1, 3);
             runMotors(0,0);
             setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
             runMotors(-0.3, -0.3);
             sleep(1000);
             runMotors(0, 0);
             encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, -0.8);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, 0.8);
             encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
 
             // Show the elapsed game time and wheel power.

@@ -114,6 +114,9 @@ public class SKYSTONETeleOp extends OpMode
 
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
+        if (slidePower > 0){
+            clawPosition = 0;
+        }
         myRobot.clawSlide.setPower(slidePower);
         /*if ((slidePower > 0.001) || (slidePower < -0.001)){
             if (clawPosition != SKYSTONEConstants.tighten){

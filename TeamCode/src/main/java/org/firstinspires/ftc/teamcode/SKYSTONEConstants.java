@@ -20,9 +20,13 @@ public class SKYSTONEConstants {
     //Foundation Constants
     public static double aFoundationAim = -10;
     public static double bFoundationDistance = -35;
+    public static double cFoundationTurn = 100;
+    public static double dWallStrafe = 23;
+    public static double eSkybridge1 = 24;
+    public static double eSkybridge2 = 10;
     public static double cFoundationClearPart1 = 40;
     public static double cFoundationClearPart2 = 20;
-    public static double eSkybridge = 10;
+    public static double eSkybridge = 14;
     //Mixed Constants
     public static double mixedSkyStoneDistance1 = 5;
     public static double mixedAdjustDistance = 6;
