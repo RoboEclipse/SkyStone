@@ -33,11 +33,6 @@ public class SKYSTONEConstants {
     public static double mixedSkyStoneDistance2 = 15;
     public static double mixedBridgeCross = 50;
     //Double Constants
-    public static double doubleSkyStoneDistance1 = 5;
-    public static double doubleAdjustDistance = 8.5;
-    public static double doubleBridgeCross = 47;
-    public static double doubleWallDistance = 9;
-    public static double doubleCenterDistance = 9;
 
     public static double _pickUpDistance = 27;
     public static double _aSkyStoneDistance = 18;

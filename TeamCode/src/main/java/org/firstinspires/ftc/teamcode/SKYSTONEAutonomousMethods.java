@@ -288,7 +288,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     void distanceEncoderDriveNoStop(double distance, double tolerance, double power, double targetAngle, DistanceSensor sensor) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         runMotors(power, power);
         double curDistance = sensor.getDistance(DistanceUnit.INCH);
         //double startDistance = curDistance;
@@ -302,12 +302,22 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
              */
             double curAngle = getHorizontalAngle();
+            //Get correction
             double steer = getCorrection(curAngle, targetAngle);
+            //Get error
             error = curDistance-distance;
-            adjust = Math.max(Math.min(error, 10),-10)/10*power;
+            //Once below 20 inches away, start slowing
+            adjust = Math.max(Math.min(error, 20),-20)/20*power;
+            //Ensure power is above 0.2
+            if(adjust > 0){
+                adjust = Math.max(adjust, 0.2);
+            }
+            else{
+                adjust = Math.min(adjust, -0.2);
+            }
             runMotors(adjust - steer, adjust + steer);
             curDistance = sensor.getDistance(DistanceUnit.INCH);
-            Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
+            Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance + "Steer: " + steer);
         }
     }
     //Attachments

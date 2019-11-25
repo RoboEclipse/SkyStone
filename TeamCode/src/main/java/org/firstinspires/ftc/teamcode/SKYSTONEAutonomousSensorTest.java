@@ -102,6 +102,8 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
             telemetry.addData("VerticalAngle", methods.getVerticalAngle());
             telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
                     ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
+            telemetry.addData("BackDistance: ", methods.myRobot.getBackDistance());
+            telemetry.addData("FrontDistance: ", methods.myRobot.getFrontDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("LeftStickY", gamepad1.left_stick_y);
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
