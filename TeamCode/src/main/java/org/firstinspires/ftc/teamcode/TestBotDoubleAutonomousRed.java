@@ -117,25 +117,25 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
                 skysStonePosition = "Center";
             }
             if(skysStonePosition.equals("Left")) {
-                encoderStrafeDriveInchesRight(-SKYSTONEConstants.doubleAdjustDistance,1);
+                encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.doubleAdjustDistance,1);
             }
             if(skysStonePosition.equals("Right")) {
-                encoderStrafeDriveInchesRight(SKYSTONEConstants.doubleAdjustDistance, 1);
+                encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance, 1);
             }
             //Drive backwards
             encoderStraightDriveInches(-3, 1);
             //Turn
             encoderTurn(-90, 1.0, 2);
             //Drive forwards
-            double dropDistance = SKYSTONEConstants.doubleBridgeCross+SKYSTONEConstants.doubleAdjustDistance;
-            double wallDistance = SKYSTONEConstants.doubleWallDistance-SKYSTONEConstants.doubleAdjustDistance;
+            double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross+SKYSTONEAutonomousConstants.doubleAdjustDistance;
+            double wallDistance = SKYSTONEAutonomousConstants.doubleWallDistance-SKYSTONEAutonomousConstants.doubleAdjustDistance;
             if(skysStonePosition.equals("Left")) {
-                wallDistance += (SKYSTONEConstants.doubleAdjustDistance);
-                dropDistance += (SKYSTONEConstants.doubleAdjustDistance);
+                wallDistance += (SKYSTONEAutonomousConstants.doubleAdjustDistance);
+                dropDistance += (SKYSTONEAutonomousConstants.doubleAdjustDistance);
             }
             if(skysStonePosition.equals("Right")) {
-                wallDistance -= (SKYSTONEConstants.doubleAdjustDistance);
-                dropDistance -= SKYSTONEConstants.doubleAdjustDistance;
+                wallDistance -= (SKYSTONEAutonomousConstants.doubleAdjustDistance);
+                dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
             }
             encoderStraightDriveInches(dropDistance, 1);
             //Drive backwards
@@ -150,7 +150,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Turn
             encoderTurn(-90,1,2);
             //Drive Forwards
-            encoderStraightDriveInches(dropDistance + 3*SKYSTONEConstants.doubleAdjustDistance + 3, 1.0);
+            encoderStraightDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance + 3, 1.0);
             //Drive Backwards
             encoderStraightDriveInches(-15,1);
             break;
