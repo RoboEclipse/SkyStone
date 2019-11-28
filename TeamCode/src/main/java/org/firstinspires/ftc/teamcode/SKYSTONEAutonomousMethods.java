@@ -168,20 +168,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
 
-    void encoderTurnNoStopLeft(double targetAngle, double power, double tolerance) {
+    void encoderTurnNoStopLeftOnly(double targetAngle, double power, double tolerance) {
         double currentAngle = getHorizontalAngle();
         //double startDifference = currentAngle-targetAngle;
         double error = targetAngle - currentAngle;
         error = loopAround(error);
         double drivePower = power;
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(drivePower, 0);
+        runMotors(-drivePower, 0);
         while (Math.abs(error) > tolerance && opModeIsActive()) {
-
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle - currentAngle);
             drivePower = Math.max(Math.min(error / 60, 1), -1) * Math.abs(power);
-            runMotors(drivePower, 0);
+            runMotors(-drivePower, 0);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -469,6 +468,25 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);
         //sleep(1000);
         //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+    }
+    void foundationPlace(SKYSTONEClass myRobot) {
+        //Grab the foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        sleep(500);
+        //Turn the foundation
+        //Robot turns clockwise, therefore negative power
+        encoderTurnNoStopLeftOnly(-SKYSTONEConstants.cFoundationTurn, 1, 3);
+        runMotors(0,0);
+        //Drive foundation towards wall
+        runMotors(-0.6, -0.6);
+        sleep(1000);
+        runMotors(0, 0);
+        //Release foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        sleep(500);
+
     }
 
 }

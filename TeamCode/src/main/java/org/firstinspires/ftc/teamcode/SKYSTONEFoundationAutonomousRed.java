@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -84,6 +83,23 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            //Raise up foundation servos
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            //Strafe right to align to foundation
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            //Drive to foundation
+            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            foundationPlace(myRobot);
+            encoderTurn(-88, 1,3);
+            encoderStrafeDriveInchesRight(8,1);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
+            //encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, -0.8);
+            //encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
+            break;
+
+
+            /*
             TelemetryPacket packet;
             packet = new TelemetryPacket();
             /* packet.put("cat", 3.8);
@@ -91,6 +107,8 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
             dashboard.sendTelemetryPacket(packet);
             */
+
+            /*
             //Raise up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
@@ -139,10 +157,12 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             methods.encoderStrafeDriveInchesRight(5,speed);
             methods.encoderStraightDriveInches(-20,speed);
             */
+            /*
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;
+            */
         }
     }
 
