@@ -29,13 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-
-import java.util.List;
+import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -51,69 +50,30 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
-//@Disabled
-public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
-    private SKYSTONEConstants constants = new SKYSTONEConstants();
-    private List<Recognition> updatedRecognitions;
+@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@Disabled
+public class LinearBase extends LinearOpMode {
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
-
-            }
-        };
-
-        //SKYSTONEClass methods = new SKYSTONEClass();
-        methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive",methods.opModeStatus());
-            methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
 
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-            }
-            else{
-                telemetry.addData("# Object Detected", 0);
-            }
             // Show the elapsed game time and wheel power.
-            telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
-            telemetry.addData("RollAngle", methods.getRoll());
-            telemetry.addData("VerticalAngle", methods.getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
-                    ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
-            telemetry.addData("BackDistance: ", methods.myRobot.getBackDistance());
-            telemetry.addData("FrontDistance: ", methods.myRobot.getFrontDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LeftStickY", gamepad1.left_stick_y);
-            telemetry.addData("RightStickY", gamepad1.right_stick_y);
-            telemetry.addData("LeftStickX", gamepad1.left_stick_x);
-            telemetry.addData("RightStickX", gamepad1.right_stick_x);
             telemetry.update();
         }
     }
-
-    public boolean opModeCheck(){
-        return opModeIsActive();
-    }
 }
+
+

@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 
 @Config
-public class SKYSTONEConstants {
+public class SKYSTONEAutonomousConstants {
 
     //TicksPerRotation is 42.78 on testbot
     private static double TICKS_PER_ROTATION = 103.6/3.7;
@@ -20,10 +20,6 @@ public class SKYSTONEConstants {
     //Foundation Constants
     public static double aFoundationAim = -10;
     public static double bFoundationDistance = -35;
-    public static double cFoundationTurn = 100;
-    public static double dWallStrafe = 23;
-    public static double eSkybridge1 = 24;
-    public static double eSkybridge2 = 14;
     public static double cFoundationClearPart1 = 40;
     public static double cFoundationClearPart2 = 20;
     public static double eSkybridge = 10;
@@ -32,7 +28,20 @@ public class SKYSTONEConstants {
     public static double mixedAdjustDistance = 6;
     public static double mixedSkyStoneDistance2 = 15;
     public static double mixedBridgeCross = 50;
+    //New Mixed Constants
+    public static double driveToStoneDistance = 30;
+    public static double pullStoneOutDistance = -5;
+    public static double driveUnderBridgeDistance = 75;
+    public static double hitFoundationDistance = -10;
+    public static double dropOffStoneDistance = 15;
+    public static double parkDistance = 40;
+    public static double moveAwayFromStoneDistance = -10;
     //Double Constants
+    public static double doubleSkyStoneDistance1 = 5;
+    public static double doubleAdjustDistance = 8.5;
+    public static double doubleBridgeCross = 47;
+    public static double doubleWallDistance = 8;
+    public static double doubleCenterDistance = 9;
 
     public static double _pickUpDistance = 27;
     public static double _aSkyStoneDistance = 18;
@@ -64,12 +73,15 @@ public class SKYSTONEConstants {
     //Skystone Right Foundation Claw
     public static double rDown = 0.25; //At least .5
     public static double rUp = 0.55;
-    //Front side claw
-    public static double frontClawDown = 0.57;
-    public static double frontClawUp = 1;
+    //Front right claw
+    public static double frDown = 0.57;
+    public static double frUp = 1;
+    //Front left claw
+    public static double flDown = 1;
+    public static double flUP = 0.3;
     //Capstone Servo
     public static double cUp = 0.4;
-    public static double cDown = 0.05;
+    public static double cDown = 0;
     //Skystone Reset
     public static int startingElevatorHeight = 10;
 }

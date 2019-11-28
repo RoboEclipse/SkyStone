@@ -27,17 +27,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import java.util.List;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+
+import java.util.List;
 
 /**
  * This 2019-2020 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -50,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+//@Disabled
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
@@ -118,6 +119,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
+                      telemetry.addData("Width", updatedRecognitions.get(0).getImageWidth() + "");
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -161,7 +163,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-       tfodParameters.minimumConfidence = 0.8;
+       tfodParameters.minimumConfidence = 0.6;
        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }

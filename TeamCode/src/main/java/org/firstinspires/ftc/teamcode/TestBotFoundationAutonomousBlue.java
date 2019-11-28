@@ -29,13 +29,17 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-
-import java.util.List;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -51,69 +55,71 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
+@Autonomous(name="TestBotFoundationAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
-    private SKYSTONEConstants constants = new SKYSTONEConstants();
-    private List<Recognition> updatedRecognitions;
+public class TestBotFoundationAutonomousBlue extends SKYSTONEAutonomousMethods {
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    // private int x;
+    // private int y;
+    double speed = 1;
+    FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
+        SKYSTONEDrivetrainClass drivetrain = myRobot;
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.update();
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
             }
-        };
-
-        //SKYSTONEClass methods = new SKYSTONEClass();
-        methods.initialize(hardwareMap, telemetry);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
-        waitForStart();
+        }
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive",methods.opModeStatus());
-            methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
 
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-            }
-            else{
-                telemetry.addData("# Object Detected", 0);
-            }
+            //Strafe right to align to foundation
+            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
+            //Drive to foundation
+            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            //Turn the foundation
+            encoderTurnNoStopRight(SKYSTONEConstants.cFoundationTurn, 1, 3);
+            runMotors(0,0);
+            setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+            runMotors(-0.3, -0.3);
+            sleep(1000);
+            runMotors(0, 0);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, 0.8);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
+
             // Show the elapsed game time and wheel power.
-            telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
-            telemetry.addData("RollAngle", methods.getRoll());
-            telemetry.addData("VerticalAngle", methods.getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
-                    ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
-            telemetry.addData("BackDistance: ", methods.myRobot.getBackDistance());
-            telemetry.addData("FrontDistance: ", methods.myRobot.getFrontDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LeftStickY", gamepad1.left_stick_y);
-            telemetry.addData("RightStickY", gamepad1.right_stick_y);
-            telemetry.addData("LeftStickX", gamepad1.left_stick_x);
-            telemetry.addData("RightStickX", gamepad1.right_stick_x);
             telemetry.update();
+            break;
         }
-    }
-
-    public boolean opModeCheck(){
-        return opModeIsActive();
     }
 }

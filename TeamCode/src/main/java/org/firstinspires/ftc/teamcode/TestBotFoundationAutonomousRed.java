@@ -30,10 +30,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -49,76 +55,71 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEFoundationAutonomous", group="Linear Opmode")
+@Autonomous(name="TestBotFoundationAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEFoundationAutonomous extends LinearOpMode {
+public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private int x;
-    private int y;
+    // private int x;
+    // private int y;
+    double speed = 1;
     FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
+        SKYSTONEDrivetrainClass drivetrain = myRobot;
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    telemetry.update();
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
             }
-        };
-        dashboard = FtcDashboard.getInstance();
-        final double speed = 0.3;
-        methods.initialize(hardwareMap, telemetry);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
-        waitForStart();
+        }
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            TelemetryPacket packet;
-            packet = new TelemetryPacket();
-            packet.put("cat", 3.8);
-            //packet.fieldOverlay().setFill("blue").fillRect(-);
 
-            dashboard.sendTelemetryPacket(packet);
-            methods.encoderStraightDriveInches(SKYSTONEConstants.aFoundationDistance, speed);
+            //Strafe right to align to foundation
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
+            //Drive to foundation
+            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            //Turn the foundation
+            encoderTurnNoStopLeft(SKYSTONEConstants.cFoundationTurn, 1, 3);
+            runMotors(0,0);
+            setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+            runMotors(-0.3, -0.3);
+            sleep(1000);
+            runMotors(0, 0);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, -0.8);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
 
-            x = 0;
-            y = 0;
-            // dashboardRecordPosition(144, 144);
-
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.aFoundationDistance + 10, speed);
-
-
-            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.bFoundationClear, speed);
-            methods.encoderTurn(-90, speed, 3);
-            methods.encoderStraightDriveInches(-SKYSTONEConstants.cSkybridgeClear, speed);
-            methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.dSkyStoneAlign,speed);
-            /*
-            methods.encoderStrafeDriveInchesRight(5, speed);
-            methods.encoderStraightDriveInches(-30,speed);
-            methods.encoderStraightDriveInches(35, speed);
-            methods.encoderStrafeDriveInchesRight(-5,speed);
-            methods.encoderStrafeDriveInchesRight(5,speed);
-            methods.encoderStraightDriveInches(-20,speed);
-            */
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;
         }
     }
-
-    /*private void dashboardRecordPosition(int deltax, int deltay) {
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("cat", 3.7);
-        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
-
-        dashboard.sendTelemetryPacket(packet);
-        x = x + deltax;
-        y = y + deltay;
-    }*/
 }
