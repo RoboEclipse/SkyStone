@@ -274,6 +274,6 @@ public class SKYSTONETeleOp extends OpMode
 
     void autoFoundationPull(){
 
-    };
+    }
 }
 
