@@ -142,7 +142,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             break;
         }
         vuforiaMethods.deactivateDetection();
-
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 
     private void crossBridge(SKYSTONEAutonomousMethods methods, SKYSTONEClass myRobot, double speed) {

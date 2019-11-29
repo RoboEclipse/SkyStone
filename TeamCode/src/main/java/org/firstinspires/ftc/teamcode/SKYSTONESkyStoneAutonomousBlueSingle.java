@@ -170,6 +170,7 @@ public class SKYSTONESkyStoneAutonomousBlueSingle extends LinearOpMode {
             break;
         }
         vuforiaMethods.deactivateDetection();
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
     /*

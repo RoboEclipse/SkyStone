@@ -139,6 +139,7 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             break;
 
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
 

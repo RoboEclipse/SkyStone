@@ -41,7 +41,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
-import java.util.function.IntBinaryOperator;
 
 
 /**
@@ -170,6 +169,7 @@ public class SKYSTONESkyStoneAutonomousRedSingle extends LinearOpMode {
             break;
         }
         vuforiaMethods.deactivateDetection();
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
     /*

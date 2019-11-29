@@ -177,6 +177,7 @@ public class SKYSTONESkyStoneAutonomousRed extends SKYSTONEAutonomousMethods {
             break;
         }
         vuforiaMethods.deactivateDetection();
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
 
