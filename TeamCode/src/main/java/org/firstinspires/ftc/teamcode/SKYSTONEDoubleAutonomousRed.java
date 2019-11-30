@@ -143,7 +143,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
                 encoderStrafeDriveInchesRight(-2,0.5);
             }
             //Drive Forwards
-            distanceEncoderDrive(0.4,0.3,1,0, myRobot.frontDistance);
+            distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
 
             //Grab the stone
             myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);

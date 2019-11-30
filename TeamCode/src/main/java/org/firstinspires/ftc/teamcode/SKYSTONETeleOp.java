@@ -48,7 +48,8 @@ public class SKYSTONETeleOp extends OpMode
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
-    private double frontClawPosition = 0.3;
+    private double flClawPosition = SKYSTONEAutonomousConstants.flUp;
+    private double frClawPosition = SKYSTONEAutonomousConstants.frUp;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -175,12 +176,14 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            frontClawPosition = 1;
+            frClawPosition = SKYSTONEAutonomousConstants.frUp;
+            flClawPosition = SKYSTONEAutonomousConstants.flUp;
         }
         if(gamepad2.left_bumper){
-            frontClawPosition = 0.57;
+            frClawPosition = SKYSTONEAutonomousConstants.frDown;
+            flClawPosition = SKYSTONEAutonomousConstants.flDown;
         }
-        myRobot.moveFrontClaw(frontClawPosition);
+        myRobot.moveFrontClaw(flClawPosition, frClawPosition);
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
@@ -201,9 +204,9 @@ public class SKYSTONETeleOp extends OpMode
 
 
         //Autonomous Tests
-        if(gamepad2.a){
+        /*if(gamepad2.a){
             pickUpStone();
-        }
+        } */
         myRobot.rotateStackingClaw(clawRotator);
         myRobot.grabStones(clawPosition);
         myRobot.runCollectorServos(collectorPower);

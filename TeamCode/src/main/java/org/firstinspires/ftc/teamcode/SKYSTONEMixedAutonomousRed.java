@@ -137,15 +137,32 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Drive to foundation
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, speed);
-            foundationPlaceRed(myRobot);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, 0.8);
+            //Grab the foundation
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            sleep(500);
+            //Turn the foundation
+            //Robot turns clockwise, therefore negative power
+            encoderTurnNoStopLeftOnly(80, 1, 3);
+            runMotors(0,0);
+            //Drive foundation towards wall
+            runMotors(-1, -1);
+            sleep(1000);
+            runMotors(0, 0);
+            //Strafe to make sure foundation goes into building zone
+            encoderStrafeDriveInchesRight(-3, speed);
+            //Release foundation
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            sleep(500);
             encoderTurn(88, 1,3);
             //Let go of stone
             myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
             //Get past skystone so we don't push it
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear,1);
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
             //Drive under bridge
-            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
+            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1+10, 0.6);
             break;
         }
         //vuforiaMethods.deactivateDetection();
