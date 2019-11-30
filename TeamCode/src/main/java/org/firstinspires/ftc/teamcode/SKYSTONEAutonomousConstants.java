@@ -36,6 +36,9 @@ public class SKYSTONEAutonomousConstants {
     public static double dropOffStoneDistance = 15;
     public static double parkDistance = 40;
     public static double moveAwayFromStoneDistance = -10;
+    public static double foundationAlign = 24;
+    public static double foundationDistance = -18;
+    public static double skystoneClear = 8;
     //Double Constants
     public static double doubleSkyStoneDistance1 = 5;
     public static double doubleAdjustDistance = 8.5;
@@ -74,11 +77,11 @@ public class SKYSTONEAutonomousConstants {
     public static double rDown = 0.25; //At least .5
     public static double rUp = 0.55;
     //Front right claw
-    public static double frDown = 0.57;
-    public static double frUp = 1;
+    public static double frDown = 0.58;
+    public static double frUp = 0.95;
     //Front left claw
-    public static double flDown = 1;
-    public static double flUP = 0.3;
+    public static double flDown = 0.71;
+    public static double flUp = 0.3;
     //Capstone Servo
     public static double cUp = 0.4;
     public static double cDown = 0;
