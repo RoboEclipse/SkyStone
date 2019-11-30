@@ -90,7 +90,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
             encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
-            foundationPlace(myRobot);
+            foundationPlaceRed(myRobot);
             encoderTurn(-88, 1,3);
             encoderStrafeDriveInchesRight(8,1);
             encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
@@ -164,6 +164,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             break;
             */
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {

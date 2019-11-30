@@ -141,7 +141,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             break;
         }
         vuforiaMethods.deactivateDetection();
-
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 
     private void crossBridge(SKYSTONEAutonomousMethods methods, SKYSTONEClass myRobot, double speed) {
@@ -174,6 +174,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         }
         methods.encoderStraightDriveNoStop(returnDistance, 1);
     }
+
     /*
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
@@ -200,4 +201,5 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         x = x + deltax;
         y = y + deltay;
     }*/
+
 }

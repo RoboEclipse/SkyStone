@@ -185,7 +185,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
 
-    void encoderTurnNoStopRight(double targetAngle, double power, double tolerance) {
+    void encoderTurnNoStopRightOnly(double targetAngle, double power, double tolerance) {
         double currentAngle = getHorizontalAngle();
         //double startDifference = currentAngle-targetAngle;
         double error = targetAngle - currentAngle;
@@ -469,7 +469,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //sleep(1000);
         //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
     }
-    void foundationPlace(SKYSTONEClass myRobot) {
+    void foundationPlaceRed(SKYSTONEClass myRobot) {
         //Grab the foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
@@ -488,5 +488,23 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
 
     }
+    void foundationPlaceBlue(SKYSTONEClass myRobot) {
+        //Grab the foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        sleep(500);
+        //Turn the foundation
+        //Robot turns clockwise, therefore negative power
+        encoderTurnNoStopRightOnly(-SKYSTONEConstants.cFoundationTurn, 1, 3);
+        runMotors(0,0);
+        //Drive foundation towards wall
+        runMotors(-0.6, -0.6);
+        sleep(1000);
+        runMotors(0, 0);
+        //Release foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        sleep(500);
 
+    }
 }

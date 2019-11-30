@@ -59,13 +59,13 @@ public class SKYSTONEConstants {
     public static double loosen = 0.7;
     public static double autoLoosen = 1;
     //Skystone Left Foundation Claw
-    public static double lDown = 0.6; //At most .65
+    public static double lDown = 0.47; //At most .65
     public static double lUp = 0.25;
     //Skystone Right Foundation Claw
-    public static double rDown = 0.25; //At least .5
+    public static double rDown = 0.34; //At least .5
     public static double rUp = 0.55;
-    //Front side claw
-    public static double frontClawDown = 0.57;
+
+    public static double frontClawDown = 0.58;
     public static double frontClawUp = 1;
     //Capstone Servo
     public static double cUp = 0.4;

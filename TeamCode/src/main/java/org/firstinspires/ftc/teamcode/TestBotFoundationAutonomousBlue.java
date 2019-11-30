@@ -35,11 +35,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -106,7 +101,7 @@ public class TestBotFoundationAutonomousBlue extends SKYSTONEAutonomousMethods {
             //Drive to foundation
             encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
             //Turn the foundation
-            encoderTurnNoStopRight(SKYSTONEConstants.cFoundationTurn, 1, 3);
+            encoderTurnNoStopRightOnly(SKYSTONEConstants.cFoundationTurn, 1, 3);
             runMotors(0,0);
             setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
             runMotors(-0.3, -0.3);
