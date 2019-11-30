@@ -95,7 +95,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
             myRobot.rightClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
             //Drive the distance
-            distanceEncoderDrive(1.5,0.3,1,0, myRobot.frontDistance);
+            distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
             //Detect where the SkyStone is
             float leftHue = hsv(myRobot.leftColor);
             float rightHue = hsv(myRobot.rightColor);
@@ -143,7 +143,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
                 encoderStrafeDriveInchesRight(-2,0.5);
             }
             //Drive Forwards
-            distanceEncoderDrive(0,0.3,1,0, myRobot.frontDistance);
+            distanceEncoderDrive(0.4,0.3,1,0, myRobot.frontDistance);
 
             //Grab the stone
             myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
