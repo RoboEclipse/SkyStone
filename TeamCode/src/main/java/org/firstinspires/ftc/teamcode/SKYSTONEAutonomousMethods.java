@@ -112,6 +112,62 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    void newEncoderStrafeDriveInchesRight(double inches){
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        int lfTarget = (int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH);
+        int lbTarget = -(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH);
+        int rfTarget = lbTarget;
+        int rbTarget = lfTarget;
+        boolean reached = false;
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        runMotors(1, 1);
+        while (!reached && opModeIsActive()){
+            reached = true;
+            int lfPosition = myRobot.lf.getCurrentPosition();
+            int lbPosition = myRobot.lb.getCurrentPosition();
+            int rfPosition = myRobot.rf.getCurrentPosition();
+            int rbPosition = myRobot.rb.getCurrentPosition();
+            int lfError = lfTarget-lfPosition;
+            int lbError = lbTarget-lbPosition;
+            int rfError = rfTarget-rfPosition;
+            int rbError = rbTarget-rbPosition;
+
+            if(Math.abs(lfError)>20){
+                myRobot.lf.setPower(Math.max(Math.abs(lfError/500), 0.1)*lfError/Math.abs(lfError));
+            }
+            else{
+                myRobot.lf.setPower(0);
+                reached = false;
+            }
+            if(Math.abs(lbError)>20){
+                myRobot.lb.setPower(Math.max(Math.abs(lbError/500), 0.1)*lbError/Math.abs(lbError));
+            }
+            else{
+                myRobot.lb.setPower(0);
+                reached = false;
+            }
+            if(Math.abs(rfError)>20){
+                myRobot.rf.setPower(Math.max(Math.abs(rfError/500), 0.1)*rfError/Math.abs(rfError));
+            }
+            else{
+                myRobot.rf.setPower(0);
+                reached = false;
+            }
+            if(Math.abs(rbError)>20){
+                myRobot.rb.setPower(Math.max(Math.abs(rbError/500), 0.1)*rbError/Math.abs(rbError));
+            }
+            else{
+                myRobot.rf.setPower(0);
+                reached = false;
+            }
+            Log.d("SkyStone Left Front: ", lfPosition+"");
+            Log.d("SkyStone Left Back: ", lbPosition+"");
+            Log.d("SkyStone Right Front: ", rfPosition+"");
+            Log.d("SkyStone Right Back: ", rbPosition+"");
+        }
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
     void distanceStraightDriveNoStop(double inches, double power) {
         ElapsedTime time = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);

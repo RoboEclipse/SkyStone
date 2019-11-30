@@ -62,14 +62,12 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        initialize(hardwareMap, telemetry);
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
-                    telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -81,13 +79,8 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            encoderStraightDriveInches(20, 1);
-            encoderStrafeDriveInchesRight(20,1);
-            encoderTurn(90,1,3);
-            encoderTurn(0,1,3);
-            straighteningEncoderDriveInches(30, 0, 3, 1);
-            straighteningEncoderDriveInches(-30, 0, 3, 1);
-            straighteningEncoderDriveInches(30, 0, 3, 1);
+            newEncoderStrafeDriveInchesRight(24);
+
             break;
         }
     }
