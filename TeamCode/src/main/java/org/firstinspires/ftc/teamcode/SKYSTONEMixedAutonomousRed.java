@@ -35,6 +35,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -148,6 +149,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             break;
         }
         //vuforiaMethods.deactivateDetection();
-
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

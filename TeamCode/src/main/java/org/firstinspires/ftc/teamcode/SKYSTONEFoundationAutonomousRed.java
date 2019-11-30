@@ -164,6 +164,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             break;
             */
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {
