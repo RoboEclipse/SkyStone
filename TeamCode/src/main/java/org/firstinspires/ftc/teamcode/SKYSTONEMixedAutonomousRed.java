@@ -77,26 +77,14 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         initialize(hardwareMap, telemetry);
         //List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         //vuforiaMethods.activateDetection();
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+        //myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
-                    telemetry.update();
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        getAngleWaitForStart();
         runtime.reset();
-
         while(opModeIsActive()){
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
-            myRobot.rightClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
             //Drive the distance
             distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
             //Detect where the SkyStone is
@@ -121,7 +109,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             }
             Log.d("SkyStone Position: ", skyStonePosition);
             //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive backwards
             encoderStraightDriveInches(-4, 1);
@@ -158,7 +146,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             sleep(500);
             encoderTurn(88, 1,3);
             //Let go of stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
             //Get past skystone so we don't push it
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
             //Drive under bridge
@@ -168,4 +156,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         //vuforiaMethods.deactivateDetection();
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
+
+
 }

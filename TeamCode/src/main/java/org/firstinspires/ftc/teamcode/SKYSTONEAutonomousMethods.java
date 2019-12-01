@@ -563,4 +563,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
 
     }
+    void getAngleWaitForStart() {
+        while (!isStarted()) {
+            synchronized (this) {
+                try {
+                    telemetry.addData("Angle: ", myRobot.getBackDistance() + "");
+                    telemetry.update();
+                    this.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
+
+    }
 }

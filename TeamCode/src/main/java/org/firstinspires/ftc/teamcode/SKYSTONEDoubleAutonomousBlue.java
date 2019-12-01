@@ -77,18 +77,7 @@ public class SKYSTONEDoubleAutonomousBlue extends SKYSTONEAutonomousMethods {
         initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    telemetry.addData("Distance", getHorizontalAngle() + "");
-                    telemetry.update();
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        getAngleWaitForStart();
         runtime.reset();
 
         while(opModeIsActive()){
