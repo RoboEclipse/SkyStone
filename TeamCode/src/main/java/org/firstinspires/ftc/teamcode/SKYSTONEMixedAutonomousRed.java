@@ -77,23 +77,11 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         initialize(hardwareMap, telemetry);
         //List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         //vuforiaMethods.activateDetection();
-        myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);
+        //myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    telemetry.addData("Distance", myRobot.getBackDistance() + "");
-                    telemetry.update();
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        getAngleWaitForStart();
         runtime.reset();
-
         while(opModeIsActive()){
             myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
             myRobot.rightClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
@@ -151,4 +139,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         //vuforiaMethods.deactivateDetection();
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
+
+
 }
