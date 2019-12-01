@@ -39,9 +39,9 @@ public class SKYSTONEConstants {
     public static double cUp = 0.4;
     public static double cDown = 0.05;
     //Front right claw
-    public static double frDown = 0.58;
+    public static double frDown = 0.55;
     public static double frUp = 0.95;
     //Front left claw
-    public static double flDown = 0.71;
+    public static double flDown = 0.75;
     public static double flUp = 0.3;
 }

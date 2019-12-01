@@ -503,19 +503,20 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         else{
             scale = -1;
         }
-        distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
+        distanceEncoderDrive(1.5,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
         float leftHue = hsv(myRobot.leftColor);
         float rightHue = hsv(myRobot.rightColor);
         float depotSideHue = isRedSide?leftHue:rightHue;
         float bridgeSideHue = isRedSide?rightHue:leftHue;
+        Log.d("Skystone:", "Bridge Side Hue: " + bridgeSideHue + ". Depot Side Hue: " + depotSideHue);
         if(depotSideHue >= 70) {
             skyStonePosition = "Left";
             //First Strafe
         }
         else if(bridgeSideHue >= 70) {
             //First Strafe
-            encoderStrafeDriveInchesRight(scale*SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
+            encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
             skyStonePosition  = "Right";
 
         }
@@ -524,7 +525,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             encoderStrafeDriveInchesRight(scale*SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
             skyStonePosition = "Center";
         }
-        Log.d("SkyStone Position: ", skyStonePosition);
+        Log.d("SkyStone:", "SkyStone Position: " + skyStonePosition);
 
 
         return skyStonePosition;
@@ -533,8 +534,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Raise up foundation servos
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        //Drive forward to align with foundation
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationAlign, speed);
         //Turns to match Foundation
         encoderTurn(foundationGrabAngle, 1, 2);
         //Drive to foundation
