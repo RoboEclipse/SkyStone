@@ -56,8 +56,8 @@ public class SKYSTONETeleOp extends OpMode
     @Override
     public void init() {
         myRobot.initialize(hardwareMap, telemetry);
-        myRobot.leftClaw.setPosition(.3);
-        myRobot.rightClaw.setPosition(.3);
+        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }

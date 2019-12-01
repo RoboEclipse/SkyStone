@@ -35,7 +35,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -92,13 +91,13 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //Detect where the SkyStone is
             float leftHue = hsv(myRobot.leftColor);
             float rightHue = hsv(myRobot.rightColor);
-            if(leftHue >= 100) {
+            if(leftHue >= 70) {
                 skyStonePosition = "Left";
                 //First Strafe
                 encoderStrafeDriveInchesRight(0,1);
                 dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
             }
-            else if(rightHue >= 100) {
+            else if(rightHue >= 70) {
                 //First Strafe
                 encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
                 skyStonePosition  = "Right";
@@ -114,16 +113,14 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive backwards
-            encoderStraightDriveInches(-4, 1);
+            encoderStraightDriveInches(-5, 1);
             //Turn
             encoderTurn(-88, 1.0, 1);
             //Cross bridge
-            encoderStraightDriveInches(dropDistance, 1);
+            encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, speed);
             //Raise up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            //Drive forward to align with foundation
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationAlign, speed);
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Drive to foundation
