@@ -75,8 +75,8 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
 
-        skyStonePosition = detectFirstStone(true);
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.frDown);
+        skyStonePosition = detectFirstStone(false);
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
         sleep(800);
         //Drive backwards
         encoderStraightDriveNoStop(-4, 1);
@@ -105,7 +105,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         sleep(200);
         encoderTurn(-88, 1,3);
         //Let go of stone
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.frUp);
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //Get past skystone so we don't push it
         encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.skystoneClear-4,1);
         //Drive under bridge
