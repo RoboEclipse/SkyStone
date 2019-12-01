@@ -206,9 +206,9 @@ public class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
                 steer = getSteer(error, P_DRIVE_COEFF);
 
                 // if driving in reverse, the motor correction also needs to be reversed
-                if (distance < 0)
+                if (distance < 0) {
                     steer *= -1.0;
-
+                }
                 leftSpeed = speed - steer;
                 rightSpeed = speed + steer;
 

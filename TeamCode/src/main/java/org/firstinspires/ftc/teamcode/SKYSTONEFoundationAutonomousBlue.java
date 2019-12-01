@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -60,9 +59,12 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
 
     @Override
     public void runOpMode() {
+
+        SKYSTONEAutonomousMethods methods = this;
+        SKYSTONEClass myRobot = methods.myRobot;
         dashboard = FtcDashboard.getInstance();
-        final double speed = 0.75;
-        initialize(hardwareMap, telemetry);
+        final double speed = 0.5;
+        methods.initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
@@ -81,6 +83,23 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            //Raise up foundation servos
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            //Strafe right to align to foundation
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.aFoundationAim, speed);
+            //Drive to foundation
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.bFoundationDistance, speed);
+            foundationPlaceRed(myRobot);
+            encoderTurn(-88, 1,3);
+            encoderStrafeDriveInchesRight(8,1);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1, 0.6);
+            //encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, -0.8);
+            //encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
+            break;
+
+
+            /*
             TelemetryPacket packet;
             packet = new TelemetryPacket();
             /* packet.put("cat", 3.8);
@@ -88,43 +107,48 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
 
             dashboard.sendTelemetryPacket(packet);
             */
-            //sleep(15000);
+
+            /*
             //Raise up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            //Strafe right so hooks are at center of foundation
-            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
+            //Strafe right to align to foundation
+            methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
-            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
-            //Lower hooks to grab foundation
+            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            //Grab foundation
+            sleep(500);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            // x = 0;
-            // y = 0;
-            // dashboardRecordPosition(144, 144);
-            //Drive most of distance with encoders to increase consistency
-            encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
-            //Run the rest with raw power
-            encoderStraightDriveInches(1, 0.3);
-            sleep(500);
-            //Strafe to side to get foundation in zone
-            encoderStrafeDriveInchesRight(-15, speed);
-            //Back up to make sure robot is fully in
-            myRobot.runMotors(-0.5, -0.5);
-            sleep(1700);
+            methods.encoderStrafeDriveInchesRight(-10, speed);
+            //Drive back with encoder to increase consistency
+            methods.distanceEncoderDrive(1,2, -1, 0, myRobot.frontDistance);
+            // myRobot.runMotors(-0.2, -0.2);
+            sleep(250);
+            myRobot.runMotors(0, 0);
+            //methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
+            //Strafe right to ensure the foundation is flush with the wall
+            methods.encoderStrafeDriveInchesRight(15, speed);
+            //Drive backwards with raw power
+            //myRobot.runMotors(-0.2, -0.2);
+            // Changed from -0.6 to -0.2
+            sleep(1400);
             myRobot.runMotors(0,0);
-            encoderStraightDriveInches(1, 0.75);
 
+            //Lift up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(500);
-            encoderStrafeDriveInchesRight(-SKYSTONEConstants.cFoundationClearPart1, speed);
-            //methods.encoderTurn(-90, speed, 3);
+            //Clear the foundation
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
+            encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
+            //Drive forward to get off the wall
+            //methods.encoderStraightDriveInches(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-
-            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge, speed);
-            //methods.encoderStrafeDriveInchesRight(-SKYSTONEConstants.eSkyStoneAlign,speed);
+            //myRobot.runMotors(-0.2, 0.2);
+            //sleep(300);
+            myRobot.runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
             methods.encoderStraightDriveInches(-30,speed);
@@ -133,14 +157,14 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             methods.encoderStrafeDriveInchesRight(5,speed);
             methods.encoderStraightDriveInches(-20,speed);
             */
+            /*
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;
-
+            */
         }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
-
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {

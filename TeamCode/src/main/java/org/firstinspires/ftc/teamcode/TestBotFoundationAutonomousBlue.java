@@ -97,19 +97,19 @@ public class TestBotFoundationAutonomousBlue extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
 
             //Strafe right to align to foundation
-            encoderStrafeDriveInchesRight(-SKYSTONEConstants.aFoundationAim, speed);
+            encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.aFoundationAim, speed);
             //Drive to foundation
-            encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.bFoundationDistance, speed);
             //Turn the foundation
-            encoderTurnNoStopRightOnly(SKYSTONEConstants.cFoundationTurn, 1, 3);
+            encoderTurnNoStopRightOnly(SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
             runMotors(0,0);
             setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
             runMotors(-0.3, -0.3);
             sleep(1000);
             runMotors(0, 0);
-            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1, 0.6);
-            encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, 0.8);
-            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge2, 0.6);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1, 0.6);
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.dWallStrafe, 0.8);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

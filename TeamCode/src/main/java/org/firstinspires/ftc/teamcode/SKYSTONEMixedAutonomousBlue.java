@@ -120,10 +120,10 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             //Drive forwards
             double dropDistance = 30;
             if(skyStonePosition.equals("Left")){
-                dropDistance -= SKYSTONEConstants.shiftDistance;
+                dropDistance -= SKYSTONEAutonomousConstants.shiftDistance;
             }
             if(skyStonePosition.equals("Right")){
-                dropDistance += SKYSTONEConstants.shiftDistance;
+                dropDistance += SKYSTONEAutonomousConstants.shiftDistance;
             }
             encoderStraightDriveInches(dropDistance, 1);
             //Drop off stone
@@ -153,7 +153,6 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         //methods.encoderStraightDriveInches(15, speed);
         //myRobot.runWithEncoder(1, SKYSTONEConstants.raiseTicks-100, myRobot.leftElevator, myRobot.rightElevator);
         //Turn
-        myRobot.elevatorDistanceDrive(1, SKYSTONEConstants.raiseTicks+100, 7,2);
         methods.encoderStraightDriveInches(-8, speed);
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         methods.encoderTurnNoStop(-90, 1, 5);
@@ -161,15 +160,15 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         //Cross bridge
         double returnDistance;
         if(skyStonePosition.equals("Left")){
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance;
+            returnDistance = SKYSTONEAutonomousConstants.doubleBridgeCross + SKYSTONEAutonomousConstants.shiftDistance;
             //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance + SKYSTONEConstants.shiftDistance, speed);
         }
         else if(skyStonePosition.equals("Right")){
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance;
+            returnDistance = SKYSTONEAutonomousConstants.doubleBridgeCross - SKYSTONEAutonomousConstants.shiftDistance;
             //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance - SKYSTONEConstants.shiftDistance, speed);
         }
         else{
-            returnDistance = SKYSTONEConstants._bBridgeCrossDistance;
+            returnDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
             //methods.encoderStraightDriveInches(SKYSTONEConstants._bBridgeCrossDistance, speed);
         }
         methods.encoderStraightDriveNoStop(returnDistance, 1);

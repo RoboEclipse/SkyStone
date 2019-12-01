@@ -77,7 +77,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         initialize(hardwareMap, telemetry);
         //List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         //vuforiaMethods.activateDetection();
-        myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);
+        myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
@@ -162,7 +162,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //Get past skystone so we don't push it
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
             //Drive under bridge
-            encoderStraightDriveInches(SKYSTONEConstants.eSkybridge1+10, 0.6);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
             break;
         }
         //vuforiaMethods.deactivateDetection();

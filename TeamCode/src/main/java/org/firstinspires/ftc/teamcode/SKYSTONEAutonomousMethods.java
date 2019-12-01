@@ -532,7 +532,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopLeftOnly(-SKYSTONEConstants.cFoundationTurn, 1, 3);
+        encoderTurnNoStopLeftOnly(-SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
         runMotors(0,0);
         //Drive foundation towards wall
         runMotors(-0.6, -0.6);
@@ -551,7 +551,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopRightOnly(-SKYSTONEConstants.cFoundationTurn, 1, 3);
+        encoderTurnNoStopRightOnly(-SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
         runMotors(0,0);
         //Drive foundation towards wall
         runMotors(-0.6, -0.6);

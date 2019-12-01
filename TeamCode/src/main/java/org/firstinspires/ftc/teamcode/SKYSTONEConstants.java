@@ -15,40 +15,8 @@ public class SKYSTONEConstants {
     //Speeds
     static double maxSpeed = 57;
 
-    //Distances:
-
-    //Foundation Constants
-    public static double aFoundationAim = -10;
-    public static double bFoundationDistance = -35;
-    public static double cFoundationTurn = 100;
-    public static double dWallStrafe = 23;
-    public static double eSkybridge1 = 24;
-    public static double eSkybridge2 = 14;
-    public static double cFoundationClearPart1 = 40;
-    public static double cFoundationClearPart2 = 20;
-    public static double eSkybridge = 10;
-    //Mixed Constants
-    public static double mixedSkyStoneDistance1 = 5;
-    public static double mixedAdjustDistance = 6;
-    public static double mixedSkyStoneDistance2 = 15;
-    public static double mixedBridgeCross = 50;
-    //Double Constants
-
-    public static double _pickUpDistance = 27;
-    public static double _aSkyStoneDistance = 18;
-    public static double _bBridgeCrossDistance = 44;
-    public static double _cBridgeReturnDistance = -35;
-    public static double leftWallDistance = 26;
-    //Shared Constants
-    public static double shiftDistance = 7.5;
-    public static double blueShift = 6;
-    public static double extraShift = 0;
-    public static int raiseTicks = 600;
-    public static int lowerTicks = -300;
-    public static int extendSlide = -850;
-
-    public static int safeSlide = -450; //Value when the rotator claw can turn without crashing into the sides
     public static int stoneDiff = 3;
+
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
     public static double right90 = 0.376; //90 degrees right from straight
     public static double left90 = 0.6; //90 degrees left from straight
@@ -70,6 +38,4 @@ public class SKYSTONEConstants {
     //Capstone Servo
     public static double cUp = 0.4;
     public static double cDown = 0.05;
-    //Skystone Reset
-    public static int startingElevatorHeight = 10;
 }
