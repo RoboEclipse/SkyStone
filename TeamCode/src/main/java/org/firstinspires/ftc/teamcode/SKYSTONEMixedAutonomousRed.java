@@ -63,18 +63,20 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
     //double y = 0;
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
-    String skyStonePosition = "Left";
-    double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
+
+    private double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
 
     @Override
     public void runOpMode() {
-
+        String skyStonePosition;
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
         //SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
+        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         //vuforiaMethods.activateDetection();
         //myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);

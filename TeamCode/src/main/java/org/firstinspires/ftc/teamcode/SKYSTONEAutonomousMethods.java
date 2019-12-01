@@ -576,6 +576,36 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 }
             }
         }
+    }
+    String pickUpFirstStoneAndTurn() {
+        String skyStonePosition;//Drive the distance
+        distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
+        //Detect where the SkyStone is
+        float leftHue = hsv(myRobot.leftColor);
+        float rightHue = hsv(myRobot.rightColor);
+        if(leftHue >= 100) {
+            skyStonePosition = "Left";
+            //First Strafe
+        }
+        else if(rightHue >= 100) {
+            //First Strafe
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
+            skyStonePosition  = "Right";
 
+        }
+        else {
+            //First strafe
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
+            skyStonePosition = "Center";
+        }
+        Log.d("SkyStone Position: ", skyStonePosition);
+        //Grab the stone
+        myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
+        sleep(800);
+        //Drive backwards
+        encoderStraightDriveInches(-4, 1);
+        //Turn
+        encoderTurn(-88, 1.0, 1);
+        return skyStonePosition;
     }
 }
