@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -83,7 +81,12 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
-            skyStonePosition = pickUpFirstStone();
+            skyStonePosition = detectFirstStone();
+            //Grab the stone
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
+            sleep(800);
+            //Drive backwards
+            encoderStraightDriveNoStop(-4, 1);
             if(skyStonePosition.equals("Left")){
                 dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
                 //Second Strafe

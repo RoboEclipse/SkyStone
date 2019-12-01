@@ -29,13 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -78,14 +75,15 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
 
-        skyStonePosition = pickUpFirstStone();
+        skyStonePosition = detectFirstStone();
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
         if(skyStonePosition.equals("Left")){
             dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
         else if(skyStonePosition.equals("Right")){
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
-        encoderTurn(-88, 1.0, 1);
+        encoderTurn(88, 1.0, 1);
         //Cross bridge
         encoderStraightDriveInches(dropDistance, 1);
         grabFoundation(speed, foundationGrabAngle);
@@ -104,7 +102,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         sleep(200);
         encoderTurn(-88, 1,3);
         //Let go of stone
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //Get past skystone so we don't push it
         encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.skystoneClear+2,1);
         //Drive under bridge

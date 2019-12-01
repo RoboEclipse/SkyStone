@@ -494,7 +494,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
         }
     }
-    String pickUpFirstStone() {
+    String detectFirstStone() {
         String skyStonePosition;//Drive the distance
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
@@ -516,11 +516,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             skyStonePosition = "Center";
         }
         Log.d("SkyStone Position: ", skyStonePosition);
-        //Grab the stone
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
-        sleep(800);
-        //Drive backwards
-        encoderStraightDriveNoStop(-4, 1);
+
 
         return skyStonePosition;
     }
