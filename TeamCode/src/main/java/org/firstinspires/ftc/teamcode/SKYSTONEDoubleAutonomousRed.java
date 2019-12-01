@@ -81,8 +81,8 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
-            myRobot.rightClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
             //Drive the distance
             distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
             //Detect where the SkyStone is
@@ -111,7 +111,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             }
             Log.d("SkyStone Position: ", skyStonePosition);
             //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive backwards
             encoderStraightDriveInches(-4, 1);
@@ -120,7 +120,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Cross bridge
             encoderStraightDriveInches(dropDistance, 1);
             //Release the stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
             //myRobot.rightClaw.setPosition(0.3);
             sleep(800);
             //Drive backwards
@@ -135,7 +135,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
 
             //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive Backwards
             encoderStraightDriveInches(-4,1);
@@ -144,7 +144,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive Forwards
             encoderStraightDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
             //Release the stone
-            myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flUp);
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
             //myRobot.rightClaw.setPosition(1);
             sleep(800);
             //Drive Backwards

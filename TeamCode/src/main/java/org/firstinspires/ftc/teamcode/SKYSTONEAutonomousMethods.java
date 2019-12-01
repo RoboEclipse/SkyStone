@@ -600,7 +600,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         Log.d("SkyStone Position: ", skyStonePosition);
         //Grab the stone
-        myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.flDown);
+        myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
         sleep(800);
         //Drive backwards
         encoderStraightDriveInches(-4, 1);

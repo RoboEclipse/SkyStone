@@ -48,8 +48,8 @@ public class SKYSTONETeleOp extends OpMode
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
-    private double flClawPosition = SKYSTONEAutonomousConstants.flUp;
-    private double frClawPosition = SKYSTONEAutonomousConstants.frUp;
+    private double flClawPosition = SKYSTONEConstants.flUp;
+    private double frClawPosition = SKYSTONEConstants.frUp;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -176,12 +176,12 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            frClawPosition = SKYSTONEAutonomousConstants.frUp;
-            flClawPosition = SKYSTONEAutonomousConstants.flUp;
+            frClawPosition = SKYSTONEConstants.frUp;
+            flClawPosition = SKYSTONEConstants.flUp;
         }
         if(gamepad2.left_bumper){
-            frClawPosition = SKYSTONEAutonomousConstants.frDown;
-            flClawPosition = SKYSTONEAutonomousConstants.flDown;
+            frClawPosition = SKYSTONEConstants.frDown;
+            flClawPosition = SKYSTONEConstants.flDown;
         }
         myRobot.moveFrontClaw(flClawPosition, frClawPosition);
 
