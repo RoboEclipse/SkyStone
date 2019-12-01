@@ -29,13 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -74,6 +71,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         //SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
+        final double foundationGrabAngle = -178;
         initialize(hardwareMap, telemetry);
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
@@ -84,77 +82,38 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         //methods.waitForStart2();
         getAngleWaitForStart();
         runtime.reset();
-        while(opModeIsActive()){
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
-            //Drive the distance
-            distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
-            //Detect where the SkyStone is
-            float leftHue = hsv(myRobot.leftColor);
-            float rightHue = hsv(myRobot.rightColor);
-            if(leftHue >= 100) {
-                skyStonePosition = "Left";
-                //First Strafe
-                encoderStrafeDriveInchesRight(0,1);
-                dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
-            }
-            else if(rightHue >= 100) {
-                //First Strafe
-                encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
-                skyStonePosition  = "Right";
-                dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
-            }
-            else {
-                //First strafe
-                encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
-                skyStonePosition = "Center";
-            }
-            Log.d("SkyStone Position: ", skyStonePosition);
-            //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
-            sleep(800);
-            //Drive backwards
-            encoderStraightDriveInches(-4, 1);
-            //Turn
-            encoderTurn(-88, 1.0, 1);
-            //Cross bridge
-            encoderStraightDriveInches(dropDistance, 1);
-            //Raise up foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            //Drive forward to align with foundation
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationAlign, speed);
-            //Turns to match Foundation
-            encoderTurn(-178, 1, 2);
-            //Drive to foundation
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, 0.8);
-            //Grab the foundation
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            sleep(500);
-            //Turn the foundation
-            //Robot turns clockwise, therefore negative power
-            encoderTurnNoStopLeftOnly(80, 1, 3);
-            runMotors(0,0);
-            //Drive foundation towards wall
-            runMotors(-1, -1);
-            sleep(1000);
-            runMotors(0, 0);
-            //Strafe to make sure foundation goes into building zone
-            encoderStrafeDriveInchesRight(-3, speed);
-            //Release foundation
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(500);
-            encoderTurn(88, 1,3);
-            //Let go of stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-            //Get past skystone so we don't push it
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
-            //Drive under bridge
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
-            break;
+        skyStonePosition = pickUpFirstStone();
+        if(skyStonePosition.equals("Left")){
+            dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
+        else if(skyStonePosition.equals("Right")){
+            dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
+        }
+        //Turn
+        encoderTurn(-88, 1.0, 1);
+        //Cross bridge
+        encoderStraightDriveInches(dropDistance, 1);
+        grabFoundation(speed, foundationGrabAngle);
+        //Turn the foundation
+        //Robot turns clockwise, therefore negative power
+        encoderTurnNoStopLeftOnly(80, 1, 3);
+        //Drive foundation towards wall
+        runMotors(-1, -1);
+        sleep(1000);
+        runMotors(0, 0);
+        //Strafe to make sure foundation goes into building zone
+        encoderStrafeDriveInchesRight(-3, speed);
+        //Release foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        sleep(200);
+        encoderTurn(88, 1,3);
+        //Let go of stone
+        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        //Get past skystone so we don't push it
+        encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
+        //Drive under bridge
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
         //vuforiaMethods.deactivateDetection();
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }

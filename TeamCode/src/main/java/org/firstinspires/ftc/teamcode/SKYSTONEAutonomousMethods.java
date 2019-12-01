@@ -168,28 +168,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    void distanceStraightDriveNoStop(double inches, double power) {
-        ElapsedTime time = new ElapsedTime();
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
-            myRobot.lf.setPower(power);
-            myRobot.lb.setPower(-power);
-            myRobot.rf.setPower(-power);
-            myRobot.rb.setPower(power);
-            Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
-            Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
-            Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
-            Log.d("Right Back: ", myRobot.rb.getCurrentPosition()+"");
-        }
-    }
-
-    //Negative = Left, Positive = Right
-    void distanceStrafeDriveInchesRight(double inches, double power){
-        distanceStraightDriveNoStop(inches, power);
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
 
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
@@ -199,64 +177,32 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void encoderTurnNoStop(double targetAngle, double power, double tolerance) {
+        encoderTurnNoStopPowers(targetAngle, power, power, tolerance);
+    }
+    void encoderTurnNoStopPowers(double targetAngle, double leftPower, double rightPower, double tolerance) {
         double currentAngle = getHorizontalAngle();
-        //double startDifference = currentAngle-targetAngle;
         double error = targetAngle-currentAngle;
         error = loopAround(error);
-        double drivePower = power;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(-drivePower, drivePower);
+        double leftDrivePower = leftPower;
+        double rightDrivePower = rightPower;
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        runMotors(-leftDrivePower, rightDrivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
-
             currentAngle = getHorizontalAngle();
-            /*
-            if(power>0){
-                drivePower = 0.1 + error/startDifference*power*0.9;
-            }
-            else {
-                drivePower = -0.1 + error/startDifference*power*0.9;
-            }*
-             */
             error = loopAround(targetAngle-currentAngle);
-            drivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(power);
-            runMotors(-drivePower, drivePower);
-            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
+            leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
+            rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
+            runMotors(-leftDrivePower, rightDrivePower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
     }
 
     void encoderTurnNoStopLeftOnly(double targetAngle, double power, double tolerance) {
-        double currentAngle = getHorizontalAngle();
-        //double startDifference = currentAngle-targetAngle;
-        double error = targetAngle - currentAngle;
-        error = loopAround(error);
-        double drivePower = power;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(-drivePower, 0);
-        while (Math.abs(error) > tolerance && opModeIsActive()) {
-            currentAngle = getHorizontalAngle();
-            error = loopAround(targetAngle - currentAngle);
-            drivePower = Math.max(Math.min(error / 60, 1), -1) * Math.abs(power);
-            runMotors(-drivePower, 0);
-            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
-        }
+        encoderTurnNoStopPowers(targetAngle, power, 0, tolerance);
     }
 
     void encoderTurnNoStopRightOnly(double targetAngle, double power, double tolerance) {
-        double currentAngle = getHorizontalAngle();
-        //double startDifference = currentAngle-targetAngle;
-        double error = targetAngle - currentAngle;
-        error = loopAround(error);
-        double drivePower = power;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(0, drivePower);
-        while (Math.abs(error) > tolerance && opModeIsActive()) {
-
-            currentAngle = getHorizontalAngle();
-            error = loopAround(targetAngle - currentAngle);
-            drivePower = Math.max(Math.min(error / 60, 1), -1) * Math.abs(power);
-            runMotors(0, drivePower);
-            Log.d("Skystone: ", "encoderTurn Error: " + error + " Adjust: " + drivePower + "CurrentAngle: " + currentAngle);
-        }
+        encoderTurnNoStopPowers(targetAngle, 0, power, tolerance);
     }
 
     int leftFrontEncoder(){
@@ -271,35 +217,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     int rightBackEncoder(){
         return myRobot.rb.getCurrentPosition();
     }
-
-    void backDistanceEncoderDrive(double distance, double tolerance, double power){
-        backDistanceEncoderDriveNoStop(distance, tolerance, power);
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-    //TODO: Investigate how the changes effect these
-    void backDistanceEncoderDriveNoStop(double distance, double tolerance, double power) {
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(power, power);
-        double curDistance = myRobot.getBackDistance();
-        //double startDistance = curDistance;
-        double error = curDistance-distance;
-        double adjust;
-        while (Math.abs(error)>tolerance){
-            /*
-            adjust = 0.1*error/Math.abs(error) + 0.9*(Math.min(Math.abs(error),10))/10*power;
-            if(error*power<0){
-                adjust*=-1;
-            }
-             */
-            error = curDistance-distance;
-            adjust = Math.max(Math.min(error, 20),-20)/20*power;
-            runMotors(adjust, adjust);
-            curDistance = myRobot.getBackDistance();
-            Log.d("Skystone: ", "DistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance);
-        }
-    }
     void straighteningEncoderDriveInches(double inches, double targetAngle, double tolerance, double power){
         straighteningEncoderDriveInchesNoStop(inches, targetAngle, tolerance, power);
         runMotors(0,0);
@@ -308,7 +225,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     void straighteningEncoderDriveInchesNoStop(double inches, double targetAngle, double tolerance, double power) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         runMotors(power, power);
         double curDistance = leftFrontEncoder();
         double targetDistance = inches*SKYSTONEConstants.TICKS_PER_INCH;
@@ -577,7 +494,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
         }
     }
-    String pickUpFirstStoneAndTurn() {
+    String pickUpFirstStone() {
         String skyStonePosition;//Drive the distance
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
@@ -604,8 +521,22 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(800);
         //Drive backwards
         encoderStraightDriveNoStop(-4, 1);
-        //Turn
-        encoderTurn(-88, 1.0, 1);
+
         return skyStonePosition;
+    }
+    void grabFoundation(double speed, double foundationGrabAngle) {
+        //Raise up foundation servos
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        //Drive forward to align with foundation
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationAlign, speed);
+        //Turns to match Foundation
+        encoderTurn(foundationGrabAngle, 1, 2);
+        //Drive to foundation
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, 0.8);
+        //Grab the foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        sleep(200);
     }
 }
