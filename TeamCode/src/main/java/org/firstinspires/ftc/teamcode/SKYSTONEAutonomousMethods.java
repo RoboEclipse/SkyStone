@@ -185,7 +185,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         error = loopAround(error);
         double leftDrivePower = leftPower;
         double rightDrivePower = rightPower;
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         runMotors(-leftDrivePower, rightDrivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
             currentAngle = getHorizontalAngle();
@@ -494,8 +494,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
         }
     }
-    String detectFirstStone() {
+    String detectFirstStone(boolean isRedSide) {
         String skyStonePosition;//Drive the distance
+        int scale;
+        if(isRedSide){
+            scale = 1;
+        }
+        else{
+            scale = -1;
+        }
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
         float leftHue = hsv(myRobot.leftColor);
@@ -506,13 +513,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         else if(rightHue >= 70) {
             //First Strafe
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
+            encoderStrafeDriveInchesRight(scale*SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
             skyStonePosition  = "Right";
 
         }
         else {
             //First strafe
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
+            encoderStrafeDriveInchesRight(scale*SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
             skyStonePosition = "Center";
         }
         Log.d("SkyStone Position: ", skyStonePosition);

@@ -76,7 +76,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
 
-        skyStonePosition = detectFirstStone();
+        skyStonePosition = detectFirstStone(true);
         //Grab the stone
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
         sleep(800);
