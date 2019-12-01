@@ -68,22 +68,16 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
     @Override
     public void runOpMode() {
         String skyStonePosition;
-        //SKYSTONEAutonomousMethods methods = this;
-        //SKYSTONEClass myRobot = this.myRobot;
-        //SKYSTONEVuforiaDetection vuforiaMethods = new SKYSTONEVuforiaDetection();
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         final double foundationGrabAngle = -178;
         initialize(hardwareMap, telemetry);
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
-        //List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
-        //vuforiaMethods.activateDetection();
-        //myRobot.clawRotation.setPosition(SKYSTONEAutonomousConstants.straight);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
         getAngleWaitForStart();
         runtime.reset();
+
+
         skyStonePosition = pickUpFirstStone();
         if(skyStonePosition.equals("Left")){
             dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
@@ -91,7 +85,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         else if(skyStonePosition.equals("Right")){
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
-        //Turn
         encoderTurn(-88, 1.0, 1);
         //Cross bridge
         encoderStraightDriveInches(dropDistance, 1);
@@ -116,9 +109,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
         //Drive under bridge
         encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
-        //vuforiaMethods.deactivateDetection();
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
-
-
 }

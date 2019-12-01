@@ -500,11 +500,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Detect where the SkyStone is
         float leftHue = hsv(myRobot.leftColor);
         float rightHue = hsv(myRobot.rightColor);
-        if(leftHue >= 100) {
+        if(leftHue >= 70) {
             skyStonePosition = "Left";
             //First Strafe
         }
-        else if(rightHue >= 100) {
+        else if(rightHue >= 70) {
             //First Strafe
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance+2, 1);
             skyStonePosition  = "Right";
