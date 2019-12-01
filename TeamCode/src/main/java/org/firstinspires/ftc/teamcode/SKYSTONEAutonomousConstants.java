@@ -40,7 +40,7 @@ public class SKYSTONEAutonomousConstants {
     public static double skystoneClear = 8;
     //Double Constants
     public static double doubleSkyStoneDistance1 = 5;
-    public static double doubleAdjustDistance = 8.5;
+    public static double doubleAdjustDistance = 9.5;
     public static double doubleBridgeCross = 47;
     public static double doubleWallDistance = 8;
     public static double doubleCenterDistance = 9;

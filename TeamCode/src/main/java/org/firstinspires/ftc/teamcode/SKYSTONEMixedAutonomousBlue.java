@@ -77,15 +77,15 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         List<VuforiaTrackable> detections = vuforiaMethods.initializeVuforia(hardwareMap);
         vuforiaMethods.activateDetection();
         myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
+        //Put down foundation servos
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         getAngleWaitForStart();
         runtime.reset();
 
         while(opModeIsActive()){
-            //Put down foundation servos
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             //Strafe sideways to allow the webcam to see.
             encoderStrafeDriveInchesRight(5, 1);
             //Detect the stone position
