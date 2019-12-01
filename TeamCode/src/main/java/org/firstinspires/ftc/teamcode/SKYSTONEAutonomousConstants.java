@@ -36,8 +36,8 @@ public class SKYSTONEAutonomousConstants {
     public static double parkDistance = 40;
     public static double moveAwayFromStoneDistance = -10;
     public static double foundationAlign = 24;
-    public static double foundationDistance = -12;
-    public static double skystoneClear = 8;
+    public static double foundationDistance = -18;
+    public static double skystoneClear = 5;
     //Double Constants
     public static double doubleSkyStoneDistance1 = 5;
     public static double doubleAdjustDistance = 9.5;

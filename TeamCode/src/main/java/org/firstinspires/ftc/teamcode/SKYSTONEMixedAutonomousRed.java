@@ -100,16 +100,20 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         sleep(1000);
         runMotors(0, 0);
         //Strafe to make sure foundation goes into building zone
-        encoderStrafeDriveInchesRight(-3, speed);
+        encoderStrafeDriveInchesRight(-6, speed);
         //Release foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
-        encoderTurn(88, 1,3);
+        encoderStraightDriveInches(3, 1);
+        encoderTurn(178, 1,3);
+
         //Let go of stone
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         //Get past skystone so we don't push it
-        encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear-2,1);
+        encoderStraightDriveInches(-SKYSTONEAutonomousConstants.skystoneClear,1);
+        //Turn back
+        encoderTurn(88, 1, 3);
         //Drive under bridge
         encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
