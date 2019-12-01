@@ -603,7 +603,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
         sleep(800);
         //Drive backwards
-        encoderStraightDriveInches(-4, 1);
+        encoderStraightDriveNoStop(-4, 1);
         //Turn
         encoderTurn(-88, 1.0, 1);
         return skyStonePosition;
