@@ -256,7 +256,23 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         }
     }
 
+    public int automatedStones(int stage, boolean isFast) {
+        Servo mrow = (Servo) collectionRotationServo;
+        if (stage == 0) {
 
+        } else if(stage == 1) {
+            mrow.setPosition(0.488);
+        } else if(stage == 2) {
+
+        } else if(stage == 3) {
+
+        } else if(stage == 5) {
+
+        }else if(stage == 6) {
+
+        }
+        return stage;
+    }
 
     boolean anyBusy(int tolerance, int targetPosition, DcMotor...motors){
         for(DcMotor motor : motors){
