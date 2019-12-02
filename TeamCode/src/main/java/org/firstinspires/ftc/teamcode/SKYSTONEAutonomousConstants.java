@@ -20,10 +20,10 @@ public class SKYSTONEAutonomousConstants {
     //Foundation Constants
     public static double aFoundationAim = -10;
     public static double bFoundationDistance = -35;
-    public static double cFoundationTurn = 100;
+    public static double cFoundationTurn = 105;
     public static double dWallStrafe = 23;
-    public static double eSkybridge1 = 24;
-    public static double eSkybridge2 = 14;
+    public static double eSkybridge1 = 20;
+    public static double eSkybridge2 = 20;
     public static double cFoundationClearPart1 = 40;
     public static double cFoundationClearPart2 = 20;
     public static double eSkybridge = 10;
@@ -46,4 +46,7 @@ public class SKYSTONEAutonomousConstants {
     public static double doubleCenterDistance = 9;
     //Shared Constants
     public static double shiftDistance = 7.5;
+    //PID loop constants, in inches
+    public static double reducePowerDistance = 30;
+    public static double flooringPower = 0.18;
 }

@@ -279,13 +279,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Get error
             error = curDistance-distance;
             //Once below 20 inches away, start slowing
-            adjust = Math.max(Math.min(error, 20),-20)/20*power;
+            adjust = Math.max(Math.min(error, SKYSTONEAutonomousConstants.reducePowerDistance),-SKYSTONEAutonomousConstants.reducePowerDistance)/SKYSTONEAutonomousConstants.reducePowerDistance*power;
             //Ensure power is above 0.2
             if(adjust > 0){
-                adjust = Math.max(adjust, 0.2);
+                adjust = Math.max(adjust, SKYSTONEAutonomousConstants.flooringPower);
             }
             else{
-                adjust = Math.min(adjust, -0.2);
+                adjust = Math.min(adjust, -SKYSTONEAutonomousConstants.flooringPower);
             }
             runMotors(adjust - steer, adjust + steer);
             curDistance = sensor.getDistance(DistanceUnit.INCH);
@@ -468,10 +468,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopRightOnly(-SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
+        encoderTurnNoStopRightOnly(SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
         runMotors(0,0);
         //Drive foundation towards wall
-        runMotors(-0.6, -0.6);
+        runMotors(-1, -1);
         sleep(1000);
         runMotors(0, 0);
         //Release foundation
@@ -496,14 +496,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     String detectFirstStone(boolean isRedSide) {
         String skyStonePosition;//Drive the distance
+        double distance;
         int scale;
         if(isRedSide){
             scale = 1;
+            distance = 2;
         }
         else{
             scale = -1;
+            distance = 1.5;
         }
-        distanceEncoderDrive(1.5,0.3,1,0, myRobot.frontDistance);
+        distanceEncoderDrive(distance,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
         float leftHue = hsv(myRobot.leftColor);
         float rightHue = hsv(myRobot.rightColor);
