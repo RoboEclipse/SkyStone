@@ -83,6 +83,11 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawRotation.setPosition(SKYSTONEConstants.straight);
+        leftClaw.setPosition(SKYSTONEConstants.flUp);
+        rightClaw.setPosition(SKYSTONEConstants.frUp);
+        rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
     }
 
 

@@ -79,16 +79,16 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
         sleep(800);
         //Drive backwards
-        encoderStraightDriveNoStop(-4, 1);
+        encoderStraightDriveNoStop(-5, 1);
         if(skyStonePosition.equals("Left")){
-            dropDistance-=SKYSTONEAutonomousConstants.doubleAdjustDistance;
+            dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
         else if(skyStonePosition.equals("Right")){
-            dropDistance += SKYSTONEAutonomousConstants.doubleAdjustDistance;
+            dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
         encoderTurn(88, 1.0, 1);
         //Cross bridge
-        encoderStraightDriveInches(dropDistance, 1);
+        encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
         grabFoundation(speed, foundationGrabAngle);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
