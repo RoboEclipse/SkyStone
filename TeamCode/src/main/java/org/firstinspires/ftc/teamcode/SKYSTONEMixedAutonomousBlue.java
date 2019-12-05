@@ -67,7 +67,6 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         String skyStonePosition;
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
-        final double foundationGrabAngle = 178;
         initialize(hardwareMap, telemetry);
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
@@ -89,27 +88,25 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         encoderTurn(88, 1.0, 1);
         //Cross bridge
         encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
-        grabFoundation(speed, foundationGrabAngle);
+        grabFoundation(speed, true);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopRightOnly(-82, 1, 3);
+        encoderTurnNoStopRightOnly(-78, 1, 3);
         //Drive foundation towards wall
         runMotors(-1, -1);
         sleep(1000);
         runMotors(0, 0);
         //Strafe to make sure foundation goes into building zone
-        encoderStrafeDriveInchesRight(20, speed);
+        encoderStrafeDriveInchesRight(12, speed);
         //Release foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
         encoderTurn(-88, 1,3);
-        //Let go of stone
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //Get past skystone so we don't push it
-        encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.skystoneClear-4,1);
+        encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.skystoneClear,1);
         //Drive under bridge
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

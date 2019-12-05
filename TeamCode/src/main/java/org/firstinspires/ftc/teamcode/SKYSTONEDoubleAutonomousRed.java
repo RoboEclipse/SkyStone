@@ -132,7 +132,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //myRobot.rightClaw.setPosition(1);
             sleep(800);
             //Drive Backwards
-            encoderStraightDriveInches(-15,1);
+            encoderStraightDriveInches(-20,1);
             break;
         }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");

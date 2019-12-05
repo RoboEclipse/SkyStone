@@ -82,9 +82,8 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             foundationPlaceBlue(myRobot);
             encoderTurn(88, 1,3);
             encoderStrafeDriveInchesRight(-8,1);
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1, 0.6);
+            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
             //encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.dWallStrafe, -0.8);
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
             break;
 
 

@@ -68,7 +68,6 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         String skyStonePosition;
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
-        final double foundationGrabAngle = -178;
         initialize(hardwareMap, telemetry);
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
@@ -91,31 +90,27 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         encoderTurn(-88, 1.0, 1);
         //Cross bridge
         encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
-        grabFoundation(speed, foundationGrabAngle);
+        grabFoundation(speed, false);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopLeftOnly(82, 1, 3);
+        encoderTurnNoStopLeftOnly(78, 1, 3);
         //Drive foundation towards wall
         runMotors(-1, -1);
         sleep(1000);
         runMotors(0, 0);
         //Strafe to make sure foundation goes into building zone
-        encoderStrafeDriveInchesRight(-6, speed);
+        encoderStrafeDriveInchesRight(-12, speed);
         //Release foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
         encoderStraightDriveInches(3, 1);
-        encoderTurn(178, 1,3);
-
-        //Let go of stone
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-        //Get past skystone so we don't push it
-        encoderStraightDriveInches(-SKYSTONEAutonomousConstants.skystoneClear,1);
         //Turn back
         encoderTurn(88, 1, 3);
+        //Get past skystone so we don't push it
+        encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear,1);
         //Drive under bridge
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+10, 0.6);
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

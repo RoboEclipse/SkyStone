@@ -358,7 +358,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     boolean opModeStatus(){
         return opModeIsActive();
     }
-    float hsv(ColorSensor sensor){
+    float getHue(ColorSensor sensor){
         float[] values = new float[3];
         int scale = 255;
         Color.RGBToHSV(sensor.red()*scale,
@@ -452,7 +452,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderTurnNoStopLeftOnly(-SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
         runMotors(0,0);
         //Drive foundation towards wall
-        runMotors(-0.6, -0.6);
+        runMotors(-1, -1);
         sleep(1000);
         runMotors(0, 0);
         //Release foundation
@@ -485,6 +485,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             synchronized (this) {
                 try {
                     telemetry.addData("Angle: ", myRobot.getBackDistance() + "");
+                    telemetry.addData("Left Hue: ", getHue(myRobot.leftColor) + "");
+                    telemetry.addData("Right Hue: ", getHue(myRobot.rightColor) + "");
+
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
@@ -500,16 +503,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         int scale;
         if(isRedSide){
             scale = 1;
-            distance = 2;
         }
         else{
             scale = -1;
-            distance = 1.5;
         }
-        distanceEncoderDrive(distance,0.3,1,0, myRobot.frontDistance);
+        distanceEncoderDrive(2,0.3,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
-        float leftHue = hsv(myRobot.leftColor);
-        float rightHue = hsv(myRobot.rightColor);
+        float leftHue = getHue(myRobot.leftColor);
+        float rightHue = getHue(myRobot.rightColor);
         float depotSideHue = isRedSide?leftHue:rightHue;
         float bridgeSideHue = isRedSide?rightHue:leftHue;
         Log.d("Skystone:", "Bridge Side Hue: " + bridgeSideHue + ". Depot Side Hue: " + depotSideHue);
@@ -520,6 +521,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         else if(bridgeSideHue >= 70) {
             //First Strafe
             encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
+            if (!isRedSide){
+                encoderStraightDriveInches(1, 1);
+            }
             skyStonePosition  = "Right";
 
         }
@@ -533,12 +537,22 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
         return skyStonePosition;
     }
-    void grabFoundation(double speed, double foundationGrabAngle) {
+    void grabFoundation(double speed, boolean blue) {
         //Raise up foundation servos
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        //Turns to match Foundation
-        encoderTurn(foundationGrabAngle, 1, 2);
+        if (blue == true){
+            //Turns to match Foundation
+            encoderTurn(178, 1, 2);
+            //Let go of stone
+            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        } else {
+            //Turns to match Foundation
+            encoderTurn(-178, 1, 2);
+            //Let go of stone
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        }
+
         //Drive to foundation
         encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, 0.8);
         //Grab the foundation
