@@ -121,7 +121,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //Turn
         turn(0,1,1, 5);
         if(skyStonePosition.equals("Left")){
-            encoderStrafeDriveInchesRight(-2,0.5);
+            encoderStrafeDriveInchesRight(-3,0.5);
         }
         //Drive Forwards
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);

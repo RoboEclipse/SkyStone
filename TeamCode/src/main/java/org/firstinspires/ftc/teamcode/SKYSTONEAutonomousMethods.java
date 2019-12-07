@@ -209,7 +209,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
             rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
             leftDrivePower = floorPower(leftDrivePower, 0.3);
-            rightDrivePower = floorPower(rightDrivePower, 0.3);
+            rightDrivePower = floorPower(rightDrivePower, 0.4);
             runMotors(-leftDrivePower, rightDrivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
