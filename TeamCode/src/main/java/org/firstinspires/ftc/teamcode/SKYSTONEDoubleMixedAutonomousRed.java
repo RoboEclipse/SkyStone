@@ -51,9 +51,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="1MixedAutonomousRed", group="Linear Opmode")
+@Autonomous(name="1DoubleMixedAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -87,9 +87,9 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         else if(skyStonePosition.equals("Right")){
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
-        encoderTurn(-88, 1.0, 1);
+        turn(-88, 1.0, 1.0, 1);
         //Cross bridge
-        encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
+        adaptiveEncoderDrive(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, -88, 100, 1);
         grabFoundation(speed, false);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
@@ -106,11 +106,11 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         sleep(200);
         encoderStraightDriveInches(3, 1);
         //Turn back
-        encoderTurn(88, 1, 3);
+        turn(88, 1, 1, 3);
         //Get past skystone so we don't push it
         encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear,1);
         //Drive under bridge
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
+        adaptiveEncoderDrive(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 88, 100, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

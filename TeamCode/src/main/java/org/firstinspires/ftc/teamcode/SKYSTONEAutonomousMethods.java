@@ -196,6 +196,25 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
     }
+    void turn(double targetAngle, double leftPower, double rightPower, double tolerance){
+        double currentAngle = getHorizontalAngle();
+        double error = targetAngle-currentAngle;
+        error = loopAround(error);
+        double leftDrivePower = leftPower;
+        double rightDrivePower = rightPower;
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        runMotors(-leftDrivePower, rightDrivePower);
+        while(Math.abs(error)>tolerance && opModeIsActive()){
+            currentAngle = getHorizontalAngle();
+            error = loopAround(targetAngle-currentAngle);
+            leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
+            rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
+            leftDrivePower = Math.max(0.2, Math.abs(leftDrivePower))*leftDrivePower/leftDrivePower;
+            rightDrivePower = Math.max(0.2, Math.abs(rightDrivePower))*rightDrivePower/rightDrivePower;
+            runMotors(-leftDrivePower, rightDrivePower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
+        }
+    }
 
     void encoderTurnNoStopLeftOnly(double targetAngle, double power, double tolerance) {
         encoderTurnNoStopPowers(targetAngle, power, 0, tolerance);
@@ -244,6 +263,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "DistanceDrive Error: " + errorDistance +
                     " Angle Steer: " + steer + "CurrentDistance: " + curDistance + "Power: " + adjust + "Angle" + currentAngle);
         }
+    }
+
+    void adaptiveEncoderDrive(double inches, double targetAngle, double tolerance, double power){
+        double fastMode = 0;
+        if(inches>40){
+            fastMode = inches-30;
+            straighteningEncoderDriveInchesNoStop(fastMode, targetAngle, tolerance, power);
+        }
+        encoderStraightDriveInches(inches-fastMode, power);
     }
 
     private double getCorrection(double currentAngle, double targetAngle){
@@ -520,10 +548,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         else if(bridgeSideHue >= 70) {
             //First Strafe
+            if(isRedSide){
+                encoderStraightDriveInches(-3, 1);
+            }
             encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
             if (!isRedSide){
                 encoderStraightDriveInches(1, 1);
             }
+
             skyStonePosition  = "Right";
 
         }
