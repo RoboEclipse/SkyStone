@@ -200,17 +200,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
         error = loopAround(error);
-        double leftDrivePower = leftPower;
-        double rightDrivePower = rightPower;
+        double leftDrivePower;
+        double rightDrivePower;
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        runMotors(-leftDrivePower, rightDrivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle-currentAngle);
             leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
             rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
-            leftDrivePower = Math.max(0.2, Math.abs(leftDrivePower))*leftDrivePower/leftDrivePower;
-            rightDrivePower = Math.max(0.2, Math.abs(rightDrivePower))*rightDrivePower/rightDrivePower;
+            leftDrivePower = floorPower(leftDrivePower, 0.3);
+            rightDrivePower = floorPower(rightDrivePower, 0.3);
             runMotors(-leftDrivePower, rightDrivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
@@ -276,7 +275,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/10;
+        double PCoefficient = 1.0/15;
         return errorAngle*PCoefficient;
     }
 
@@ -309,16 +308,30 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Once below 20 inches away, start slowing
             adjust = Math.max(Math.min(error, SKYSTONEAutonomousConstants.reducePowerDistance),-SKYSTONEAutonomousConstants.reducePowerDistance)/SKYSTONEAutonomousConstants.reducePowerDistance*power;
             //Ensure power is above 0.2
-            if(adjust > 0){
-                adjust = Math.max(adjust, SKYSTONEAutonomousConstants.flooringPower);
-            }
-            else{
-                adjust = Math.min(adjust, -SKYSTONEAutonomousConstants.flooringPower);
-            }
+            adjust = floorPower(adjust);
             runMotors(adjust - steer, adjust + steer);
             curDistance = sensor.getDistance(DistanceUnit.INCH);
             Log.d("Skystone: ", "FrontDistanceDrive Error: " + error + " Adjust: " + adjust + "CurrentDistance: " + curDistance + "Steer: " + steer);
         }
+    }
+
+    private double floorPower(double power) {
+        if(power > 0){
+            power = Math.max(power, SKYSTONEAutonomousConstants.flooringPower);
+        }
+        else{
+            power = Math.min(power, -SKYSTONEAutonomousConstants.flooringPower);
+        }
+        return power;
+    }
+    private double floorPower(double power, double floor) {
+        if(power > 0){
+            power = Math.max(power, floor);
+        }
+        else{
+            power = Math.min(power, -floor);
+        }
+        return power;
     }
     //Attachments
 

@@ -48,5 +48,5 @@ public class SKYSTONEAutonomousConstants {
     public static double shiftDistance = 7.5;
     //PID loop constants, in inches
     public static double reducePowerDistance = 30;
-    public static double flooringPower = 0.18;
+    public static double flooringPower = 0.2;
 }
