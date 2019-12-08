@@ -589,7 +589,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         if (blue){
             //Turns to match Foundation
-            encoderTurn(178, 1, 2);
+            encoderTurn(-173, 1, 2);
             //Let go of stone
             myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         } else {

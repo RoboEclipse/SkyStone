@@ -121,7 +121,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         turn(0,1,1, 5);
         if(skyStonePosition.equals("Left")){
             //Depot side align to the wall
-            encoderStrafeDriveInchesRight(-6,0.5);
+            encoderStrafeDriveInchesRight(6,0.5);
         }
         //Drive Forwards
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
