@@ -568,7 +568,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 encoderStraightDriveInches(-3, 1);
             }
             encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
-            encoderStraightDriveInches(1, 1);
+            if(isRedSide){
+                encoderStraightDriveInches(1, 1);
+            }
+            else{
+                encoderStraightDriveInches(2, 1);
+            }
 
             skyStonePosition  = "Right";
 
@@ -607,6 +612,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Grab the foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        encoderStrafeDriveInchesRight(-3, 1);
         sleep(200);
     }
 }

@@ -90,7 +90,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
             wallDistance = 15;
         }
-        turn(-88, 0.8, 0.8, 5);
+        turn(-88, 0.6, 0.6, 5);
 
         encoderStrafeDriveInchesRight(-5, 1);
         //Cross bridge
@@ -122,7 +122,8 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         distanceEncoderDrive(wallDistance,0.3,1,92, myRobot.frontDistance);
         //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
         //Turn
-        turn(0,1,1, 5);
+        turn(0,0.8,0.8, 5);
+        encoderStraightDriveInches(-1,1);
         if(skyStonePosition.equals("Left")){
             //Depot side align to the wall
             encoderStrafeDriveInchesRight(-6,0.5);
@@ -134,7 +135,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        encoderStraightDriveInches(-3,1);
+        encoderStraightDriveInches(-4,1);
         //Turn
         turn(-85, 0.6, 0.6, 5);
         //Drive Forwards
@@ -144,7 +145,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //myRobot.rightClaw.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        encoderStraightDriveInches(-20,1);
+        adaptiveEncoderDrive(-20, -85, 5, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

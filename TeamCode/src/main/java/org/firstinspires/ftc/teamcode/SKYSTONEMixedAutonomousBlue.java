@@ -85,9 +85,10 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         else if(skyStonePosition.equals("Right")){
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
         }
-        encoderTurn(88, 1.0, 1);
+        encoderTurn(92, 1.0, 1);
         //Cross bridge
         encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
+        encoderStrafeDriveInchesRight(-1,1);
         grabFoundation(speed, true);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
