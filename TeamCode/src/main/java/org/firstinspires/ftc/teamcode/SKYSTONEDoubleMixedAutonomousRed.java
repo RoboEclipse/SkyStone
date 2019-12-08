@@ -90,7 +90,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
             wallDistance = 14;
         }
-        turn(-88, 1.0, 1.0, 5);
+        turn(-88, 0.8, 0.8, 5);
 
         encoderStrafeDriveInchesRight(-5, 1);
         //Cross bridge
@@ -136,9 +136,9 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //Drive Backwards
         encoderStraightDriveInches(-4,1);
         //Turn
-        turn(-88, 1.0, 1.0, 5);
+        turn(-85, 0.8, 0.8, 5);
         //Drive Forwards
-        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -88, 50, 1);
+        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -85, 50, 1);
         //Release the stone
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         //myRobot.rightClaw.setPosition(1);

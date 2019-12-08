@@ -208,8 +208,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             error = loopAround(targetAngle-currentAngle);
             leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
             rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
-            leftDrivePower = floorPower(leftDrivePower, 0.3);
-            rightDrivePower = floorPower(rightDrivePower, 0.4);
+            leftDrivePower = floorPower(leftDrivePower, 0.45);
+            rightDrivePower = floorPower(rightDrivePower, 0.45);
             runMotors(-leftDrivePower, rightDrivePower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
@@ -564,13 +564,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         else if(bridgeSideHue >= 70) {
             //First Strafe
-            if(isRedSide){
+            if(isRedSide) {
                 encoderStraightDriveInches(-3, 1);
             }
             encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
-            if (!isRedSide){
-                encoderStraightDriveInches(1, 1);
-            }
+            encoderStraightDriveInches(1, 1);
 
             skyStonePosition  = "Right";
 
