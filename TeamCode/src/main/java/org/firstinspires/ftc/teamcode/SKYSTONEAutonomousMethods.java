@@ -266,8 +266,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     void adaptiveEncoderDrive(double inches, double targetAngle, double tolerance, double power){
         double fastMode = 0;
-        if(inches>40){
-            fastMode = inches-30;
+        if(inches>30){
+            fastMode = inches-15;
             straighteningEncoderDriveInchesNoStop(fastMode, targetAngle, tolerance, power);
         }
         encoderStraightDriveInches(inches-fastMode, power);
@@ -551,7 +551,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         else{
             scale = -1;
         }
-        distanceEncoderDrive(2,0.3,1,0, myRobot.frontDistance);
+        distanceEncoderDrive(2,0.25,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
         float leftHue = getHue(myRobot.leftColor);
         float rightHue = getHue(myRobot.rightColor);
@@ -589,6 +589,33 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return skyStonePosition;
     }
     void grabFoundation(double speed, boolean blue) {
+        //Raise up foundation servos
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        if (blue){
+            //Turns to match Foundation
+            encoderTurn(-173, 1, 2);
+            //Let go of stone
+            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        } else {
+            //Turns to match Foundation
+            encoderTurn(-178, 1, 2);
+            //Let go of stone
+            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+        }
+
+        //Drive to foundation
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, speed);
+        runMotors(-0.35, -0.35);
+        sleep(200);
+        runMotors(0,0);
+        //Grab the foundation
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        encoderStrafeDriveInchesRight(-3, 1);
+        sleep(200);
+    }
+    void fastGrabFoundation(double speed, boolean blue) {
         //Raise up foundation servos
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);

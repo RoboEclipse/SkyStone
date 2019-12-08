@@ -98,7 +98,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         grabFoundation(speed, false);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
-        turn(74, 1, 0, 5);
+        turn(78, 1, 0, 5);
         //Drive foundation towards wall
         runMotors(-0.8, -0.8);
         sleep(1000);
@@ -107,26 +107,26 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
-        //Strafe to not crash into AFK teammate
+        //Straight to not crash into AFK teammate
         encoderStraightDriveInches(3, 1);
         //Turn back
         turn(88, 1, 1, 5);
         //Get past skystone so we don't push it
-        encoderStrafeDriveInchesRight(5, 1);
+        encoderStrafeDriveInchesRight(8, 1);
 
         //Drive under bridge
-        straighteningEncoderDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 92, 50, 1);
+        straighteningEncoderDriveInchesNoStop(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 92, 50, 1);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         //Drive forwards
         distanceEncoderDrive(wallDistance,0.3,1,92, myRobot.frontDistance);
         //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
         //Turn
-        turn(0,0.8,0.8, 5);
+        turn(0,0.7,0.7, 3);
         encoderStraightDriveInches(-1,1);
         if(skyStonePosition.equals("Left")){
             //Depot side align to the wall
-            encoderStrafeDriveInchesRight(-6,0.5);
+            encoderStrafeDriveInchesRight(-7,0.5);
         }
         //Drive Forwards
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
@@ -137,15 +137,15 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //Drive Backwards
         encoderStraightDriveInches(-4,1);
         //Turn
-        turn(-85, 0.6, 0.6, 5);
+        turn(-83, 0.6, 0.6, 5);
         //Drive Forwards
-        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -85, 50, 1);
+        straighteningEncoderDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -83, 50, 1);
         //Release the stone
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         //myRobot.rightClaw.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        adaptiveEncoderDrive(-20, -85, 5, 1);
+        straighteningEncoderDriveInches(-20, -85, 5, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

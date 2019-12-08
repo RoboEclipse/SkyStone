@@ -77,7 +77,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive backwards
-        encoderStraightDriveNoStop(-5, 1);
+        encoderStraightDriveNoStop(-4.5, 1);
         if(skyStonePosition.equals("Left")){
             dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
             wallDistance = 3;
@@ -103,7 +103,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
         //Strafe to not crash into AFK teammate
-        encoderStraightDriveInches(3, 1);
+        //encoderStraightDriveInches(1, 1);
         //Turn back
         turn(-90, 1, 1, 5);
         //Get past skystone so we don't push it

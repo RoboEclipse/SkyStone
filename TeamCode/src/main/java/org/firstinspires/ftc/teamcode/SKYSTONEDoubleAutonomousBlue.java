@@ -124,7 +124,7 @@ public class SKYSTONEDoubleAutonomousBlue extends SKYSTONEAutonomousMethods {
             //Drive Backwards
             encoderStraightDriveInches(-4,1);
             //Turn
-            encoderTurn(88,1,1);
+            encoderTurn(90,1,1);
             //Drive Forwards
             encoderStraightDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
             //Release the stone
