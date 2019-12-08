@@ -137,15 +137,15 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //Drive Backwards
         encoderStraightDriveInches(-4,1);
         //Turn
-        turn(-83, 0.6, 0.6, 5);
+        turn(-81, 0.6, 0.6, 5);
         //Drive Forwards
-        straighteningEncoderDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -83, 50, 1);
+        straighteningEncoderDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, -81, 50, 1);
         //Release the stone
         myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
         //myRobot.rightClaw.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        straighteningEncoderDriveInches(-20, -85, 5, 1);
+        straighteningEncoderDriveInches(-20, -85, 50, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }
