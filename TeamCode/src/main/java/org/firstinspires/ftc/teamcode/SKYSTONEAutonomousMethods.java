@@ -325,6 +325,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return power;
     }
     private double floorPower(double power, double floor) {
+        if (Math.abs(power) < 0.00001){
+            return power;
+        }
         if(power > 0){
             power = Math.max(power, floor);
         }
@@ -586,7 +589,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Raise up foundation servos
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        if (blue == true){
+        if (blue){
             //Turns to match Foundation
             encoderTurn(178, 1, 2);
             //Let go of stone
@@ -599,7 +602,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
 
         //Drive to foundation
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, 0.8);
+        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, speed);
+        runMotors(-0.35, -0.35);
+        sleep(200);
+        runMotors(0,0);
         //Grab the foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);

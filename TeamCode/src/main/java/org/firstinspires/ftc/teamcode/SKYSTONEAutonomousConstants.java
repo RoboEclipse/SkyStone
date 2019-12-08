@@ -38,6 +38,7 @@ public class SKYSTONEAutonomousConstants {
     public static double foundationAlign = 24;
     public static double foundationDistance = -13;
     public static double skystoneClear = 12;
+    public static int frontClawsWaitLength = 300;
     //Double Constants
     public static double doubleSkyStoneDistance1 = 5;
     public static double doubleAdjustDistance = 9.5;
