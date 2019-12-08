@@ -132,9 +132,9 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         //Drive Backwards
         encoderStraightDriveInches(-3,1);
         //Turn
-        turn(85,0.6, 0.6, 5);
+        turn(87,0.6, 0.6, 5);
         //Drive Forwards
-        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 85, 50, 1.0);
+        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 87, 50, 1.0);
         //Release the stone
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //myRobot.rightClaw.setPosition(1);
