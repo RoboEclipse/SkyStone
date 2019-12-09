@@ -90,7 +90,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
             dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
             wallDistance = 15;
         }
-        turn(-88, 0.6, 0.6, 5);
+        turn(-86, 0.6, 0.6, 5);
 
         encoderStrafeDriveInchesRight(-5, 1);
         //Cross bridge
@@ -145,7 +145,7 @@ public class SKYSTONEDoubleMixedAutonomousRed extends SKYSTONEAutonomousMethods 
         //myRobot.rightClaw.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        straighteningEncoderDriveInches(-20, -85, 50, 1);
+        straighteningEncoderDriveInches(-15, -85, 50, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

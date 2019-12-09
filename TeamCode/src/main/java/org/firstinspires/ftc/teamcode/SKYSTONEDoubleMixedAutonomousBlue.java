@@ -88,7 +88,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         }
         turn(90, 0.8, 0.8, 5);
         //Cross bridge
-        encoderStrafeDriveInchesRight(-5, 1);
+        encoderStrafeDriveInchesRight(-3, 1);
         adaptiveEncoderDrive(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 90, 100, 1);
         grabFoundation(speed, true);
         //Turn the foundation
@@ -108,7 +108,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         turn(-90, 1, 1, 5);
         //Get past skystone so we don't push it
         // -5 will crash into brig
-        encoderStrafeDriveInchesRight(-3 ,1);
+        encoderStrafeDriveInchesRight(-4 ,1);
         //Drive under bridge
         straighteningEncoderDriveInches(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, -90, 50, 1);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
@@ -134,13 +134,13 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         //Turn
         turn(90,0.6, 0.6, 5);
         //Drive Forwards
-        adaptiveEncoderDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 90, 50, 1.0);
+        straighteningEncoderDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 90, 50, 1.0);
         //Release the stone
         myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
         //myRobot.rightClaw.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        encoderStraightDriveInches(-20,1);
+        straighteningEncoderDriveInches(-15, 90, 50, 1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

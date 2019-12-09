@@ -612,7 +612,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Grab the foundation
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        encoderStrafeDriveInchesRight(-3, 1);
+        //encoderStrafeDriveInchesRight(-3, 1);
         sleep(200);
     }
     void fastGrabFoundation(double speed, boolean blue) {

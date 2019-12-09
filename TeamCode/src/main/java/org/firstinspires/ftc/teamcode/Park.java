@@ -83,8 +83,8 @@ public class Park extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            methods.encoderStraightDriveInches(-20, 1);
-            methods.encoderStrafeDriveInchesRight(18, 1);
+            methods.encoderStraightDriveInches(-10, 1);
+            //methods.encoderStrafeDriveInchesRight(18, 1);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
