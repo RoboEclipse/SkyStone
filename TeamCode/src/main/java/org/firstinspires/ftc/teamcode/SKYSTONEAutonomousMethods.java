@@ -74,15 +74,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     //Methods
-    void encoderStraightDriveInches(double inches, double power){
+    void encoderStraightDrive(double inches, double power){
         encoderStraightDriveNoStop(inches, power);
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     void encoderStraightDriveNoStop(double inches, double power) {
-        ElapsedTime time = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoderStraightDriveNoReset(inches, power);
+    }
+
+    void encoderStraightDriveNoReset(double inches, double power){
+        ElapsedTime time = new ElapsedTime();
         multiSetTargetPosition(inches* SKYSTONEConstants.TICKS_PER_INCH, myRobot.lb, myRobot.lf, myRobot.rb, myRobot.rf);
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
         runMotors(power, power);
@@ -243,6 +247,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     void straighteningEncoderDriveInchesNoStop(double inches, double targetAngle, double tolerance, double power) {
         setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        straighteningEncoderDriveInchesNoReset(inches, targetAngle, tolerance, power);
+    }
+
+    void straighteningEncoderDriveInchesNoReset(double inches, double targetAngle, double tolerance, double power){
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         runMotors(power, power);
         double curDistance = leftFrontEncoder();
@@ -264,13 +272,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
 
+
     void adaptiveEncoderDrive(double inches, double targetAngle, double tolerance, double power){
         double fastMode = 0;
         if(inches>30){
             fastMode = inches-15;
             straighteningEncoderDriveInchesNoStop(fastMode, targetAngle, tolerance, power);
         }
-        encoderStraightDriveInches(inches-fastMode, power);
+        encoderStraightDriveNoReset(inches, power);
     }
 
     private double getCorrection(double currentAngle, double targetAngle){
@@ -565,14 +574,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         else if(bridgeSideHue >= 70) {
             //First Strafe
             if(isRedSide) {
-                encoderStraightDriveInches(-3, 1);
+                encoderStraightDrive(-3, 1);
             }
             encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
             if(isRedSide){
-                encoderStraightDriveInches(1, 1);
+                encoderStraightDrive(1, 1);
             }
             else{
-                encoderStraightDriveInches(2, 1);
+                encoderStraightDrive(2, 1);
             }
 
             skyStonePosition  = "Right";
@@ -596,16 +605,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Turns to match Foundation
             encoderTurn(-173, 1, 2);
             //Let go of stone
-            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         } else {
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Let go of stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
         }
 
         //Drive to foundation
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, speed);
+        encoderStraightDrive(SKYSTONEAutonomousConstants.foundationDistance, speed);
         runMotors(-0.35, -0.35);
         sleep(200);
         runMotors(0,0);
@@ -623,16 +632,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Turns to match Foundation
             encoderTurn(-173, 1, 2);
             //Let go of stone
-            myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         } else {
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Let go of stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
         }
 
         //Drive to foundation
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.foundationDistance, speed);
+        encoderStraightDrive(SKYSTONEAutonomousConstants.foundationDistance, speed);
         runMotors(-0.35, -0.35);
         sleep(200);
         runMotors(0,0);

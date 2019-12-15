@@ -29,8 +29,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -51,66 +51,69 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
+@Autonomous(name="1SideClawTest", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
-    private SKYSTONEConstants constants = new SKYSTONEConstants();
-    private List<Recognition> updatedRecognitions;
+public class SKYSTONESideClawTest extends SKYSTONEAutonomousMethods {
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private double autoRotate = 0.5;
-    private double autoGrab = 0.5;
+    FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
 
-        //SKYSTONEClass methods = new SKYSTONEClass();
+        //SKYSTONEAutonomousMethods methods = this;
+        //SKYSTONEClass myRobot = this.myRobot;
+        dashboard = FtcDashboard.getInstance();
         initialize(hardwareMap, telemetry);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
-        waitForStart();
+        myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
         runtime.reset();
+        getAngleWaitForStart();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive", opModeStatus());
-            //Drive motor controls
-            double lx = gamepad1.left_stick_x;
-            double ly = -gamepad1.left_stick_y;
-            double speedMultiplier = 1;
-            double rotationMultiplier = .8;
-            double theta = Math.atan2(lx, ly);
-            double v_theta = Math.sqrt(lx * lx + ly * ly);
-            double v_rotation = gamepad1.right_stick_x;
-            myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
-            autoRotate += 0.06*gamepad2.left_stick_y;
-            autoGrab += 0.06*gamepad2.right_stick_y;
+        while(opModeIsActive()){
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontLow);
+            sleep(800);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
+            sleep(800);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+            sleep(800);
+            straighteningEncoderDriveInches(-75, 0, 1, 0.5);
+            sleep(800);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
+            sleep(800);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
+            break;
+        }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
-            myRobot.frontLower.setPosition(autoRotate);
-            myRobot.frontGrabber.setPosition(autoGrab);
+    }
 
 
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("AutoRotate", autoRotate);
-            telemetry.addData("AutoGrab", autoGrab);
-            telemetry.addData("HorizontalAngle", getHorizontalAngle());
-            telemetry.addData("RollAngle", getRoll());
-            telemetry.addData("VerticalAngle", getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + leftFrontEncoder() + ", lb: " + leftBackEncoder() +
-                    ", rf: " + rightFrontEncoder() + ", rb: " + rightBackEncoder());
-            telemetry.addData("BackDistance: ", myRobot.getBackDistance());
-            telemetry.addData("FrontDistance: ", myRobot.getFrontDistance());
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("LeftStickY", gamepad1.left_stick_y);
-            telemetry.addData("RightStickY", gamepad1.right_stick_y);
-            telemetry.addData("LeftStickX", gamepad1.left_stick_x);
-            telemetry.addData("RightStickX", gamepad1.right_stick_x);
-            telemetry.update();
+    /*
+    private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        y = vuforiaMethods.loopDetection(telemetry, detections);
+        if(y > SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right: " + y);
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center: " + y);
+        }
+        else{
+            Log.d("SkyStonePosition", "Left: " + y);
         }
     }
+    */
+    /*private void dashboardRecordPosition(int deltax, int deltay) {
+        TelemetryPacket packet = new TelemetryPacket();
+        packet.put("cat", 3.7);
+        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
 
-    public boolean opModeCheck(){
-        return opModeIsActive();
-    }
+        dashboard.sendTelemetryPacket(packet);
+        x = x + deltax;
+        y = y + deltay;
+    }*/
 }
