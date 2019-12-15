@@ -46,4 +46,6 @@ public class SKYSTONEConstants {
     public static double flDown = 0.78;
     public static double flUp = 0.3;
     public static double flSuperUp = 0.28;
+    //Side foundation claw
+
 }

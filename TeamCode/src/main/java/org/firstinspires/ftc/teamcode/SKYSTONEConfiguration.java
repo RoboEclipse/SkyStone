@@ -25,6 +25,7 @@ class SKYSTONEConfiguration {
     final String collectorRotationServo = "collectorRotationServo";
     final String collectorBackRotationServo = "collectorBackServo";
     final String cappingServo = "capStoneServo";
+    final String sideFoundationServo = "sideFoundationServo";
 
     //Distance Sensors
     final String leftDistance = "frontDistance";
