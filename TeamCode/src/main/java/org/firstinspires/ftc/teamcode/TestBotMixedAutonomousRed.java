@@ -29,14 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 /**
@@ -105,11 +102,11 @@ public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
             //Strafe
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
             //Drive backwards
-            encoderStraightDriveInches(-4, 1);
+            encoderStraightDrive(-4, 1);
             //Turn
             encoderTurn(-88, 1.0, 1);
             //Drive forwards
-            encoderStraightDriveInches(50, 1);
+            encoderStraightDrive(50, 1);
             break;
         }
     }

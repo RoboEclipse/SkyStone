@@ -68,14 +68,14 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         getAngleWaitForStart();
         runtime.reset();
 
 
         skyStonePosition = detectFirstStone(false);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frDown);
         sleep(800);
         //Drive backwards
         encoderStraightDriveNoStop(-5, 1);
@@ -87,7 +87,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         }
         encoderTurn(92, 1.0, 1);
         //Cross bridge
-        encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
+        encoderStraightDrive(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
         encoderStrafeDriveInchesRight(-1,1);
         grabFoundation(speed, true);
         //Turn the foundation
@@ -107,7 +107,7 @@ public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
         //Get past skystone so we don't push it
         encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.skystoneClear,1);
         //Drive under bridge
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
+        encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }

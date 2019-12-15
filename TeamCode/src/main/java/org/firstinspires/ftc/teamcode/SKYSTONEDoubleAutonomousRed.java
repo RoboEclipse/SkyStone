@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -75,8 +73,8 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         getAngleWaitForStart();
@@ -85,7 +83,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             skyStonePosition = detectFirstStone(true);
             //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive backwards
             encoderStraightDriveNoStop(-4, 1);
@@ -102,14 +100,14 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Turn
             encoderTurn(-88, 1.0, 1);
             //Cross bridge
-            encoderStraightDriveInches(dropDistance, 1);
+            encoderStraightDrive(dropDistance, 1);
             //Release the stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-            //myRobot.rightClaw.setPosition(0.3);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            //myRobot.frontGrabber.setPosition(0.3);
             sleep(800);
             //Drive backwards
             distanceEncoderDrive(wallDistance,0.3,-1,-88, myRobot.backDistance);
-            //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
+            //encoderStraightDrive(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
             //Turn
             encoderTurn(0,1,1);
             if(skyStonePosition.equals("Left")){
@@ -119,20 +117,20 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
 
             //Grab the stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive Backwards
-            encoderStraightDriveInches(-4,1);
+            encoderStraightDrive(-4,1);
             //Turn
             encoderTurn(-88,1,1);
             //Drive Forwards
-            encoderStraightDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
+            encoderStraightDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
             //Release the stone
-            myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-            //myRobot.rightClaw.setPosition(1);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            //myRobot.frontGrabber.setPosition(1);
             sleep(800);
             //Drive Backwards
-            encoderStraightDriveInches(-20,1);
+            encoderStraightDrive(-20,1);
             break;
         }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");

@@ -28,7 +28,7 @@ import static java.lang.Thread.sleep;
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, leftClaw, rightClaw, capServo, sideFoundationServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, sideFoundationServo;
     CRServo collectionRotationServo, collectorBackServo;
     DistanceSensor frontDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     ExpansionHubEx expansionHub;
@@ -65,8 +65,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         capServo = hardwareMap.servo.get(skystoneNames.cappingServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
-        leftClaw = hardwareMap.servo.get(skystoneNames.leftClaw);
-        rightClaw = hardwareMap.servo.get(skystoneNames.rightClaw);
+        frontLower = hardwareMap.servo.get(skystoneNames.leftClaw);
+        frontGrabber = hardwareMap.servo.get(skystoneNames.rightClaw);
         sideFoundationServo = hardwareMap.servo.get(skystoneNames.sideFoundationServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         collectorBackServo = hardwareMap.crservo.get(skystoneNames.collectorBackRotationServo);
@@ -85,8 +85,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
-        leftClaw.setPosition(SKYSTONEConstants.flUp);
-        rightClaw.setPosition(SKYSTONEConstants.frUp);
+        frontLower.setPosition(SKYSTONEConstants.flUp);
+        frontGrabber.setPosition(SKYSTONEConstants.frUp);
         rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
     }
@@ -213,8 +213,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double flClawPosition, double frClawPosition){
-        leftClaw.setPosition(flClawPosition);
-        rightClaw.setPosition(frClawPosition);
+        frontLower.setPosition(flClawPosition);
+        frontGrabber.setPosition(frClawPosition);
     }
     //Motor Movement
     void runElevatorMotors(double power){

@@ -123,7 +123,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
                 encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance, 1);
             }
             //Drive backwards
-            encoderStraightDriveInches(-3, 1);
+            encoderStraightDrive(-3, 1);
             //Turn
             encoderTurn(-90, 1.0, 2);
             //Drive forwards
@@ -137,22 +137,22 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
                 wallDistance -= (SKYSTONEAutonomousConstants.doubleAdjustDistance);
                 dropDistance -= SKYSTONEAutonomousConstants.doubleAdjustDistance;
             }
-            encoderStraightDriveInches(dropDistance, 1);
+            encoderStraightDrive(dropDistance, 1);
             //Drive backwards
             distanceEncoderDrive(wallDistance,1,-1,-90, backSensor);
-            //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
+            //encoderStraightDrive(-dropDistance - 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
             //Turn
             encoderTurn(0,1,2);
             //Drive Forwards
             distanceEncoderDrive(1,1,1,0, frontSensor);
             //Drive Backwards
-            encoderStraightDriveInches(-3,1);
+            encoderStraightDrive(-3,1);
             //Turn
             encoderTurn(-90,1,2);
             //Drive Forwards
-            encoderStraightDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance + 3, 1.0);
+            encoderStraightDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance + 3, 1.0);
             //Drive Backwards
-            encoderStraightDriveInches(-15,1);
+            encoderStraightDrive(-15,1);
             break;
         }
     }

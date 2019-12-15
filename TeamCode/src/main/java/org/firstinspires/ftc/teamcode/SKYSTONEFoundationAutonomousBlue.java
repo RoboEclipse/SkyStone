@@ -78,11 +78,11 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             //Strafe right to align to foundation
             encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.aFoundationAim, speed);
             //Drive to foundation
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.bFoundationDistance, speed);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.bFoundationDistance, speed);
             foundationPlaceBlue(myRobot);
             encoderTurn(88, 1,3);
             encoderStrafeDriveInchesRight(-8,1);
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
             //encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.dWallStrafe, -0.8);
             break;
 
@@ -103,7 +103,7 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             //Strafe right to align to foundation
             methods.encoderStrafeDriveInchesRight(SKYSTONEConstants.aFoundationAim, speed);
             //Drive to foundation
-            methods.encoderStraightDriveInches(SKYSTONEConstants.bFoundationDistance, speed);
+            methods.encoderStraightDrive(SKYSTONEConstants.bFoundationDistance, speed);
             //Grab foundation
             sleep(500);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
@@ -114,7 +114,7 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             // myRobot.runMotors(-0.2, -0.2);
             sleep(250);
             myRobot.runMotors(0, 0);
-            //methods.encoderStraightDriveInches(-SKYSTONEConstants.bFoundationDistance + 10, speed);
+            //methods.encoderStraightDrive(-SKYSTONEConstants.bFoundationDistance + 10, speed);
             //Strafe right to ensure the foundation is flush with the wall
             methods.encoderStrafeDriveInchesRight(15, speed);
             //Drive backwards with raw power
@@ -131,7 +131,7 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart1, speed);
             encoderStrafeDriveInchesRight(SKYSTONEConstants.cFoundationClearPart2, speed);
             //Drive forward to get off the wall
-            //methods.encoderStraightDriveInches(-2, 0.75);
+            //methods.encoderStraightDrive(-2, 0.75);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             //myRobot.runMotors(-0.2, 0.2);
@@ -139,11 +139,11 @@ public class SKYSTONEFoundationAutonomousBlue extends SKYSTONEAutonomousMethods 
             myRobot.runMotors(0,0);
             /*
             methods.encoderStrafeDriveInchesRight(5, speed);
-            methods.encoderStraightDriveInches(-30,speed);
-            methods.encoderStraightDriveInches(35, speed);
+            methods.encoderStraightDrive(-30,speed);
+            methods.encoderStraightDrive(35, speed);
             methods.encoderStrafeDriveInchesRight(-5,speed);
             methods.encoderStrafeDriveInchesRight(5,speed);
-            methods.encoderStraightDriveInches(-20,speed);
+            methods.encoderStraightDrive(-20,speed);
             */
             /*
             // Show the elapsed game time and wheel power.

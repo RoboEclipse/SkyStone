@@ -69,15 +69,15 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         getAngleWaitForStart();
         runtime.reset();
 
 
         skyStonePosition = detectFirstStone(true);
         //Grab the stone
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flDown);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
         sleep(800);
         //Drive backwards
         encoderStraightDriveNoStop(-5, 1);
@@ -89,7 +89,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         }
         encoderTurn(-88, 1.0, 1);
         //Cross bridge
-        encoderStraightDriveInches(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
+        encoderStraightDrive(dropDistance + SKYSTONEAutonomousConstants.foundationAlign, 1);
         grabFoundation(speed, false);
         //Turn the foundation
         //Robot turns clockwise, therefore negative power
@@ -104,13 +104,13 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
-        encoderStraightDriveInches(3, 1);
+        encoderStraightDrive(3, 1);
         //Turn back
         encoderTurn(88, 1, 3);
         //Get past skystone so we don't push it
         encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.skystoneClear,1);
         //Drive under bridge
-        encoderStraightDriveInches(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
+        encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge1+SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }
