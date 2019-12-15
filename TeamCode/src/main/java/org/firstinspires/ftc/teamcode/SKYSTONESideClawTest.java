@@ -30,10 +30,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
 
 
 /**
@@ -49,68 +51,62 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TestBotMixedAutonomousRed", group="Linear Opmode")
+@Autonomous(name="1SideClawTest", group="Linear Opmode")
 //@Disabled
-public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONESideClawTest extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    // private int x;
-    // private int y;
-    double speed = 1;
     FtcDashboard dashboard;
-    //Telemetry telemetry;
 
     @Override
     public void runOpMode() {
 
-        SKYSTONEDrivetrainClass drivetrain = myRobot;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
-                    telemetry.update();
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        //SKYSTONEAutonomousMethods methods = this;
+        //SKYSTONEClass myRobot = this.myRobot;
+        dashboard = FtcDashboard.getInstance();
+        initialize(hardwareMap, telemetry);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
         runtime.reset();
+        getAngleWaitForStart();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            //Drive the distance
-            distanceEncoderDrive(1.5,0.3,1,0, myRobot.frontDistance);
-            //Strafe
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
-            //Drive backwards
-            encoderStraightDrive(-4, 1);
-            //Turn
-            encoderTurn(-88, 1.0, 1);
-            //Drive forwards
-            encoderStraightDrive(50, 1);
+        while(opModeIsActive()){
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontLow);
+            sleep(800);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
+            sleep(800);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+            sleep(800);
+            straighteningEncoderDriveInches(-75, 0, 1, 0.5);
+            sleep(800);
+            myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
+            sleep(800);
+            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
             break;
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
+
     }
 
+
+    /*
+    private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        y = vuforiaMethods.loopDetection(telemetry, detections);
+        if(y > SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right: " + y);
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center: " + y);
+        }
+        else{
+            Log.d("SkyStonePosition", "Left: " + y);
+        }
+    }
+    */
     /*private void dashboardRecordPosition(int deltax, int deltay) {
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("cat", 3.7);

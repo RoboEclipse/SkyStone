@@ -48,8 +48,8 @@ public class SKYSTONETeleOp extends OpMode
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
-    private double flClawPosition = SKYSTONEConstants.flUp;
-    private double frClawPosition = SKYSTONEConstants.frUp;
+    private double flClawPosition = SKYSTONEConstants.frontHigh;
+    private double frClawPosition = SKYSTONEConstants.frontLoosen;
     /*
      * Code to run ONCE when the driver hits INIT
      */

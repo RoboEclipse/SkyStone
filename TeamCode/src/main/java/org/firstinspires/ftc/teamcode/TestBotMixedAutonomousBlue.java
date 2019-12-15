@@ -101,15 +101,15 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             //myRobot.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
 
             //Strafe sideways to allow the webcam to see.
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.driveToStoneDistance, 1);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.driveToStoneDistance, 1);
 
             //Grab the SkyStone
-            //myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.frDown);
+            //myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.frDown);
             telemetry.addData("grabbed stone",0);
             telemetry.update();
             sleep(800);
             //drive backwards to get stone out of line
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.pullStoneOutDistance, 1);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.pullStoneOutDistance, 1);
             //Turn so that front is towards bridge
             encoderTurn(90, 1.0, 3);
             //Drive forwards
@@ -120,22 +120,22 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             if(skyStonePosition.equals("Right")){
                 dropDistance -= SKYSTONEAutonomousConstants.mixedAdjustDistance;
             }*/
-            encoderStraightDriveInches(dropDistance, 1);
+            encoderStraightDrive(dropDistance, 1);
             //turn to have back towards platform
             encoderTurn(180, 1.0, 3);
             //drive backwards to hit platform
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.hitFoundationDistance, 1);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.hitFoundationDistance, 1);
             telemetry.addData("grab foundation", 0);
             telemetry.update();
             //Put down foundation servos (to grab foundation)
             //myRobot.leftFoundationServo.setPosition(SKYSTONEAutonomousConstants.lDown);
             //myRobot.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
             //drive forwards to drop off stones
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.dropOffStoneDistance, 1);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.dropOffStoneDistance, 1);
             telemetry.addData("drop off stone", 0);
             telemetry.update();
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.moveAwayFromStoneDistance, 1);
-            //myRobot.leftClaw.setPosition(SKYSTONEAutonomousConstants.frUp);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.moveAwayFromStoneDistance, 1);
+            //myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.frUp);
             //turn to drop off foundation
             encoderTurn(270, 1.0, 3);
             //drive backwards to drop off foundation
@@ -143,7 +143,7 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             sleep(1000);
             myRobot.runMotors(0,0);
             //drive forward to get under bridge
-            encoderStraightDriveInches(SKYSTONEAutonomousConstants.parkDistance, 1);
+            encoderStraightDrive(SKYSTONEAutonomousConstants.parkDistance, 1);
             break;
         }
     }

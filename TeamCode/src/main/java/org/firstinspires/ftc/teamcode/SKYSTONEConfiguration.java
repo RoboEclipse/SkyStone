@@ -15,8 +15,8 @@ class SKYSTONEConfiguration {
     //Autonomous Servos
     final String leftFoundationServo = "leftFoundationServo";
     final String rightFoundationServo = "rightFoundationServo";
-    final String leftClaw = "leftClaw";
-    final String rightClaw = "rightClaw";
+    final String leftClaw = "frontLower";
+    final String rightClaw = "frontGrabber";
 
     //Tele-Op Servos
     final String collectorServo = "clawServo";
@@ -25,6 +25,7 @@ class SKYSTONEConfiguration {
     final String collectorRotationServo = "collectorRotationServo";
     final String collectorBackRotationServo = "collectorBackServo";
     final String cappingServo = "capStoneServo";
+    final String sideFoundationServo = "sideFoundationServo";
 
     //Distance Sensors
     final String leftDistance = "frontDistance";

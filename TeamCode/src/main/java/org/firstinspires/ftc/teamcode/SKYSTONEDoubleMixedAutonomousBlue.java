@@ -69,12 +69,12 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.leftClaw.setPosition(SKYSTONEConstants.flUp);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         getAngleWaitForStart();
         runtime.reset();
         skyStonePosition = detectFirstStone(false);
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frDown);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive backwards
         encoderStraightDriveNoStop(-4.5, 1);
@@ -103,7 +103,7 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(200);
         //Strafe to not crash into AFK teammate
-        //encoderStraightDriveInches(1, 1);
+        //encoderStraightDrive(1, 1);
         //Turn back
         turn(-90, 1, 1, 5);
         //Get past skystone so we don't push it
@@ -115,10 +115,10 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         //Drive backwards
         distanceEncoderDrive(wallDistance,0.3, 1, -90, myRobot.frontDistance);
-        //encoderStraightDriveInches(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
+        //encoderStraightDrive(-dropDistance - 3*SKYSTONEConstants.doubleAdjustDistance, 1.0);
         //Turn
         turn(0,0.8,0.8, 5);
-        encoderStraightDriveInches(-1,1);
+        encoderStraightDrive(-1,1);
         if(skyStonePosition.equals("Left")){
             //Depot side align to the wall
             encoderStrafeDriveInchesRight(6,0.5);
@@ -127,17 +127,17 @@ public class SKYSTONEDoubleMixedAutonomousBlue extends SKYSTONEAutonomousMethods
         distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
 
         //Grab the stone
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frDown);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frDown);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
-        encoderStraightDriveInches(-4,1);
+        encoderStraightDrive(-4,1);
         //Turn
         turn(90,0.6, 0.6, 5);
         //Drive Forwards
         straighteningEncoderDriveInches(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 90, 50, 1.0);
         //Release the stone
-        myRobot.rightClaw.setPosition(SKYSTONEConstants.frUp);
-        //myRobot.rightClaw.setPosition(1);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
+        //myRobot.frontGrabber.setPosition(1);
         sleep(SKYSTONEAutonomousConstants.frontClawsWaitLength);
         //Drive Backwards
         straighteningEncoderDriveInches(-15, 90, 50, 1);

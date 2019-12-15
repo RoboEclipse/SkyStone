@@ -39,6 +39,11 @@ public class SKYSTONEConstants {
     public static double cUp = 0.4;
     public static double cDown = 0.05;
     //Front right claw
+    public static double frontLow = 0;
+    public static double frontPlace = 0.45;
+    public static double frontHigh = 1;
+    public static double frontGrab = 0.0;
+    public static double frontLoosen = 0.7;
     public static double frDown = 0.53;
     public static double frUp = 0.95;
     public static double frSuperUp = 1;
@@ -46,4 +51,6 @@ public class SKYSTONEConstants {
     public static double flDown = 0.78;
     public static double flUp = 0.3;
     public static double flSuperUp = 0.28;
+    //Side foundation claw
+
 }

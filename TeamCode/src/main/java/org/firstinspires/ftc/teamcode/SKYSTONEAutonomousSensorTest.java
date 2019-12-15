@@ -53,24 +53,19 @@ import java.util.List;
 
 @Autonomous(name="SKYSTONEAutonomousSensorTest", group="Linear Opmode")
 //@Disabled
-public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
+public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
     private SKYSTONEConstants constants = new SKYSTONEConstants();
     private List<Recognition> updatedRecognitions;
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    private double autoRotate = 0.5;
+    private double autoGrab = 0.5;
 
     @Override
     public void runOpMode() {
 
-        SKYSTONEAutonomousMethods methods = new SKYSTONEAutonomousMethods() {
-            @Override
-            public void runOpMode() throws InterruptedException {
-
-            }
-        };
-
         //SKYSTONEClass methods = new SKYSTONEClass();
-        methods.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         waitForStart();
@@ -78,32 +73,34 @@ public class SKYSTONEAutonomousSensorTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("OpModeIsActive",methods.opModeStatus());
-            methods.runMotors(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
+            telemetry.addData("OpModeIsActive", opModeStatus());
+            //Drive motor controls
+            double lx = gamepad1.left_stick_x;
+            double ly = -gamepad1.left_stick_y;
+            double speedMultiplier = 1;
+            double rotationMultiplier = .8;
+            double theta = Math.atan2(lx, ly);
+            double v_theta = Math.sqrt(lx * lx + ly * ly);
+            double v_rotation = gamepad1.right_stick_x;
+            myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
+            autoRotate += 0.06*gamepad2.left_stick_y;
+            autoGrab += 0.06*gamepad2.right_stick_y;
 
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-            }
-            else{
-                telemetry.addData("# Object Detected", 0);
-            }
+            myRobot.frontLower.setPosition(autoRotate);
+            myRobot.frontGrabber.setPosition(autoGrab);
+
+
+
             // Show the elapsed game time and wheel power.
-            telemetry.addData("HorizontalAngle", methods.getHorizontalAngle());
-            telemetry.addData("RollAngle", methods.getRoll());
-            telemetry.addData("VerticalAngle", methods.getVerticalAngle());
-            telemetry.addData("Encoders: ", "lf: " + methods.leftFrontEncoder() + ", lb: " + methods.leftBackEncoder() +
-                    ", rf: " + methods.rightFrontEncoder() + ", rb: " + methods.rightBackEncoder());
-            telemetry.addData("BackDistance: ", methods.myRobot.getBackDistance());
-            telemetry.addData("FrontDistance: ", methods.myRobot.getFrontDistance());
+            telemetry.addData("AutoRotate", autoRotate);
+            telemetry.addData("AutoGrab", autoGrab);
+            telemetry.addData("HorizontalAngle", getHorizontalAngle());
+            telemetry.addData("RollAngle", getRoll());
+            telemetry.addData("VerticalAngle", getVerticalAngle());
+            telemetry.addData("Encoders: ", "lf: " + leftFrontEncoder() + ", lb: " + leftBackEncoder() +
+                    ", rf: " + rightFrontEncoder() + ", rb: " + rightBackEncoder());
+            telemetry.addData("BackDistance: ", myRobot.getBackDistance());
+            telemetry.addData("FrontDistance: ", myRobot.getFrontDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("LeftStickY", gamepad1.left_stick_y);
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
