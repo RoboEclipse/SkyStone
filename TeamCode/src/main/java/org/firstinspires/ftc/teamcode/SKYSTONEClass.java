@@ -28,7 +28,7 @@ import static java.lang.Thread.sleep;
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     DcMotor clawSlide, leftElevator, rightElevator;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, sideFoundationServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, foundationServo;
     CRServo collectionRotationServo, collectorBackServo;
     DistanceSensor frontDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
     ExpansionHubEx expansionHub;
@@ -65,9 +65,9 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         capServo = hardwareMap.servo.get(skystoneNames.cappingServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
+        foundationServo = hardwareMap.servo.get(skystoneNames.foundationServo);
         frontLower = hardwareMap.servo.get(skystoneNames.leftClaw);
         frontGrabber = hardwareMap.servo.get(skystoneNames.rightClaw);
-        sideFoundationServo = hardwareMap.servo.get(skystoneNames.sideFoundationServo);
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         collectorBackServo = hardwareMap.crservo.get(skystoneNames.collectorBackRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
