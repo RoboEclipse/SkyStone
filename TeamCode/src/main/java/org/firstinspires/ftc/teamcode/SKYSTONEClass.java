@@ -147,6 +147,12 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rb.setPower(w.rr);
         telemetry.addData("Powers", String.format(Locale.US, "lf %.2f lr %.2f rf %.2f rr %.2f", w.lf, w.lr, w.rf, w.rr));
     }
+    void encoderDiagonal1(double power, int ticks) {
+        runWithEncoder(power,ticks, lb, rf);
+    }
+    void encoderDiagonal2(double power, int ticks1) {
+        runWithEncoder(power,ticks1, lf, rb);
+    }
     private static class Wheels {
         double lf, lr, rf, rr;
 
@@ -229,6 +235,24 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
             motor.setPower(power);
         }
         while(anyBusy(5, ticks, motors) && time.milliseconds()<2500){
+            for(DcMotor motor : motors){
+                Log.d("Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
+            }
+        }
+        for(DcMotor motor : motors){
+            motor.setPower(0);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+    void runWithEncoder(double power, int ticks, int tolerance, DcMotor...motors){
+        ElapsedTime time = new ElapsedTime();
+        for(DcMotor motor : motors){
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setTargetPosition(ticks);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motor.setPower(power);
+        }
+        while(anyBusy(tolerance, ticks, motors) && time.milliseconds()<2500){
             for(DcMotor motor : motors){
                 Log.d("Motor " + motor.getPortNumber(), motor.getCurrentPosition() + "");
             }
