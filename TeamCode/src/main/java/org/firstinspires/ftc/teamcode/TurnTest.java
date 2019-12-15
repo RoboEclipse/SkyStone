@@ -34,13 +34,10 @@ import android.util.Log;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -117,8 +114,8 @@ public class TurnTest extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             //encoderTurn(0, 1, 5);
             //methods.distanceEncoderDrive(20,5, 1, -0);
-            methods.straighteningEncoderDriveInches(70,0,5,1);
-            methods.straighteningEncoderDriveInches(-70, 0, 5, 1);
+            methods.straighteningEncoderDrive(70,0,5,1);
+            methods.straighteningEncoderDrive(-70, 0, 5, 1);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
             break;

@@ -33,10 +33,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-
-import java.util.List;
-
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -72,13 +68,9 @@ public class SKYSTONESideClawTest extends SKYSTONEAutonomousMethods {
         getAngleWaitForStart();
 
         while(opModeIsActive()){
-            myRobot.frontLower.setPosition(SKYSTONEConstants.frontLow);
-            sleep(800);
-            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
-            sleep(800);
+            frontGrabStone();
             myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
-            sleep(800);
-            straighteningEncoderDriveInches(-75, 0, 1, 0.5);
+            adaptiveEncoderDrive(-75, 0, 1, 1);
             sleep(800);
             myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
             sleep(800);
