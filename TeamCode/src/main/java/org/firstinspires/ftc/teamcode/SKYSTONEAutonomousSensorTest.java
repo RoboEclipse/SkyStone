@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -60,7 +59,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
     private ElapsedTime runtime = new ElapsedTime();
     private double autoRotate = 0.5;
     private double autoGrab = 0.5;
-
+    private double sideFoundation = 0.5;
     @Override
     public void runOpMode() {
 
@@ -85,13 +84,19 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
             autoRotate += 0.06*gamepad2.left_stick_y;
             autoGrab += 0.06*gamepad2.right_stick_y;
-
+            if (gamepad2.dpad_up) {
+                sideFoundation += 0.06;
+            }
+            if (gamepad2.dpad_down) {
+               sideFoundation -= 0.06;
+            }
             myRobot.frontLower.setPosition(autoRotate);
             myRobot.frontGrabber.setPosition(autoGrab);
 
 
 
-            // Show the elapsed game time and wheel power.
+            // Show the elapsed game time and wheel power.s
+            telemetry.addData("sideFoundaion", sideFoundation);
             telemetry.addData("AutoRotate", autoRotate);
             telemetry.addData("AutoGrab", autoGrab);
             telemetry.addData("HorizontalAngle", getHorizontalAngle());
