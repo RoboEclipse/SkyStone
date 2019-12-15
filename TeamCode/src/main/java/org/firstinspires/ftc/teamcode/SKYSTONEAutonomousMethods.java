@@ -27,6 +27,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Software
     //private Telemetry telemetry;
 
+    int turnPValue = 15;
     //Classes
 
     private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
@@ -284,7 +285,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     private double getCorrection(double currentAngle, double targetAngle){
         double errorAngle = loopAround(targetAngle-currentAngle);
-        double PCoefficient = 1.0/15;
+        double PCoefficient = 1.0/turnPValue;
         return errorAngle*PCoefficient;
     }
 
@@ -421,6 +422,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         );
         return values[0];
     }
+
+    void frontGrabStone (){
+        myRobot.frontLower.setPosition(SKYSTONEConstants.frontLow);
+        sleep(200);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
+        sleep(800);
+    }
+
     //VuforiaDetectionStuff
 
     //Vuforia Stuff
