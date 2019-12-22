@@ -660,4 +660,65 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderStrafeDriveInchesRight(-3, 1);
         sleep(200);
     }
+    void directionalDrive(double targetX, double targetY, boolean PID, boolean rotation, double targetAngle){
+        double xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+        double yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+        double totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
+        double kR = 0.01;
+        double tolerance = 0.5;
+        double velocity = 1;
+        double rotationVelocity = 0;
+        double kP = 1/20;
+        while(yDis>tolerance || xDis>tolerance){
+            xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+            yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+            telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,7);
+            Log.d("Skystone:"," Distance to Wall: xDis = " + xDis + " yDis = " + yDis);
+            Log.d("Skystone:"," LeftWallDistance: targetX = " + targetX + " targetY = " + targetY);
+            totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
+            if(PID) {
+                velocity *= getP(totalDistance, kP);
+            }
+            if(rotation){
+                rotationVelocity = (targetAngle-getHorizontalAngle()) * kR;
+            }
+            double angle = Math.atan2(xDis,yDis);
+            freeDrive(angle, velocity, rotationVelocity);
+            Log.d("Skystone: ", "Skystone Angle: "+ angle + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
+
+        }
+    }
+
+    double getP(double error, double kP){
+        return Math.min(1,Math.abs(error)*kP);
+    }
+
+    void freeDrive(double direction, double velocity, double rotationVelocity){
+        double s = Math.sin(direction + Math.PI / 4.0);
+        double c = Math.cos(direction + Math.PI / 4.0);
+        double a = Math.max(Math.abs(s), Math.abs(c));
+        s /= a;
+        c /= a;
+
+        final double v1 = velocity * s + rotationVelocity;
+        final double v2 = velocity * c - rotationVelocity;
+        final double v3 = velocity * c + rotationVelocity;
+        final double v4 = velocity * s - rotationVelocity;
+
+        // Ensure that none of the values go over 1.0. If none of the provided values are
+        // over 1.0, just scale by 1.0 and keep all values.
+        double scale = ma(1.0, v1, v2, v3, v4);
+        myRobot.lf.setPower(v1/scale);
+        myRobot.rf.setPower(v2/scale);
+        myRobot.lb.setPower(v3/scale);
+        myRobot.rb.setPower(v4/scale);
+    }
+
+    private static double ma(double... xs) {
+        double ret = 0.0;
+        for (double x : xs) {
+            ret = Math.max(ret, Math.abs(x));
+        }
+        return ret;
+    }
 }

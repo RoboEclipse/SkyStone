@@ -143,7 +143,6 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         SKYSTONEClass.Wheels w = getWheels(direction, velocity, rotationVelocity);
         lf.setPower(w.lf);
         rf.setPower(w.rf);
-        rf.setPower(w.rf);
         lb.setPower(w.lr);
         rb.setPower(w.rr);
         telemetry.addData("Powers", String.format(Locale.US, "lf %.2f lr %.2f rf %.2f rr %.2f", w.lf, w.lr, w.rf, w.rr));

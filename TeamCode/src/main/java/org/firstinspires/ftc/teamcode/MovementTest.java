@@ -79,8 +79,8 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            newEncoderStrafeDriveInchesRight(24);
-
+            directionalDrive(10,15, false, false, 0);
+            directionalDrive(15,20, true, false, 0);
             break;
         }
     }
