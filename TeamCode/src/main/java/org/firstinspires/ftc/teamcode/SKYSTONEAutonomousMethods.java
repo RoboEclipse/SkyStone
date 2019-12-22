@@ -429,6 +429,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
         sleep(800);
     }
+    void frontReleaseStone(){
+        myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
+        sleep(600);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
+        sleep(200);
+    }
 
     //VuforiaDetectionStuff
 
@@ -493,7 +499,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Complex Methods
     void pickUpStone(){
         myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
-        myRobot.clawServo.setPosition(SKYSTONEConstants.autoLoosen);
+        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
         sleep(800);
         myRobot.rightElevator.setPower(-0.3);
         myRobot.leftElevator.setPower(-0.3);

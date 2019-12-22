@@ -18,14 +18,13 @@ public class SKYSTONEConstants {
     public static int stoneDiff = 3;
 
     //Skystone Tele-op Stacking Claw Rotation Servo Constants
-    public static double right90 = 0.376; //90 degrees right from straight
-    public static double left90 = 0.6; //90 degrees left from straight
-    public static double straight = 0.488; //Straight
-    public static double oppositeSide = 0.713; //Make it straight but on the other side or back side
+    public static double right90 = 0.368; //90 degrees right from straight
+    public static double left90 = 0.592; //90 degrees left from straight
+    public static double straight = 0.478; //Straight
+    public static double oppositeSide = 0.264; //Make it straight but on the other side or back side
     //Skystone Tele-op Stacking Grabber Claw
-    public static double tighten = 0.05;
-    public static double loosen = 0.7;
-    public static double autoLoosen = 1;
+    public static double tighten = 1;
+    public static double loosen = 0.4;
     //Skystone Right Foundation Claw
     public static double rDown = 0.5; //At most .65
     public static double rUp = 0.25;
