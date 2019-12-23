@@ -95,7 +95,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             sideFoundation = Math.max(Math.min(1, sideFoundation),0);
             myRobot.frontLower.setPosition(autoRotate);
             myRobot.frontGrabber.setPosition(autoGrab);
-            myRobot.foundationServo.setPosition(sideFoundation);
+            //myRobot.foundationServo.setPosition(sideFoundation);
 
 
             // Show the elapsed game time and wheel power.s

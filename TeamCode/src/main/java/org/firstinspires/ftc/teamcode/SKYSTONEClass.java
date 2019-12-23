@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,10 +28,11 @@ import static java.lang.Thread.sleep;
 
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
+    ColorSensor leftColor, rightColor;
     DcMotor clawSlide, leftElevator, rightElevator;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo;
     CRServo collectionRotationServo, collectorBackServo;
-    DistanceSensor frontDistance, rightDistance, backLeftDistance, backRightDistance, backDistance, elevatorDistance;
+    DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance, backDistance; //elevatorDistance
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
@@ -40,7 +42,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     private Telemetry telemetry;
 
     //Classes
-    private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
+
     //SKYSTONEDrivetrainClass drivetrain = new SKYSTONEDrivetrainClass();
     //private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 
@@ -57,6 +59,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
         */
+        leftColor = hardwareMap.colorSensor.get("leftColor");
+        rightColor = hardwareMap.colorSensor.get("rightColor");
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
@@ -70,8 +74,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
         collectorBackServo = hardwareMap.crservo.get(skystoneNames.collectorBackRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
-        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
-        frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        //elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
+        //frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);

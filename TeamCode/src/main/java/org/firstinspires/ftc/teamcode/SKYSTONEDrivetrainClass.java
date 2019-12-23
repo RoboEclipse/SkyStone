@@ -7,6 +7,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,8 +16,9 @@ import org.openftc.revextensions2.ExpansionHubMotor;
 
 public class SKYSTONEDrivetrainClass {
     DcMotor lb, lf, rb, rf;
-    ColorSensor leftColor, rightColor;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
+    DistanceSensor elevatorDistance,backDistance, rightDistance, frontDistance;
+    SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
     // The IMU sensor object
     BNO055IMU imu;
     Orientation angles;
@@ -25,8 +27,9 @@ public class SKYSTONEDrivetrainClass {
         lf = hardwareMap.dcMotor.get("frontLeft");
         rb = hardwareMap.dcMotor.get("backRight");
         rf = hardwareMap.dcMotor.get("frontRight");
-        leftColor = hardwareMap.colorSensor.get("leftColor");
-        rightColor = hardwareMap.colorSensor.get("rightColor");
+        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
+        backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
+        rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
 
 
         /*
