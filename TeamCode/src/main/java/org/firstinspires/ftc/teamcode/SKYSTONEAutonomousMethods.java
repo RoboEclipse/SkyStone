@@ -666,15 +666,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderStrafeDriveInchesRight(-3, 1);
         sleep(200);
     }
-    void directionalDrive(double targetX, double targetY, boolean PID, boolean rotation, double targetAngle){
+    void directionalDrive(double targetX, double targetY, boolean PID, boolean rotation, double targetAngle, double tolerance){
         double xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
         double yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-        double totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
+        double totalDistance;
         double kR = 0.01;
-        double tolerance = 0.5;
         double velocity = 1;
         double rotationVelocity = 0;
         double kP = 1/20;
+        Log.d("Skystone: ", "kP " + kP + " kR " + kR + " tolerance" + tolerance);
         while(yDis>tolerance || xDis>tolerance){
             xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
             yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
