@@ -79,7 +79,9 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            directionalDrive(10,15, true, 1);
+            directionalDrive(30,3, true, 1);
+            directionalDrive(15,5, true, 1);
+            adaptiveEncoderDrive(50,0,30,1);
             //directionalDrive(15,20, true, 0.5);
             break;
         }

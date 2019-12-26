@@ -47,15 +47,9 @@ import org.openftc.revextensions2.RevBulkData;
 public class TestBotTeleOp extends OpMode
 {
 
-    ExpansionHubEx expansionHub;
-    RevBulkData bulkData;
-    double newTime;
-    float[] leftHsvValues = new float[3];
-    float[] rightHsvValues = new float[3];
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEDrivetrainClass myRobot = new SKYSTONEDrivetrainClass();
-    DistanceSensor frontDistance, leftDistance, backDistance;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -63,12 +57,6 @@ public class TestBotTeleOp extends OpMode
     public void init() {
 
         myRobot.initializeDriveTrain(hardwareMap, telemetry);
-        backDistance = hardwareMap.get(DistanceSensor.class, "backDistance");
-        frontDistance = hardwareMap.get(DistanceSensor.class, "frontDistance");
-        //frontDistance = hardwareMap.get(DistanceSensor.class, "frontDistance");
-
-
-        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
 
@@ -88,7 +76,6 @@ public class TestBotTeleOp extends OpMode
     @Override
     public void start() {
         runtime.reset();
-        newTime=0;
     }
 
     /*
@@ -96,42 +83,9 @@ public class TestBotTeleOp extends OpMode
      */
     @Override
     public void loop() {
-        double oldTime = newTime;
-        newTime = runtime.time();
-/*
-        double frontDistanceReading = frontDistance.getDistance(DistanceUnit.CM);
-        double backDistanceReading = backDistance.getDistance(DistanceUnit.CM);
-        double leftDistanceReading = frontDistance.getDistance(DistanceUnit.CM);
-*/
-
-
-        double leftDrive = -gamepad1.left_stick_y;
-        double rightDrive = -gamepad1.right_stick_y;
-        myRobot.lf.setPower(leftDrive);
-        myRobot.lb.setPower(leftDrive);
-        myRobot.rf.setPower(rightDrive);
-        myRobot.rb.setPower(rightDrive);
-        telemetry.addData("Loop Hertz: ", 1/(newTime-oldTime));
-        telemetry.addData("Left Power: ", leftDrive);
-        telemetry.addData("Right Power: ", rightDrive);
-        /*telemetry.addData("Left Front: ", myRobot.lf.getCurrentPosition());
-        telemetry.addData("Right Front: ", myRobot.rf.getCurrentPosition());
-        telemetry.addData("Left Back: ", myRobot.lb.getCurrentPosition());
-        telemetry.addData("Right Back: ", myRobot.rb.getCurrentPosition());
-        telemetry.addData("Distances: ", frontDistanceReading + " " + backDistanceReading + " " + leftDistanceReading);
-*/
-        bulkData = expansionHub.getBulkInputData();
-        expansionHub.setAllI2cBusSpeeds(ExpansionHubEx.I2cBusSpeed.FAST_400K);
-        telemetry.addData(
-                "Encoders from Bulk Read", "lf: " + bulkData.getMotorCurrentPosition(myRobot.lfBR)
-                        + " lb: " + bulkData.getMotorCurrentPosition(myRobot.lbBR)
-                        + " rf: " + bulkData.getMotorCurrentPosition(myRobot.rfBR)
-                        + " rb: "+ bulkData.getMotorCurrentPosition(myRobot.rbBR)
-        );
-
-
+        telemetry.addData("leftDistance", myRobot.elevatorDistance.getDistance(DistanceUnit.INCH));
+        telemetry.addData("backDistance", myRobot.backDistance.getDistance(DistanceUnit.INCH));
         telemetry.update();
-
     }
 
     /*

@@ -22,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object
-    BNO055IMU imu;
+    //BNO055IMU imu;
     Orientation angles;
     //Software
     //private Telemetry telemetry;
@@ -42,19 +42,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
 
         //Tensorflow
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -400,7 +388,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     //IMU Stuff
     double getHorizontalAngle(){
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = myRobot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.firstAngle;
         output = loopAround(output);
         return output;
@@ -417,13 +405,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     double getRoll(){
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = myRobot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.secondAngle;
         output = loopAround(output);
         return output;
     }
     double getVerticalAngle(){
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = myRobot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double output = angles.thirdAngle;
         output = loopAround(output);
         return output;
@@ -457,63 +445,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //VuforiaDetectionStuff
 
-    //Vuforia Stuff
-    /*
-     * Initialize the Vuforia localization engine.
-     */
-    /*
-    private void initVuforia(HardwareMap hardwareMap) {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
-    }
-    */
-    // Load the data sets for the trackable objects. These particular data
-    /*
-     * Initialize the TensorFlow Object Detection engine.
-
-    private void initTfod(HardwareMap hardwareMap) {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(/*tfodMonitorViewId*
-/*
-        tfodParameters.minimumConfidence = 0.6;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-    }
-        List<Recognition> runTensorFlow(){
-        if (tfod != null) {
-            // getUpdatedRecognitions() will return null if no new information is available since
-            // the last time that call was made.
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
-                Log.d("# Object Detected", updatedRecognitions.size());
-
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    Log.d(String.format("label (%d)", i), recognition.getLabel());
-                    Log.d(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    Log.d(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-            }
-            return updatedRecognitions;
-        }
-        return null;
-    }
-    */
+    //Vuforia Stuf
 
     //Complex Methods
     void pickUpStone(){
@@ -707,7 +639,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             double yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
-            if(xDis>2500 || yDis>2500){
+            if(xRaw>250 || yRaw>250){
                 break;
             }
             telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,"");
