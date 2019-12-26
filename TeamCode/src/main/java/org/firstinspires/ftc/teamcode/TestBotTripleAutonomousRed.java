@@ -29,10 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -48,50 +50,31 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="MovementTest", group="Linear Opmode")
-//@Disabled
-public class MovementTest extends SKYSTONEAutonomousMethods {
+@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@Disabled
+public class TestBotTripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    // private int x;
-    // private int y;
-    FtcDashboard dashboard;
 
     @Override
     public void runOpMode() {
-        dashboard = FtcDashboard.getInstance();
-        final double speed = 0.75;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            directionalDrive(10,15, true, 1);
-            //directionalDrive(15,20, true, 0.5);
+            //Drive up to the stones
+            freeEncoderDrive(-10,0,0,-10,1);
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
+
             break;
         }
     }
-
-    /*private void dashboardRecordPosition(int deltax, int deltay) {
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("cat", 3.7);
-        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
-
-        dashboard.sendTelemetryPacket(packet);
-        x = x + deltax;
-        y = y + deltay;
-    }*/
 }

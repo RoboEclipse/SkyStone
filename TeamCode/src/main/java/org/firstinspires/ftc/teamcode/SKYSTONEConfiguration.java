@@ -27,7 +27,7 @@ class SKYSTONEConfiguration {
     final String cappingServo = "capStoneServo";
 
     //Distance Sensors
-    final String leftDistance = "frontDistance";
+    final String frontDistance = "frontDistance";
     final String rightDistance = "rightDistance";
     final String backLeftDistance = "backLeftDistance";
     final String backRightDistance = "backRightDistance";

@@ -75,6 +75,25 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     //Methods
+    //TODO: Incorporate freeEncoderDrive, encoderDrive and runUsingEncoder
+    void freeEncoderDrive(int lf, int rf, int lb, int rb, double power){
+        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ElapsedTime time = new ElapsedTime();
+        myRobot.lf.setTargetPosition(lf*(int)SKYSTONEConstants.TICKS_PER_INCH);
+        myRobot.rf.setTargetPosition(rf*(int)SKYSTONEConstants.TICKS_PER_INCH);
+        myRobot.lb.setTargetPosition(lb*(int)SKYSTONEConstants.TICKS_PER_INCH);
+        myRobot.rb.setTargetPosition(rb*(int)SKYSTONEConstants.TICKS_PER_INCH);
+        setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
+        runMotors(power, power);
+        while (notCloseEnough(20, myRobot.lf, myRobot.rf, myRobot.lb, myRobot.rb) && time.milliseconds()<4000 && opModeIsActive()){
+            Log.d("Left Front: ", myRobot.lf.getCurrentPosition()+"");
+            Log.d("Left Back: ", myRobot.lb.getCurrentPosition()+"");
+            Log.d("Right Front: ", myRobot.rf.getCurrentPosition()+"");
+            Log.d("Right Back: ", myRobot.rb.getCurrentPosition()+"");
+        }
+        runMotors(0,0);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
     void encoderStraightDrive(double inches, double power){
         encoderStraightDriveNoStop(inches, power);
         runMotors(0,0);
@@ -666,27 +685,38 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderStrafeDriveInchesRight(-3, 1);
         sleep(200);
     }
-    void directionalDrive(double targetX, double targetY, boolean PID, boolean rotation, double targetAngle, double tolerance){
+    void coordinateDrive(Localizer.Corner corner, double targetX, double targetY, boolean PID, double tolerance){
+
+        switch (corner){
+            case LEFT_UP:
+        }
+
+    }
+    void directionalDrive(double targetX, double targetY, boolean PID, double tolerance){
         double xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
-        double yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+        double yDis = targetY - myRobot.backDistance.getDistance(DistanceUnit.INCH);
         double totalDistance;
         double kR = 0.01;
-        double velocity = 1;
+        double maxVelocity = 1;
+        double velocity = maxVelocity;
         double rotationVelocity = 0;
-        double kP = 1/20;
-        Log.d("Skystone: ", "kP " + kP + " kR " + kR + " tolerance" + tolerance);
-        while(yDis>tolerance || xDis>tolerance){
-            xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
-            yDis = targetY - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-            telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,7);
+        double kP = 1.0/20;
+        Log.d("Skystone: ", "kP " + kP + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
+        while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
+            double xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+            double yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+            xDis = targetX - xRaw;
+            yDis = targetY - yRaw;
+            if(xDis>2500 || yDis>2500){
+                break;
+            }
+            telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,"");
             Log.d("Skystone:"," Distance to Wall: xDis = " + xDis + " yDis = " + yDis);
             Log.d("Skystone:"," LeftWallDistance: targetX = " + targetX + " targetY = " + targetY);
+            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
             totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
             if(PID) {
-                velocity *= getP(totalDistance, kP);
-            }
-            if(rotation){
-                rotationVelocity = (targetAngle-getHorizontalAngle()) * kR;
+                velocity = Math.max(0.2, Math.abs(maxVelocity * getP(totalDistance, kP)));
             }
             double angle = Math.atan2(xDis,yDis);
             freeDrive(angle, velocity, rotationVelocity);
@@ -727,4 +757,5 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         return ret;
     }
+
 }

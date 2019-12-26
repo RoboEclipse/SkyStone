@@ -65,7 +65,7 @@ public class TestBotTeleOp extends OpMode
         myRobot.initializeDriveTrain(hardwareMap, telemetry);
         backDistance = hardwareMap.get(DistanceSensor.class, "backDistance");
         frontDistance = hardwareMap.get(DistanceSensor.class, "frontDistance");
-        //leftDistance = hardwareMap.get(DistanceSensor.class, "leftDistance");
+        //frontDistance = hardwareMap.get(DistanceSensor.class, "frontDistance");
 
 
         expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
@@ -101,7 +101,7 @@ public class TestBotTeleOp extends OpMode
 /*
         double frontDistanceReading = frontDistance.getDistance(DistanceUnit.CM);
         double backDistanceReading = backDistance.getDistance(DistanceUnit.CM);
-        double leftDistanceReading = leftDistance.getDistance(DistanceUnit.CM);
+        double leftDistanceReading = frontDistance.getDistance(DistanceUnit.CM);
 */
 
 
@@ -129,25 +129,7 @@ public class TestBotTeleOp extends OpMode
                         + " rb: "+ bulkData.getMotorCurrentPosition(myRobot.rbBR)
         );
 
-        int rightRed = myRobot.rightColor.red();
-        int rightBlue = myRobot.rightColor.blue();
-        int rightGreen = myRobot.rightColor.green();
-        int scale = 255;
-        int leftRed = myRobot.leftColor.red();
-        int leftBlue = myRobot.leftColor.blue();
-        int leftGreen = myRobot.leftColor.green();
-        Color.RGBToHSV((int) (leftRed)*scale,
-                (int) (leftGreen) * scale,
-                (int) (leftBlue) * scale,
-                leftHsvValues
-                );
-        Color.RGBToHSV((int) (rightRed) * scale,
-                (int) (rightGreen) * scale,
-                (int) (rightBlue) * scale,
-                rightHsvValues
-        );
-        telemetry.addData("LeftColor: ", "Red: " + leftRed + " Blue: " + leftBlue + " Green: " + leftGreen + " Hue: " + leftHsvValues[0]);
-        telemetry.addData("RightColor: ", "Red: " + rightRed + " Blue: " + rightBlue + " Green: " + rightGreen + " Hue: " + rightHsvValues[0]);
+
         telemetry.update();
 
     }

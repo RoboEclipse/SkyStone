@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -30,7 +26,7 @@ public class SKYSTONEDrivetrainClass {
         elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
-
+        frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
 
         /*
         lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get("backLeft");
