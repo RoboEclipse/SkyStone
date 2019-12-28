@@ -288,6 +288,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             straighteningEncoderDriveNoStop(fastMode, targetAngle, tolerance, power);
         }
         encoderStraightDriveNoReset(inches, power);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     private double getCorrection(double currentAngle, double targetAngle){
