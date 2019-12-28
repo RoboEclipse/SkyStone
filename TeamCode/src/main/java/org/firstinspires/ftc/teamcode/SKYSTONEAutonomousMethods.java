@@ -624,27 +624,70 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
 
     }
-    void directionalDrive(double targetX, double targetY, boolean PID, double tolerance){
+    void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
         double xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
         double yDis = targetY - myRobot.backDistance.getDistance(DistanceUnit.INCH);
         double totalDistance;
-        double kR = 0.01;
+        double kR = -0.01;
         double maxVelocity = 1;
         double velocity = maxVelocity;
         double rotationVelocity = 0;
         double kP = 1.0/20;
+        double currentAngle;
+        double currentError;
+        double xRaw = 0;
+        double yRaw = 0;
+        Localizer.Corner corner;
+
+        if(targetX<SKYSTONEAutonomousConstants.fieldSize/2){
+            if(targetY<SKYSTONEAutonomousConstants.fieldSize/2){
+                corner = Localizer.Corner.LEFT_DOWN;
+            }
+            else{
+                corner = Localizer.Corner.LEFT_UP;
+            }
+        } else {
+            if(targetY<SKYSTONEAutonomousConstants.fieldSize/2){
+                corner = Localizer.Corner.RIGHT_DOWN;
+            }
+            else{
+                corner = Localizer.Corner.RIGHT_UP;
+            }
+        }
         Log.d("Skystone: ", "kP " + kP + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
-            double xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
-            double yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+            switch (corner){
+                case LEFT_DOWN:
+                    xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+
+                    break;
+                case LEFT_UP:
+                    xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                    break;
+                case RIGHT_DOWN:
+                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+
+                    break;
+                case RIGHT_UP:
+                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                    break;
+            }
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
             if(xRaw>250 || yRaw>250){
+                Log.d("Skystone: ", "FinalX: "  + xRaw + " FinalY: " + yRaw);
                 break;
             }
+            currentAngle = loopAround(getHorizontalAngle());
+            currentError = targetAngle - currentAngle;
+            rotationVelocity = currentError * kR;
             telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,"");
-            Log.d("Skystone:"," Distance to Wall: xDis = " + xDis + " yDis = " + yDis);
-            Log.d("Skystone:"," LeftWallDistance: targetX = " + targetX + " targetY = " + targetY);
+            Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
+            Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
             totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
             if(PID) {
@@ -652,7 +695,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
             double angle = Math.atan2(xDis,yDis);
             freeDrive(angle, velocity, rotationVelocity);
-            Log.d("Skystone: ", "Skystone Angle: "+ angle + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
+            Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
 
         }
     }
@@ -680,6 +723,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rf.setPower(v2/scale);
         myRobot.lb.setPower(v3/scale);
         myRobot.rb.setPower(v4/scale);
+        Log.d("Skystone: ", " lfPower: " + v1/scale + " rfPower: " + v2/scale + "lbPower: " + v3/scale + " rbPower: " + v4/scale);
     }
 
     private static double ma(double... xs) {
