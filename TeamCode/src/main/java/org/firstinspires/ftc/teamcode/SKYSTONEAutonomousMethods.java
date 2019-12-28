@@ -695,6 +695,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 velocity = Math.max(0.2, Math.abs(maxVelocity * getP(totalDistance, kP)));
             }
             double angle = Math.atan2(xDis,yDis);
+            if(corner == Localizer.Corner.RIGHT_UP || corner == Localizer.Corner.RIGHT_DOWN){
+                angle = 180-angle;
+            }
             freeDrive(angle, velocity, rotationVelocity);
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
 
