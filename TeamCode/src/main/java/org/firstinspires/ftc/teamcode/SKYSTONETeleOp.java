@@ -165,10 +165,10 @@ public class SKYSTONETeleOp extends OpMode
 
         //Collector Servos
         if(gamepad2.right_trigger>0.7){
-            collectorPower = 0.75;
+            collectorPower = -0.75;
         }
         else if(gamepad2.left_trigger>0.7){
-            collectorPower = -0.75;
+            collectorPower = 0.75;
         }
         else{
             collectorPower = 0;
@@ -236,8 +236,7 @@ public class SKYSTONETeleOp extends OpMode
             + " lb: " + myRobot.lb.getCurrentPosition()
             + " rf: " + myRobot.rf.getCurrentPosition()
             + " rb: "+ myRobot.rb.getCurrentPosition()
-            + " left elevator: " + myRobot.leftElevator.getCurrentPosition()
-            + " right elevator: " + myRobot.rightElevator.getCurrentPosition()
+            + " elevator: " + myRobot.elevator.getCurrentPosition()
             + " slide motor: " + horizSlidePosition
         );
 
@@ -255,14 +254,14 @@ public class SKYSTONETeleOp extends OpMode
     private void pickUpStone(){
         //State 1: Raise elevator, then rotate claw
         if(stage == 0 && timer.milliseconds()>=2000){
-            myRobot.runWithEncoder(0.5, 400, myRobot.rightElevator, myRobot.leftElevator);
+            myRobot.runWithEncoder(0.5, 400, myRobot.elevator);
             clawRotator = SKYSTONEConstants.left90;
             timer.reset();
             stage++;
         }
         //State 2: Lower elevator, then grab stone
         if(stage == 1 && timer.milliseconds()>=2000){
-            myRobot.runWithEncoder(0.5, -400, myRobot.rightElevator, myRobot.leftElevator);
+            myRobot.runWithEncoder(0.5, -400, myRobot.elevator);
             clawPosition = SKYSTONEConstants.tighten;
             timer.reset();
             stage++;
