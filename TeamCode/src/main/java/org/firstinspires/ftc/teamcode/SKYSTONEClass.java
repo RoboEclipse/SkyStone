@@ -214,7 +214,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
     void runCollectorServos(double collectorPower){
         rightCollectorMotor.setPower(collectorPower);
-        leftCollectorMotor.setPower(collectorPower);
+        leftCollectorMotor.setPower(-collectorPower);
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double flClawPosition, double frClawPosition){
