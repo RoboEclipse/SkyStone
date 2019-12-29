@@ -9,8 +9,7 @@ class SKYSTONEConfiguration {
 
     //Attachment motors
     final String slidingMotor = "slidingMotor";
-    final String leftElevatorMotor = "leftElevator";
-    final String rightElevatorMotor = "rightElevator";
+    final String elevator = "elevatorMotor";
     final String rightCollectorMotor = "rightCollector";
     final String leftCollectorMotor = "leftCollector";
     //Autonomous Servos

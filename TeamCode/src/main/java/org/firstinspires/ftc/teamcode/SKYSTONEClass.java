@@ -28,7 +28,7 @@ import static java.lang.Thread.sleep;
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     ColorSensor leftColor, rightColor;
-    DcMotor clawSlide, leftElevator, rightElevator, rightCollectorMotor, leftCollectorMotor;
+    DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
     ExpansionHubEx expansionHub;
@@ -61,8 +61,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightColor = hardwareMap.colorSensor.get("rightColor");
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
-        leftElevator = hardwareMap.dcMotor.get(skystoneNames.leftElevatorMotor);
-        rightElevator = hardwareMap.dcMotor.get(skystoneNames.rightElevatorMotor);
+        elevator = hardwareMap.dcMotor.get(skystoneNames.elevator);
         leftFoundationServo = hardwareMap.servo.get(skystoneNames.leftFoundationServo);
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         capServo = hardwareMap.servo.get(skystoneNames.cappingServo);
@@ -79,13 +78,13 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
 
-        leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
         frontLower.setPosition(SKYSTONEConstants.flUp);
         frontGrabber.setPosition(SKYSTONEConstants.frUp);
@@ -204,8 +203,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
                         + " lb: " + lb.getCurrentPosition()
                         + " rf: " + rf.getCurrentPosition()
                         + " rb: "+ rb.getCurrentPosition()
-                        + " left elevator: " + leftElevator.getCurrentPosition()
-                        + " right elevator: " + rightElevator.getCurrentPosition()
+                        + " elevator: " + elevator.getCurrentPosition()
                         + " slide motor: " + clawSlide.getCurrentPosition()
         );
     }
@@ -225,8 +223,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     }
     //Motor Movement
     void runElevatorMotors(double power){
-        leftElevator.setPower(power);
-        rightElevator.setPower(power);
+        elevator.setPower(power);
     }
     void runWithEncoder(double power, int ticks, DcMotor...motors){
         ElapsedTime time = new ElapsedTime();
@@ -331,17 +328,14 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         */
-        leftElevator.setPower(power);
-        rightElevator.setPower(power);
+        elevator.setPower(power);
         double error = Math.abs(getElevatorDistance()-distance);
         while (error>tolerance){
             error = Math.abs(getElevatorDistance()-distance);
             Log.d("ElevatorError: ", error + "");
         }
-        leftElevator.setPower(0);
-        rightElevator.setPower(0);
-        leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator.setPower(0);
+        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     void resetAutonomous() {
