@@ -85,6 +85,8 @@ public class TestBotTeleOp extends OpMode
     public void loop() {
         telemetry.addData("leftDistance", myRobot.elevatorDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("backDistance", myRobot.backDistance.getDistance(DistanceUnit.INCH));
+        telemetry.addData("frontDistance", myRobot.frontDistance.getDistance(DistanceUnit.INCH));
+        Log.d("Skystone: ", "Mroworeoriwopfwiefds");
         telemetry.update();
     }
 
