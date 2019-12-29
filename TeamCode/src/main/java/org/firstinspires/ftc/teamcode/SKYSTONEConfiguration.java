@@ -11,7 +11,8 @@ class SKYSTONEConfiguration {
     final String slidingMotor = "slidingMotor";
     final String leftElevatorMotor = "leftElevator";
     final String rightElevatorMotor = "rightElevator";
-
+    final String rightCollectorMotor = "rightCollector";
+    final String leftCollectorMotor = "leftCollector";
     //Autonomous Servos
     final String leftFoundationServo = "leftFoundationServo";
     final String rightFoundationServo = "rightFoundationServo";

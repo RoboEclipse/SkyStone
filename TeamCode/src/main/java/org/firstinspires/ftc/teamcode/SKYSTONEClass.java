@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Log;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -29,9 +28,8 @@ import static java.lang.Thread.sleep;
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     ColorSensor leftColor, rightColor;
-    DcMotor clawSlide, leftElevator, rightElevator;
+    DcMotor clawSlide, leftElevator, rightElevator, rightCollectorMotor, leftCollectorMotor;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo;
-    CRServo collectionRotationServo, collectorBackServo;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
@@ -71,15 +69,16 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         frontLower = hardwareMap.servo.get(skystoneNames.leftClaw);
         frontGrabber = hardwareMap.servo.get(skystoneNames.rightClaw);
-        collectionRotationServo = hardwareMap.crservo.get(skystoneNames.collectorRotationServo);
-        collectorBackServo = hardwareMap.crservo.get(skystoneNames.collectorBackRotationServo);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
+        leftCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.leftCollectorMotor);
+        rightCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.rightCollectorMotor);
         //elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
         //frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
+
         leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftElevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -216,8 +215,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     void grabStones (double closingDegrees) { clawServo.setPosition(closingDegrees); }
     void rotateStackingClaw(double turningDegrees) { clawRotation.setPosition(turningDegrees); }
     void runCollectorServos(double collectorPower){
-        collectionRotationServo.setPower(collectorPower);
-        collectorBackServo.setPower(collectorPower);
+        rightCollectorMotor.setPower(collectorPower);
+        leftCollectorMotor.setPower(collectorPower);
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double flClawPosition, double frClawPosition){
@@ -287,9 +286,9 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
-
+    /*
     public int automatedStones(int stage, boolean isFast) {
-        Servo mrow = (Servo) collectionRotationServo;
+        Moto mrow = (Servo) collectionRotationServo;
         if (stage == 0) {
 
         } else if(stage == 1) {
@@ -305,7 +304,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         }
         return stage;
     }
-
+    */
     boolean anyBusy(int tolerance, int targetPosition, DcMotor...motors){
         for(DcMotor motor : motors){
             if(Math.abs(targetPosition-motor.getCurrentPosition())>tolerance){
