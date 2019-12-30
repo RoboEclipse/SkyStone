@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -430,23 +428,26 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         );
         return values[0];
     }
-
-    void frontGrabStone (){
-        myRobot.frontLower.setPosition(SKYSTONEConstants.frontLow);
-        sleep(200);
-        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontGrab);
-        sleep(800);
+    //For carrying the blocks
+    void frontCarry () {
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsUp);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scGrab);
     }
+    //Basic grab
+    void frontGrabStone (){
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsDown);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scGrab);
+        sleep(100);
+    }
+    //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
-        myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
-        sleep(600);
-        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
-        sleep(200);
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsReady);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scReady);
     }
 
     //VuforiaDetectionStuff
 
-    //Vuforia Stuf
+    //Vuforia Stuff
 
     //Complex Methods
     void pickUpStone(){

@@ -51,4 +51,12 @@ public class SKYSTONEAutonomousConstants {
     //PID loop constants, in inches
     public static double reducePowerDistance = 30;
     public static double flooringPower = 0.2;
+
+    //Side base servo
+    public static double bsReady = 0.36;
+    public static double bsDown = 0.32;
+    public static double bsUp = 0.84;
+    //Side Claw
+    public static double scReady = 0.38;
+    public static double scGrab = 0.66;
 }

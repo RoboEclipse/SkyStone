@@ -17,6 +17,8 @@ class SKYSTONEConfiguration {
     final String rightFoundationServo = "rightFoundationServo";
     final String leftClaw = "frontLower";
     final String rightClaw = "frontGrabber";
+    final String sideBaseServo = "sideBaseServo";
+    final String sideClaw = "sideClaw";
 
     //Tele-Op Servos
     final String collectorServo = "clawServo";

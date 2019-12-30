@@ -29,7 +29,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     ColorSensor leftColor, rightColor;
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, sideBaseServo, sideClaw;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
@@ -68,6 +68,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
         frontLower = hardwareMap.servo.get(skystoneNames.leftClaw);
         frontGrabber = hardwareMap.servo.get(skystoneNames.rightClaw);
+        sideBaseServo = hardwareMap.servo.get(skystoneNames.sideBaseServo);
+        sideClaw = hardwareMap.servo.get(skystoneNames.sideClaw);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         leftCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.leftCollectorMotor);
         rightCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.rightCollectorMotor);
@@ -90,6 +92,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         frontGrabber.setPosition(SKYSTONEConstants.frUp);
         rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        //sideBaseServo.setPosition(SKYSTONEConstants.);
     }
 
 
