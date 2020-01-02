@@ -60,6 +60,8 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
     private double autoRotate = 0.5;
     private double autoGrab = 0.5;
     private double sideFoundation = 0.5;
+    private double sideServoPosition = 0.5;
+    private double sideClawPosition = 0.5;
     @Override
     public void runOpMode() {
 
@@ -90,18 +92,31 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             if (gamepad2.dpad_down) {
                sideFoundation -= 0.06;
             }
+            if(gamepad1.a){
+                frontCarry();
+            }
+            if(gamepad1.b){
+                frontGrabStone();
+            }
+            if(gamepad1.x){
+                frontReleaseStone();
+            }
             autoRotate = Math.max(Math.min(1, autoRotate),0);
             autoGrab = Math.max(Math.min(1, autoGrab),0);
             sideFoundation = Math.max(Math.min(1, sideFoundation),0);
             myRobot.frontLower.setPosition(autoRotate);
             myRobot.frontGrabber.setPosition(autoGrab);
+            myRobot.sideBaseServo.setPosition(sideServoPosition);
+            myRobot.sideClaw.setPosition(sideClawPosition);
             //myRobot.foundationServo.setPosition(sideFoundation);
 
 
             // Show the elapsed game time and wheel power.s
-            telemetry.addData("sideFoundaion", sideFoundation);
+            telemetry.addData("sideFoundation", sideFoundation);
             telemetry.addData("AutoRotate", autoRotate);
             telemetry.addData("AutoGrab", autoGrab);
+            telemetry.addData("sideServoPosition", sideServoPosition);
+            telemetry.addData("sideClawPosition", sideClawPosition);
             telemetry.addData("HorizontalAngle", getHorizontalAngle());
             telemetry.addData("RollAngle", getRoll());
             telemetry.addData("VerticalAngle", getVerticalAngle());
@@ -117,7 +132,21 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             telemetry.update();
         }
     }
-
+    void frontCarry () {
+        sideServoPosition = SKYSTONEAutonomousConstants.bsUp;
+        sideClawPosition = SKYSTONEAutonomousConstants.scGrab;
+    }
+    //Basic grab
+    void frontGrabStone (){
+        sideServoPosition = SKYSTONEAutonomousConstants.bsDown;
+        sideClawPosition = SKYSTONEAutonomousConstants.scGrab;
+        sleep(100);
+    }
+    //frontRelease is both the release and the starting position before grab
+    void frontReleaseStone(){
+        sideServoPosition = SKYSTONEAutonomousConstants.bsReady;
+        sideClawPosition = SKYSTONEAutonomousConstants.scReady;
+    }
     public boolean opModeCheck(){
         return opModeIsActive();
     }

@@ -35,4 +35,8 @@ class SKYSTONEConfiguration {
     final String backRightDistance = "backRightDistance";
     final String backDistance = "backDistance";
     final String elevatorHeight = "elevatorHeight";
+
+    //Color Sensors
+    final String frontColor = "frontColor";
+    final String backColor = "backColor";
 }

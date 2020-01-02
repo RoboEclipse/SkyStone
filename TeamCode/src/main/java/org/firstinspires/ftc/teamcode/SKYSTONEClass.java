@@ -57,8 +57,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
         */
-        frontColor = hardwareMap.colorSensor.get("frontColor");
-        backColor = hardwareMap.colorSensor.get("backColor");
+        frontColor = hardwareMap.colorSensor.get(skystoneNames.frontColor);
+        backColor = hardwareMap.colorSensor.get(skystoneNames.backColor);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         elevator = hardwareMap.dcMotor.get(skystoneNames.elevator);
