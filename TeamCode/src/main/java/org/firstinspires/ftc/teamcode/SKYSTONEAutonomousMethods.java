@@ -187,22 +187,35 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void encoderTurnNoStop(double targetAngle, double power, double tolerance) {
-        encoderTurnNoStopPowers(targetAngle, power, power, tolerance);
+        encoderTurnNoStopPowers(targetAngle, -power, power, tolerance);
     }
     void encoderTurnNoStopPowers(double targetAngle, double leftPower, double rightPower, double tolerance) {
+        double kR = 40;
+        double d;
+        double kD = 0.01;
+        double dt;
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
+        double previousError = error;
+        ElapsedTime clock = new ElapsedTime();
+        double t1 = clock.nanoseconds();
         error = loopAround(error);
-        double leftDrivePower = leftPower;
-        double rightDrivePower = rightPower;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(-leftDrivePower, rightDrivePower);
+        double leftDrivePower;
+        double rightDrivePower;
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //runMotors(leftDrivePower, rightDrivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
+            double t2 = clock.nanoseconds();
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle-currentAngle);
-            leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
-            rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
-            runMotors(-leftDrivePower, rightDrivePower);
+            dt = t2-t1;
+            d = (error-previousError)/dt;
+            leftDrivePower = Math.max(Math.min(error/kR, 1),-1)*leftPower + d*kD;
+            rightDrivePower = Math.max(Math.min(error/kR, 1),-1)*rightPower;
+            runMotors(Math.max(Math.abs(leftPower/4), Math.abs(leftDrivePower))*Math.signum(leftDrivePower),
+                    Math.max(Math.abs(rightPower/4), Math.abs(rightDrivePower))*Math.signum(rightDrivePower));
+            previousError = error;
+            t1 = t2;
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -226,7 +239,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void encoderTurnNoStopLeftOnly(double targetAngle, double power, double tolerance) {
-        encoderTurnNoStopPowers(targetAngle, power, 0, tolerance);
+        encoderTurnNoStopPowers(targetAngle, -power, 0, tolerance);
     }
 
     void encoderTurnNoStopRightOnly(double targetAngle, double power, double tolerance) {
