@@ -82,7 +82,13 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            encoderTurn(90, 1, 3);
+            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopLeftOnly(0,1,3);
 
+
+
+            /*
             //Strafe right to align to foundation
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.aFoundationAim, speed);
             //Drive to foundation
@@ -97,7 +103,7 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge1, 0.6);
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.dWallStrafe, -0.8);
             encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
-
+            */
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();

@@ -81,20 +81,22 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+10.0, true, 2,0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, false, 5,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-5, false, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-5, true, 2,0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, SKYSTONEAutonomousConstants.fieldSize-10, false, 2,0);
             straighteningEncoderDrive(72, 0, 50, 1);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0, true, 2,0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 16.0/3+15.0, false, 5,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13, false, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13, true, 2,0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, SKYSTONEAutonomousConstants.fieldSize-18, false, 2,0);
             straighteningEncoderDrive(72, 0, 50, 1);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0, true, 2,0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8+15.0, false, 5,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, false, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, SKYSTONEAutonomousConstants.fieldSize-26, false, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
+            encoderTurn(90, 1, 3);
+            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopLeftOnly(0,1,3);
             /*
             grabAndPlace(8.0/3+10, 20);
             encoderStraightDrive(80, 1);
