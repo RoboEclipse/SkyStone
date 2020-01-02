@@ -105,8 +105,8 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
             //Drive the rest of the distance
             distanceEncoderDrive(1,1,1,0, frontSensor);
-            float leftHue = getHue(myRobot.leftColor);
-            float rightHue = getHue(myRobot.rightColor);
+            float leftHue = getHue(myRobot.frontColor);
+            float rightHue = getHue(myRobot.backColor);
             if(leftHue >= 115) {
                 skysStonePosition = "Left";
             }

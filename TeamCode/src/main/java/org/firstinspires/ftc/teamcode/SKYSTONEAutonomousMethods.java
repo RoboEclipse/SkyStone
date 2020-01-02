@@ -504,8 +504,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             synchronized (this) {
                 try {
                     telemetry.addData("Angle: ", myRobot.getBackDistance() + "");
-                    telemetry.addData("Left Hue: ", getHue(myRobot.leftColor) + "");
-                    telemetry.addData("Right Hue: ", getHue(myRobot.rightColor) + "");
+                    telemetry.addData("Left Hue: ", getHue(myRobot.frontColor) + "");
+                    telemetry.addData("Right Hue: ", getHue(myRobot.backColor) + "");
 
                     telemetry.update();
                     this.wait();
@@ -528,8 +528,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         distanceEncoderDrive(2,0.25,1,0, myRobot.frontDistance);
         //Detect where the SkyStone is
-        float leftHue = getHue(myRobot.leftColor);
-        float rightHue = getHue(myRobot.rightColor);
+        float leftHue = getHue(myRobot.frontColor);
+        float rightHue = getHue(myRobot.backColor);
         float depotSideHue = isRedSide?leftHue:rightHue;
         float bridgeSideHue = isRedSide?rightHue:leftHue;
         Log.d("Skystone:", "Bridge Side Hue: " + bridgeSideHue + ". Depot Side Hue: " + depotSideHue);

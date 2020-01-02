@@ -27,7 +27,7 @@ import static java.lang.Thread.sleep;
 
 public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
-    ColorSensor leftColor, rightColor;
+    ColorSensor frontColor, backColor;
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, sideBaseServo, sideClaw;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
@@ -57,8 +57,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
         */
-        leftColor = hardwareMap.colorSensor.get("leftColor");
-        rightColor = hardwareMap.colorSensor.get("rightColor");
+        frontColor = hardwareMap.colorSensor.get("frontColor");
+        backColor = hardwareMap.colorSensor.get("backColor");
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
         clawSlide = hardwareMap.dcMotor.get(skystoneNames.slidingMotor);
         elevator = hardwareMap.dcMotor.get(skystoneNames.elevator);
