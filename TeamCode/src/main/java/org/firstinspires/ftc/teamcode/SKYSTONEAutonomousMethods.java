@@ -794,4 +794,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         return ret;
     }
+
+    void placeAndReturn(double x1, double y1, double x2, double y2) {
+        directionalDrive(x1, y1, true, 2,0);
+        frontReleaseStone();
+        directionalDrive(x1+7, y1-5, true, 2,0);
+        straighteningEncoderDrive(72, 0, 50, 1);
+        directionalDrive(x2, y2, true, 2,0);
+        frontGrabStone();
+        frontCarry();
+        directionalDrive(x2+7, y2+5, true, 2,0);
+        straighteningEncoderDrive(-65, 0, 50, 1);
+    }
 }

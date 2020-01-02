@@ -33,6 +33,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -47,38 +51,39 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TestBotTripleSkystoneRed", group="Linear Opmode")
+@Autonomous(name="1DoubleAutonomousRed", group="Linear Opmode")
 //@Disabled
-public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    // private int x;
-    // private int y;
+    double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
+    //Second Strafe
+    double wallDistance = SKYSTONEAutonomousConstants.doubleWallDistance;
+    //double y = 0;
     FtcDashboard dashboard;
+    List<Recognition> updatedRecognitions;
+    String skyStonePosition = "Left";
 
     @Override
     public void runOpMode() {
+
+        //SKYSTONEAutonomousMethods methods = this;
+        //SKYSTONEClass myRobot = this.myRobot;
         dashboard = FtcDashboard.getInstance();
-        final double speed = 0.75;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        final double speed = 1;
+        initialize(hardwareMap, telemetry);
+        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
-        while (!isStarted()) {
-            synchronized (this) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        }
+        getAngleWaitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while(opModeIsActive()){
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+10.0, true, 2,0);
+            frontGrabStone();
+            frontCarry();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, true, 2,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
@@ -86,22 +91,34 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
                     SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
+            frontReleaseStone();
             encoderTurn(90, 1, 3);
             encoderTurnNoStopPowers(70, -1,-0.25,3);
             encoderTurnNoStopLeftOnly(0,1,3);
-            /*
-            grabAndPlace(8.0/3+10, 20);
-            encoderStraightDrive(80, 1);
-            grabAndPlace(16.0/3+10, 14);
-            encoderStraightDrive(80, 1);
-            grabAndPlace(8+10, 8);
-            encoderTurn(90,1,3);
-
-             */
             break;
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
+
     }
 
+
+    /*
+    private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
+        y = vuforiaMethods.loopDetection(telemetry, detections);
+        if(y > SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Right";
+            Log.d("SkystonePosition", "Right: " + y);
+            telemetry.addData("SkystonePosition", "Right");
+        }
+        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
+            skyStonePosition = "Center";
+            Log.d("SkystonePosition", "Center: " + y);
+        }
+        else{
+            Log.d("SkyStonePosition", "Left: " + y);
+        }
+    }
+    */
     /*private void dashboardRecordPosition(int deltax, int deltay) {
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("cat", 3.7);
