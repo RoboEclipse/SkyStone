@@ -190,32 +190,78 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderTurnNoStopPowers(targetAngle, -power, power, tolerance);
     }
     void encoderTurnNoStopPowers(double targetAngle, double leftPower, double rightPower, double tolerance) {
-        double kR = 40;
+        double kR = SKYSTONEAutonomousConstants.kR;
+        double kD = SKYSTONEAutonomousConstants.kD;
+
+        //Undefined constants
         double d;
-        double kD = 0.01;
         double dt;
+        double leftProportionalPower;
+        double rightProportionalPower;
+        //Initial error
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
+        error = loopAround(error);
         double previousError = error;
+        //Initial Time
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
-        error = loopAround(error);
+
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while(Math.abs(error)>tolerance && opModeIsActive()){
+            //Getting Error
+            currentAngle = getHorizontalAngle();
+            error = loopAround(targetAngle-currentAngle);
+
+            //Getting time difference
+            double t2 = clock.nanoseconds();
+            dt = t2-t1;
+
+            //Setting d action
+            d = (error-previousError)/dt*Math.pow(10,9);
+            //Setting p action
+            leftProportionalPower = Math.max(Math.min(error*kR, 1),-1)*leftPower;
+            rightProportionalPower = Math.max(Math.min(error*kR, 1),-1)*rightPower;
+            //Set real power
+            double realLeftPower = Math.max(Math.abs(leftPower/4), Math.abs(leftProportionalPower) + d*kD)*Math.signum(leftProportionalPower);
+            double realRightPower = Math.max(Math.abs(rightPower/4), Math.abs(rightProportionalPower)  + d*kD)*Math.signum(rightProportionalPower);
+            runMotors(realLeftPower, realRightPower);
+
+            //Store old values
+            previousError = error;
+            t1 = t2;
+
+            //Logging
+            Log.d("Skystone: ", "leftProportionalPower: " + leftProportionalPower + " rightProportionalPower: " + rightProportionalPower);
+            Log.d("Skystone: ", "dt: " + dt + "DerivativeAction: " + d*kD);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + realLeftPower + "rightPower: " + realRightPower + "CurrentAngle: " + currentAngle);
+        }
+    }
+    void encoderTurnNoStopNoD(double targetAngle, double leftPower, double rightPower, double tolerance) {
+        double kR = SKYSTONEAutonomousConstants.kR;
+        //Undefined constants
         double leftDrivePower;
         double rightDrivePower;
+        //Initial error
+        double currentAngle = getHorizontalAngle();
+        double error = targetAngle-currentAngle;
+        error = loopAround(error);
+
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //runMotors(leftDrivePower, rightDrivePower);
         while(Math.abs(error)>tolerance && opModeIsActive()){
-            double t2 = clock.nanoseconds();
+            //Getting Error
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle-currentAngle);
-            dt = t2-t1;
-            d = (error-previousError)/dt;
-            leftDrivePower = Math.max(Math.min(error/kR, 1),-1)*leftPower + d*kD;
+
+            //Setting powers
+            leftDrivePower = Math.max(Math.min(error/kR, 1),-1)*leftPower;
             rightDrivePower = Math.max(Math.min(error/kR, 1),-1)*rightPower;
+
             runMotors(Math.max(Math.abs(leftPower/4), Math.abs(leftDrivePower))*Math.signum(leftDrivePower),
                     Math.max(Math.abs(rightPower/4), Math.abs(rightDrivePower))*Math.signum(rightDrivePower));
-            previousError = error;
-            t1 = t2;
+
+            //Logging
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
         }
     }

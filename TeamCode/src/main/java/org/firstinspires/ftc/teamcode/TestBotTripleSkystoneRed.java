@@ -79,20 +79,12 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+10.0, true, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, false, 5,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, true, 2,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-5, true, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, SKYSTONEAutonomousConstants.fieldSize-10, false, 2,0);
-            straighteningEncoderDrive(72, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0, true, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 16.0/3+15.0, false, 5,0);
-            straighteningEncoderDrive(-65, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13, true, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, SKYSTONEAutonomousConstants.fieldSize-18, false, 2,0);
-            straighteningEncoderDrive(72, 0, 50, 1);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0, true, 2,0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8+15.0, false, 5,0);
-            straighteningEncoderDrive(-65, 0, 50, 1);
+            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
+                    SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
+            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
+                    SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
             encoderTurn(90, 1, 3);
             encoderTurnNoStopPowers(70, -1,-0.25,3);
@@ -110,12 +102,13 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
         }
     }
 
-    private void grabAndPlace(double closeWallDistance, double farWallDistance) {
-        directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 8, closeWallDistance, true, 2.5,0);
-        directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 3,(closeWallDistance-4), true, 2.5,0);
-        encoderStraightDrive(-50, 1);
-        directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 8, SKYSTONEAutonomousConstants.fieldSize-farWallDistance, true, 2.5, 0);
-        directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 3, SKYSTONEAutonomousConstants.fieldSize-(farWallDistance-4), true, 2.5, 0);
+    private void placeAndReturn(double x1, double y1, double x2, double y2) {
+        directionalDrive(x1, y1, true, 2,0);
+        directionalDrive(x1+7, y1-5, true, 2,0);
+        straighteningEncoderDrive(72, 0, 50, 1);
+        directionalDrive(x2, y2, true, 2,0);
+        directionalDrive(x2+7, y2+5, true, 2,0);
+        straighteningEncoderDrive(-65, 0, 50, 1);
     }
 
     /*private void dashboardRecordPosition(int deltax, int deltay) {
