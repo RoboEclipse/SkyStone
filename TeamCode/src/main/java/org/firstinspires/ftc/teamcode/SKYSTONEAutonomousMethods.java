@@ -423,8 +423,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         int scale = 255;
         Color.RGBToHSV(sensor.red()*scale,
                 sensor.green() * scale,
-                sensor.blue() * scale,
-                 values
+                sensor.blue() * scale, values
         );
         return values[0];
     }
@@ -736,5 +735,4 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         return ret;
     }
-
 }
