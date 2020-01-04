@@ -81,12 +81,30 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
+            /*
             frontReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+10.0, true, 2,0);
             frontGrabStone();
             frontCarry();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, true, 2,0);
             straighteningEncoderDrive(-10, 0, 50, 1);
+            */
+            //grabFoundation();
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            encoderTurn(90, 1, 3);
+            encoderStraightDrive(-5,1);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            sleep(250);
+            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopLeftOnly(0,1,3);
+            encoderStraightDrive(-12,1);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            sleep(250);
+            encoderStraightDrive(36,1);
             /*
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
                     SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
