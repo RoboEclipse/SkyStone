@@ -488,19 +488,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     //For carrying the blocks
     void frontCarry () {
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsUp);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scGrab);
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
     }
     //Basic grab
     void frontGrabStone (){
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsDown);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scGrab);
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbDown);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
         sleep(300);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsReady);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scReady);
+        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsReady);
     }
 
     //VuforiaDetectionStuff

@@ -133,19 +133,19 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
         }
     }
     void frontCarry () {
-        sideServoPosition = SKYSTONEAutonomousConstants.bsUp;
-        sideClawPosition = SKYSTONEAutonomousConstants.scGrab;
+        sideServoPosition = SKYSTONEAutonomousConstants.fbUp;
+        sideClawPosition = SKYSTONEAutonomousConstants.fsGrab;
     }
     //Basic grab
     void frontGrabStone (){
-        sideServoPosition = SKYSTONEAutonomousConstants.bsDown;
-        sideClawPosition = SKYSTONEAutonomousConstants.scGrab;
+        sideServoPosition = SKYSTONEAutonomousConstants.fbDown;
+        sideClawPosition = SKYSTONEAutonomousConstants.fsGrab;
         sleep(100);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
-        sideServoPosition = SKYSTONEAutonomousConstants.bsReady;
-        sideClawPosition = SKYSTONEAutonomousConstants.scReady;
+        sideServoPosition = SKYSTONEAutonomousConstants.fbReady;
+        sideClawPosition = SKYSTONEAutonomousConstants.fsReady;
     }
     public boolean opModeCheck(){
         return opModeIsActive();
