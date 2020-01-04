@@ -52,13 +52,21 @@ public class SKYSTONEAutonomousConstants {
     public static double reducePowerDistance = 30;
     public static double flooringPower = 0.2;
 
-    //Side base servo
-    public static double bsReady = 0.36;
-    public static double bsDown = 0.32;
-    public static double bsUp = 0.84;
-    //Side Claw
-    public static double scReady = 0.38;
-    public static double scGrab = 0.66;
+    //Front Side base servo
+    public static double fbReady = 0.36;
+    public static double fbDown = 0.28;
+    public static double fbUp = 0.66;
+    //Front Side Autonomous Claw
+    public static double fsReady = 0.38; //Needs to be updated
+    public static double fsGrab = 0.66; //Needs to be updated
+    //Front Side base servo
+    public static double bbReady = 0.86;
+    public static double bbDown = 0.91;
+    public static double bbUp = 0.6;
+    //Front Side Autonomous Claw
+    public static double bsReady = 0; //Not right
+    public static double bsGrab = 0; //Not right
+    //Pure pursuit constants
     public static double kR = 1.0/25;
     public static double kD = 0.004;
 }
