@@ -59,7 +59,7 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.initialize(hardwareMap, telemetry);
         myRobot.frontColor.enableLed(false);
         myRobot.backColor.enableLed(false);
-        myRobot.capServo.setPosition(0.33);
+        myRobot.capServo.setPosition(capStonePosition);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
@@ -131,11 +131,11 @@ public class SKYSTONETeleOp extends OpMode
         //Capstone Controls
 
         if(gamepad1.x) {
-            myRobot.capServo.setPosition(SKYSTONEConstants.cDown);
+            capStonePosition = SKYSTONEConstants.cDown;
         } else if (gamepad1.y) {
-            myRobot.capServo.setPosition(SKYSTONEConstants.cUp);
+            capStonePosition = SKYSTONEConstants.cUp;
         }
-
+        myRobot.capServo.setPosition(capStonePosition);
         //Claw rotation
         int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();
         if(gamepad2.dpad_left){
@@ -178,14 +178,19 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            frClawPosition = SKYSTONEConstants.frUp;
-            flClawPosition = SKYSTONEConstants.flUp;
+            myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.bbUp);
+            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
+            myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
+            myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
         }
         if(gamepad2.left_bumper){
-            frClawPosition = SKYSTONEConstants.frDown;
-            flClawPosition = SKYSTONEConstants.flDown;
+            myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.bbReady);
+            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
+            myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbReady);
+            myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsReady);
         }
-        myRobot.moveFrontClaw(flClawPosition, frClawPosition);
+
+        // TODO myRobot.moveFrontClaw(flClawPosition, frClawPosition);
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
@@ -221,6 +226,7 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("ClawPosition", clawPosition);
         telemetry.addData("leftFoundationPosition", leftFoundationPosition);
         telemetry.addData("CollectorPower", collectorPower);
+        telemetry.addData("CapstonePosition", capStonePosition);
         //telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
         //telemetry.addData("BackDistance", myRobot.getBackDistance());
         myRobot.readEncoders();

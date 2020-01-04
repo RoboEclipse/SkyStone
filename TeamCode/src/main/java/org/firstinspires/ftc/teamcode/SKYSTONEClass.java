@@ -88,11 +88,14 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
-        frontLower.setPosition(SKYSTONEConstants.flUp);
-        frontGrabber.setPosition(SKYSTONEConstants.frUp);
+        // Front is really back claw
+        frontLower.setPosition(SKYSTONEAutonomousConstants.bbUp);
+        frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
         rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        //sideBaseServo.setPosition(SKYSTONEConstants.);
+        sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+
     }
 
 
@@ -221,8 +224,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double flClawPosition, double frClawPosition){
-        frontLower.setPosition(flClawPosition);
-        frontGrabber.setPosition(frClawPosition);
+        //frontLower.setPosition(flClawPosition);
+        //frontGrabber.setPosition(frClawPosition);
     }
     //Motor Movement
     void runElevatorMotors(double power){

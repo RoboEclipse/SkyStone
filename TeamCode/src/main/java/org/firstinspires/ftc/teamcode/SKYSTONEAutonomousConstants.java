@@ -64,7 +64,7 @@ public class SKYSTONEAutonomousConstants {
     public static double bbDown = 0.91;
     public static double bbUp = 0.6;
     //Front Side Autonomous Claw
-    public static double bsReady = 0; //Not right
+    public static double bsReady = .2; //Not right
     public static double bsGrab = 0; //Not right
     //Pure pursuit constants
     public static double kR = 1.0/25;
