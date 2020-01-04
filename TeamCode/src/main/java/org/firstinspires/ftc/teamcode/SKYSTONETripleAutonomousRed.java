@@ -51,7 +51,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="1DoubleAutonomousRed", group="Linear Opmode")
+@Autonomous(name="1TripleAutonomousRed", group="Linear Opmode")
 //@Disabled
 public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
@@ -81,11 +81,13 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
+            frontReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+10.0, true, 2,0);
             frontGrabStone();
             frontCarry();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, true, 2,0);
-            straighteningEncoderDrive(-65, 0, 50, 1);
+            straighteningEncoderDrive(-10, 0, 50, 1);
+            /*
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
                     SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
@@ -95,8 +97,9 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderTurn(90, 1, 3);
             encoderTurnNoStopPowers(70, -1,-0.25,3);
             encoderTurnNoStopLeftOnly(0,1,3);
+            */
             break;
-        }
+            }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
