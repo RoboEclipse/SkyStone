@@ -495,7 +495,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void frontGrabStone (){
         myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.bsDown);
         myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.scGrab);
-        sleep(100);
+        sleep(300);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
