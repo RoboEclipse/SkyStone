@@ -749,7 +749,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
             totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
             if(PID) {
-                velocity = Math.max(0.25, Math.abs(maxVelocity * getP(totalDistance, kP)));
+                velocity = Math.max(0.5, Math.abs(maxVelocity * getP(totalDistance, kP)));
             }
             double angle = Math.atan2(xDis,yDis);
             if(corner == Localizer.Corner.RIGHT_UP || corner == Localizer.Corner.RIGHT_DOWN){

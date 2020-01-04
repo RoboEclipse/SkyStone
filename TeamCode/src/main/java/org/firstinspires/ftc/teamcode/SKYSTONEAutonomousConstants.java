@@ -58,7 +58,7 @@ public class SKYSTONEAutonomousConstants {
     public static double fbUp = 0.66;
     //Front Side Autonomous Claw
     public static double fsReady = 0.38; //Needs to be updated
-    public static double fsGrab = 0.66; //Needs to be updated
+    public static double fsGrab = 0.45; //Needs to be updated
     //Front Side base servo
     public static double bbReady = 0.86;
     public static double bbDown = 0.91;

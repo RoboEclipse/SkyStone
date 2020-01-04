@@ -51,9 +51,9 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="1TripleAutonomousRed", group="Linear Opmode")
+@Autonomous(name="1TripleAutonomousBlue", group="Linear Opmode")
 //@Disabled
-public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
+public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -83,6 +83,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
+            /*
             frontReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
             if(getHue(myRobot.frontColor)>70){
@@ -107,13 +108,17 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             straighteningEncoderDrive(-75, 0, 50, 1);
             //grabFoundation();
 
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-14, true, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
             frontReleaseStone();
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             frontCarry();
+
+             */
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             encoderTurn(90, 1, 3);
-            encoderStraightDrive(-7,1);
+            encoderStraightDrive(-5,1);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             sleep(250);

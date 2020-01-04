@@ -43,11 +43,12 @@ public class SKYSTONETeleOp extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEClass myRobot = new SKYSTONEClass();
-    private double clawRotator = SKYSTONEConstants.straight;
-    private double clawPosition = 0;
+    private double clawRotator = SKYSTONEConstants.oppositeSide;
+    private double clawPosition = SKYSTONEConstants.tighten;
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
+    private double capStonePosition = 0.33;
     private double flClawPosition = SKYSTONEConstants.frontHigh;
     private double frClawPosition = SKYSTONEConstants.frontLoosen;
     /*
@@ -58,6 +59,7 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.initialize(hardwareMap, telemetry);
         myRobot.frontColor.enableLed(false);
         myRobot.backColor.enableLed(false);
+        myRobot.capServo.setPosition(0.33);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
     }
