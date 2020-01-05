@@ -220,11 +220,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Setting d action
             d = (error-previousError)/dt*Math.pow(10,9);
             //Setting p action
-            leftProportionalPower = Math.max(Math.min(error*kR, 1),-1)*leftPower;
-            rightProportionalPower = Math.max(Math.min(error*kR, 1),-1)*rightPower;
+            leftProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*leftPower;
+            rightProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*rightPower;
             //Set real power
-            double realLeftPower = Math.max(Math.abs(leftPower/4), Math.abs(leftProportionalPower) + d*kD)*Math.signum(leftProportionalPower);
-            double realRightPower = Math.max(Math.abs(rightPower/4), Math.abs(rightProportionalPower)  + d*kD)*Math.signum(rightProportionalPower);
+            double realLeftPower = Math.max(Math.abs(leftPower/2), Math.abs(leftProportionalPower))*Math.signum(leftProportionalPower);
+            double realRightPower = Math.max(Math.abs(rightPower/2), Math.abs(rightProportionalPower))*Math.signum(rightProportionalPower);
             runMotors(realLeftPower, realRightPower);
 
             //Store old values
@@ -239,6 +239,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void turn(double targetAngle, double leftPower, double rightPower, double tolerance){
+        double kR = 1/60;
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
         error = loopAround(error);
@@ -248,8 +249,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         while(Math.abs(error)>tolerance && opModeIsActive()){
             currentAngle = getHorizontalAngle();
             error = loopAround(targetAngle-currentAngle);
-            leftDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(leftPower);
-            rightDrivePower = Math.max(Math.min(error/60, 1),-1)*Math.abs(rightPower);
+            leftDrivePower = Math.max(Math.min(error*kR, 1),-1)*Math.abs(leftPower);
+            rightDrivePower = Math.max(Math.min(error*kR, 1),-1)*Math.abs(rightPower);
             leftDrivePower = floorPower(leftDrivePower, 0.45);
             rightDrivePower = floorPower(rightDrivePower, 0.45);
             runMotors(-leftDrivePower, rightDrivePower);
@@ -461,19 +462,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     //For carrying the blocks
     void backCarryStone () {
-        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
-        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
     }
     //Basic grab
     void backGrabStone (){
-        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbDown);
-        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbDown);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
         sleep(300);
     }
     //frontRelease is both the release and the starting position before grab
     void backReleaseStone(){
-        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
-        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
     }
     void frontCarryStone () {
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbUp);

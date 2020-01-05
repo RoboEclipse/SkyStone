@@ -84,23 +84,11 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         while(opModeIsActive()){
             frontReleaseStone();
+            backReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
-            if(getHue(myRobot.frontColor)>70){
-                skyStonePosition = "Depot";
-            }
-            else if(getHue(myRobot.backColor)>70){
-                skyStonePosition = "Bridge";
-            }
-            if(skyStonePosition.equals("Center")){
-                wallDistance+=8;
-                distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
-                //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-            }
-            if(skyStonePosition.equals("Bridge")){
-                wallDistance+=16;
-                distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
-                //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-            }
+            wallDistance = detectSkyStonePosition(wallDistance, skyStonePosition);
+            //TODO: Potentially switch claws
+            backCarryStone();
             frontGrabStone();
             frontCarryStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, wallDistance+5, true, 2,0);
@@ -108,21 +96,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             //grabFoundation();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-14, true, 2,0);
             frontReleaseStone();
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            frontCarryStone();
-            encoderTurn(90, 1, 3);
-            encoderStraightDrive(-7,1);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-            sleep(250);
-            encoderTurnNoStopPowers(70, -1,-0.5,3);
-            encoderTurnNoStopLeftOnly(0,1,3);
-            encoderStraightDrive(-12,1);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(250);
-            encoderStraightDrive(5,1);
+            grabFoundation();
             /*
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
                     SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
@@ -138,6 +112,44 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
+    }
+
+    private void grabFoundation() {
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        frontCarryStone();
+        encoderTurn(90, 1, 3);
+        encoderStraightDrive(-7,1);
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+        sleep(250);
+        encoderTurnNoStopPowers(70, -1,-0.5,3);
+        encoderTurnNoStopLeftOnly(0,1,3);
+        encoderStraightDrive(-12,1);
+        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+        sleep(250);
+        encoderStraightDrive(5,1);
+    }
+
+    private double detectSkyStonePosition(double wallDistance, String skyStonePosition) {
+        if(getHue(myRobot.frontColor)>70){
+            skyStonePosition = "Depot";
+        }
+        else if(getHue(myRobot.backColor)>70){
+            skyStonePosition = "Bridge";
+        }
+        if(skyStonePosition.equals("Center")){
+            wallDistance+=8;
+            distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
+            //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
+        }
+        if(skyStonePosition.equals("Bridge")){
+            wallDistance+=16;
+            distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
+            //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
+        }
+        return wallDistance;
     }
 
 

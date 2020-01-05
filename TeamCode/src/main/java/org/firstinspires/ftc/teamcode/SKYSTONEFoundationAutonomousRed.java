@@ -72,6 +72,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            /*
             //Raise up foundation servos
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
@@ -85,6 +86,26 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             encoderStraightDrive(SKYSTONEAutonomousConstants.eSkybridge1 + SKYSTONEAutonomousConstants.eSkybridge2, 0.6);
             //encoderStrafeDriveInchesRight(SKYSTONEConstants.dWallStrafe, -0.8);
             //encoderStraightDrive(SKYSTONEConstants.eSkybridge2, 0.6);
+            */
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-14, true, 2,0);
+            frontReleaseStone();
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            frontCarryStone();
+            encoderTurn(90, 1, 3);
+            encoderStraightDrive(-7,1);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
+            sleep(250);
+            encoderStrafeDriveInchesRight(12,1);
+            encoderTurnNoStopPowers(70, -1,-0.5,3);
+            encoderTurnNoStopLeftOnly(0,1,3);
+            encoderStraightDrive(-18,1);
+            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
+            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
+            sleep(250);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-2, SKYSTONEAutonomousConstants.fieldSize-36,true, 2, 0);
+            encoderStraightDrive(12, 1);
             break;
 
 

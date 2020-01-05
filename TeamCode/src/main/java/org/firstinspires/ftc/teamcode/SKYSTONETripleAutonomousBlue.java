@@ -83,7 +83,6 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         runtime.reset();
 
         while(opModeIsActive()){
-            /*
             frontReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
             if(getHue(myRobot.frontColor)>70){
@@ -103,7 +102,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
                 //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
             }
             frontGrabStone();
-            frontCarry();
+            frontCarryStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, wallDistance+5, true, 2,0);
             straighteningEncoderDrive(-75, 0, 50, 1);
             //grabFoundation();
@@ -112,9 +111,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
             frontReleaseStone();
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            frontCarry();
-
-             */
+            frontCarryStone();
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             encoderTurn(90, 1, 3);

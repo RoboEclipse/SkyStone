@@ -81,10 +81,12 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
 
             encoderTurn(90, 1, 3);
+            /*
             encoderStraightDrive(-4,1);
             encoderTurnNoStopPowers(70, -1,-0.25,3);
             encoderTurnNoStopLeftOnly(0,1,3);
             runMotors(0,0);
+            */
             //encoderTurnNoStopPowers(70, -1,-0.25,3);
             //encoderTurnNoStopLeftOnly(0,1,3);
             //directionalDrive(5,15, false, 4,0);
