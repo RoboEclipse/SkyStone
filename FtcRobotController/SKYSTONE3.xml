@@ -8,23 +8,23 @@
             <Motor name="leftCollector" port="3" />
             <Servo name="clawServo" port="0" />
             <Servo name="rotationServo" port="1" />
-            <ContinuousRotationServo name="collectorRotationServo" port="2" />
-            <Servo name="capStoneServo" port="3" />
+            <ContinuousRotationServo name="" port="2" />
+            <Servo name="" port="3" />
             <Servo name="leftFoundationServo" port="4" />
             <Servo name="rightFoundationServo" port="5" />
             <LynxEmbeddedIMU name="imu 1" port="0" bus="0" />
             <REV_VL53L0X_RANGE_SENSOR name="rightDistance" port="0" bus="1" />
-            <LynxColorSensor name="frontColor" port="0" bus="2" />
-            <LynxColorSensor name="backColor" port="0" bus="3" />
+            <LynxColorSensor name="backColor" port="0" bus="2" />
+            <LynxColorSensor name="frontColor" port="0" bus="3" />
         </LynxModule>
         <LynxModule name="Expansion Hub 1" port="3">
             <NestRest37CW name="backLeft" port="0" />
             <NestRest37CW name="frontLeft" port="1" />
             <NestRest37CW name="backRight" port="2" />
             <NestRest37CW name="frontRight" port="3" />
-            <Servo name="frontGrabber" port="0" />
-            <Servo name="frontLower" port="1" />
-            <ContinuousRotationServo name="collectorBackServo" port="3" />
+            <Servo name="capStoneServo" port="1" />
+            <Servo name="frontLower" port="2" />
+            <Servo name="frontGrabber" port="3" />
             <Servo name="sideBaseServo" port="4" />
             <Servo name="sideClaw" port="5" />
             <REV_VL53L0X_RANGE_SENSOR name="backDistance" port="0" bus="3" />
