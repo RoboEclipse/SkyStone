@@ -29,7 +29,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     ColorSensor frontColor, backColor;
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontLower, frontGrabber, capServo, sideBaseServo, sideClaw;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontBase, frontGrabber, capServo, backBase, backGrabber;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
@@ -66,14 +66,14 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rightFoundationServo = hardwareMap.servo.get(skystoneNames.rightFoundationServo);
         capServo = hardwareMap.servo.get(skystoneNames.cappingServo);
         clawServo = hardwareMap.servo.get(skystoneNames.collectorServo);
-        frontLower = hardwareMap.servo.get(skystoneNames.leftClaw);
-        frontGrabber = hardwareMap.servo.get(skystoneNames.rightClaw);
-        sideBaseServo = hardwareMap.servo.get(skystoneNames.sideBaseServo);
-        sideClaw = hardwareMap.servo.get(skystoneNames.sideClaw);
+        frontBase = hardwareMap.servo.get(skystoneNames.frontBase);
+        frontGrabber = hardwareMap.servo.get(skystoneNames.frontGrabber);
+        backBase = hardwareMap.servo.get(skystoneNames.backBase);
+        backGrabber = hardwareMap.servo.get(skystoneNames.backGrabber);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         leftCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.leftCollectorMotor);
         rightCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.rightCollectorMotor);
-        //elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
+        //elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);
@@ -89,12 +89,12 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
         // Front is really back claw
-        frontLower.setPosition(SKYSTONEAutonomousConstants.bbUp);
-        frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
+        //frontBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
+        //frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
         rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
-        sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        //backBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        //backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
 
     }
 
@@ -102,27 +102,6 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
 
     //Methods
     //Shortcuts
-    private void setModeAllDrive(DcMotor.RunMode mode){
-        lb.setMode(mode);
-        lf.setMode(mode);
-        rb.setMode(mode);
-        rf.setMode(mode);
-    }
-    private void multiSetTargetPosition(double ticks, DcMotor...motors){
-        for(DcMotor motor:motors){
-            motor.setTargetPosition((int) Math.round(ticks));
-        }
-    }
-    private boolean anyBusy(){
-        return lb.isBusy() || lf.isBusy() || rb.isBusy() || rf.isBusy();
-    }
-    void runMotors (double leftPower, double rightPower){
-        lb.setPower(leftPower);
-        lf.setPower(leftPower);
-        rb.setPower(rightPower);
-        rf.setPower(rightPower);
-    }
-
     void initializeBR (HardwareMap hardwareMap){
         expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
 
@@ -153,12 +132,6 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         lb.setPower(w.lr);
         rb.setPower(w.rr);
         telemetry.addData("Powers", String.format(Locale.US, "lf %.2f lr %.2f rf %.2f rr %.2f", w.lf, w.lr, w.rf, w.rr));
-    }
-    void encoderDiagonal1(double power, int ticks) {
-        runWithEncoder(power,ticks, lb, rf);
-    }
-    void encoderDiagonal2(double power, int ticks1) {
-        runWithEncoder(power,ticks1, lf, rb);
     }
     private static class Wheels {
         double lf, lr, rf, rr;
@@ -224,7 +197,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     }
     void setCapServo (double turningDegrees) { capServo.setPosition(turningDegrees); }
     void moveFrontClaw (double flClawPosition, double frClawPosition){
-        //frontLower.setPosition(flClawPosition);
+        //frontBase.setPosition(flClawPosition);
         //frontGrabber.setPosition(frClawPosition);
     }
     //Motor Movement
@@ -322,26 +295,6 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     }
     double getFrontDistance() {
         return frontDistance.getDistance(DistanceUnit.INCH);
-    }
-    double getElevatorDistance(){
-        return elevatorDistance.getDistance(DistanceUnit.CM);
-    }
-    void elevatorDistanceDrive(double power, int ticks, double distance, double tolerance){
-        /*
-        leftElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightElevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        multiSetTargetPosition(ticks, leftElevator, rightElevator);
-        leftElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightElevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        */
-        elevator.setPower(power);
-        double error = Math.abs(getElevatorDistance()-distance);
-        while (error>tolerance){
-            error = Math.abs(getElevatorDistance()-distance);
-            Log.d("ElevatorError: ", error + "");
-        }
-        elevator.setPower(0);
-        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     void resetAutonomous() {

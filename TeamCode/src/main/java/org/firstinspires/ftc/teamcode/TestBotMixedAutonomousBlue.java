@@ -91,7 +91,7 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             encoderStraightDrive(SKYSTONEAutonomousConstants.driveToStoneDistance, 1);
 
             //Grab the SkyStone
-            //myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.frDown);
+            //myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.frDown);
             telemetry.addData("grabbed stone",0);
             telemetry.update();
             sleep(800);
@@ -122,7 +122,7 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             telemetry.addData("drop off stone", 0);
             telemetry.update();
             encoderStraightDrive(SKYSTONEAutonomousConstants.moveAwayFromStoneDistance, 1);
-            //myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.frUp);
+            //myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.frUp);
             //turn to drop off foundation
             encoderTurn(270, 1.0, 3);
             //drive backwards to drop off foundation

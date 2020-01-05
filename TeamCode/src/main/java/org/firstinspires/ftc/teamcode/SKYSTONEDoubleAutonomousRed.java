@@ -73,7 +73,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -83,7 +83,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             skyStonePosition = detectFirstStone(true);
             //Grab the stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive backwards
             encoderStraightDriveNoStop(-4, 1);
@@ -102,7 +102,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Cross bridge
             encoderStraightDrive(dropDistance, 1);
             //Release the stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
             //myRobot.frontGrabber.setPosition(0.3);
             sleep(800);
             //Drive backwards
@@ -117,7 +117,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             distanceEncoderDrive(1.9,0.3,1,0, myRobot.frontDistance);
 
             //Grab the stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flDown);
             sleep(800);
             //Drive Backwards
             encoderStraightDrive(-4,1);
@@ -126,7 +126,7 @@ public class SKYSTONEDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             //Drive Forwards
             encoderStraightDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
             //Release the stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
             //myRobot.frontGrabber.setPosition(1);
             sleep(800);
             //Drive Backwards

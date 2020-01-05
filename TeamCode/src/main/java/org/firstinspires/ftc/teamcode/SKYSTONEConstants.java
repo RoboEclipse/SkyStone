@@ -36,7 +36,7 @@ public class SKYSTONEConstants {
     public static double frontClawUp = 1;
     //Capstone Servo
     public static double cUp = 0.33;
-    public static double cDown = 0.55; //At least 0.55
+    public static double cDown = 0.6; //At least 0.55
     //Front right claw
     public static double frontLow = 0;
     public static double frontPlace = 0.45;

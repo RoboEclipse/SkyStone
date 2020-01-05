@@ -74,7 +74,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         final double speed = 1;
         double wallDistance = 8.0/3 + 10.0;
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)

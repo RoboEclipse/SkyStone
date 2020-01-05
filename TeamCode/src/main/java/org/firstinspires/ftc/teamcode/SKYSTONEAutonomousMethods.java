@@ -237,34 +237,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + realLeftPower + "rightPower: " + realRightPower + "CurrentAngle: " + currentAngle);
         }
     }
-    void encoderTurnNoStopNoD(double targetAngle, double leftPower, double rightPower, double tolerance) {
-        double kR = SKYSTONEAutonomousConstants.kR;
-        //Undefined constants
-        double leftDrivePower;
-        double rightDrivePower;
-        //Initial error
-        double currentAngle = getHorizontalAngle();
-        double error = targetAngle-currentAngle;
-        error = loopAround(error);
 
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //runMotors(leftDrivePower, rightDrivePower);
-        while(Math.abs(error)>tolerance && opModeIsActive()){
-            //Getting Error
-            currentAngle = getHorizontalAngle();
-            error = loopAround(targetAngle-currentAngle);
-
-            //Setting powers
-            leftDrivePower = Math.max(Math.min(error/kR, 1),-1)*leftPower;
-            rightDrivePower = Math.max(Math.min(error/kR, 1),-1)*rightPower;
-
-            runMotors(Math.max(Math.abs(leftPower/4), Math.abs(leftDrivePower))*Math.signum(leftDrivePower),
-                    Math.max(Math.abs(rightPower/4), Math.abs(rightDrivePower))*Math.signum(rightDrivePower));
-
-            //Logging
-            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
-        }
-    }
     void turn(double targetAngle, double leftPower, double rightPower, double tolerance){
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
@@ -487,20 +460,35 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return values[0];
     }
     //For carrying the blocks
-    void frontCarry () {
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+    void backCarryStone () {
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+    }
+    //Basic grab
+    void backGrabStone (){
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbDown);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        sleep(300);
+    }
+    //frontRelease is both the release and the starting position before grab
+    void backReleaseStone(){
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
+    }
+    void frontCarryStone () {
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
     }
     //Basic grab
     void frontGrabStone (){
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbDown);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbDown);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
         sleep(300);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
-        myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbReady);
-        myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsReady);
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
     }
 
     //VuforiaDetectionStuff
@@ -634,7 +622,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Let go of stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         }
 
         //Drive to foundation
@@ -661,7 +649,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //Turns to match Foundation
             encoderTurn(-178, 1, 2);
             //Let go of stone
-            myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         }
 
         //Drive to foundation
@@ -802,7 +790,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         straighteningEncoderDrive(72, 0, 50, 1);
         directionalDrive(x2, y2, true, 2,0);
         frontGrabStone();
-        frontCarry();
+        frontCarryStone();
         directionalDrive(x2+7, y2+5, true, 2,0);
         straighteningEncoderDrive(-65, 0, 50, 1);
     }

@@ -74,7 +74,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         final double speed = 1;
         double wallDistance = 8.0/3 + 10.0;
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
@@ -86,44 +86,43 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             frontReleaseStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
             if(getHue(myRobot.frontColor)>70){
-                skyStonePosition = "Left";
+                skyStonePosition = "Depot";
             }
             else if(getHue(myRobot.backColor)>70){
-                skyStonePosition = "Right";
+                skyStonePosition = "Bridge";
             }
             if(skyStonePosition.equals("Center")){
                 wallDistance+=8;
                 distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
                 //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
             }
-            if(skyStonePosition.equals("Right")){
+            if(skyStonePosition.equals("Bridge")){
                 wallDistance+=16;
                 distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
                 //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
             }
             frontGrabStone();
-            frontCarry();
+            frontCarryStone();
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, wallDistance+5, true, 2,0);
             straighteningEncoderDrive(-75, 0, 50, 1);
             //grabFoundation();
-
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-14, true, 2,0);
             frontReleaseStone();
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            frontCarry();
+            frontCarryStone();
             encoderTurn(90, 1, 3);
             encoderStraightDrive(-7,1);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             sleep(250);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopPowers(70, -1,-0.5,3);
             encoderTurnNoStopLeftOnly(0,1,3);
             encoderStraightDrive(-12,1);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
             sleep(250);
-            encoderStraightDrive(36,1);
+            encoderStraightDrive(5,1);
             /*
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
                     SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);

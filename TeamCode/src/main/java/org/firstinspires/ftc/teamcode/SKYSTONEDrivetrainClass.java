@@ -24,7 +24,7 @@ public class SKYSTONEDrivetrainClass {
         lf = hardwareMap.dcMotor.get("frontLeft");
         rb = hardwareMap.dcMotor.get("backRight");
         rf = hardwareMap.dcMotor.get("frontRight");
-        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.elevatorHeight);
+        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);

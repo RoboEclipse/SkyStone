@@ -44,7 +44,7 @@ public class SKYSTONETeleOp extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEClass myRobot = new SKYSTONEClass();
     private double clawRotator = SKYSTONEConstants.oppositeSide;
-    private double clawPosition = SKYSTONEConstants.tighten;
+    private double clawPosition = SKYSTONEConstants.loosen;
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
@@ -59,6 +59,8 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.initialize(hardwareMap, telemetry);
         myRobot.frontColor.enableLed(false);
         myRobot.backColor.enableLed(false);
+        myRobot.frontColor.red();
+        myRobot.backColor.red();
         myRobot.capServo.setPosition(capStonePosition);
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -117,25 +119,16 @@ public class SKYSTONETeleOp extends OpMode
 
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
-        /*if (slidePower > 0){
-            clawPosition = 0;
-        }*/
         myRobot.clawSlide.setPower(slidePower);
-        /*if ((slidePower > 0.001) || (slidePower < -0.001)){
-            if (clawPosition != SKYSTONEConstants.tighten){
-                Log.d("Protect Claw", "Claw was loose when moving so it got closed");
-            }
-            clawPosition = SKYSTONEConstants.tighten;
-        }*/
 
         //Capstone Controls
-
         if(gamepad1.x) {
             capStonePosition = SKYSTONEConstants.cDown;
         } else if (gamepad1.y) {
             capStonePosition = SKYSTONEConstants.cUp;
         }
         myRobot.capServo.setPosition(capStonePosition);
+
         //Claw rotation
         int horizSlidePosition = myRobot.clawSlide.getCurrentPosition();
         if(gamepad2.dpad_left){
@@ -150,12 +143,6 @@ public class SKYSTONETeleOp extends OpMode
         else if(gamepad2.dpad_up){
             clawRotator = SKYSTONEConstants.oppositeSide;
         }
-
-        /* if (clawRotator != SKYSTONEConstants.straight && (horizSlidePosition > SKYSTONEConstants.safeSlide)){
-            clawRotator = SKYSTONEConstants.straight;
-            Log.d("Protected Claw Rotation", "Rotation Servo set straight because it was not in safe distance");
-            telemetry.addData("Protected Claw Rotation", "Rotation Servo Set Straight");
-        }*/
 
         //Claw controls
         if(gamepad2.y) {
@@ -178,16 +165,16 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.bbUp);
+            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
             myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
-            myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbUp);
-            myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
         }
         if(gamepad2.left_bumper){
-            myRobot.frontLower.setPosition(SKYSTONEAutonomousConstants.bbReady);
+            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
             myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
-            myRobot.sideBaseServo.setPosition(SKYSTONEAutonomousConstants.fbReady);
-            myRobot.sideClaw.setPosition(SKYSTONEAutonomousConstants.fsReady);
+            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
         }
 
         // TODO myRobot.moveFrontClaw(flClawPosition, frClawPosition);

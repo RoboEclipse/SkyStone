@@ -73,7 +73,7 @@ public class SKYSTONENewDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -87,7 +87,7 @@ public class SKYSTONENewDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         encoderTurn(-88, 1.0, 1);
         //Grab the stone
         frontGrabStone();
-        myRobot.frontLower.setPosition(SKYSTONEConstants.frontClawUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.frontClawUp);
         encoderStrafeDriveInchesRight(-5,1);
         if(skyStonePosition.equals("Left")){
             dropDistance+=SKYSTONEAutonomousConstants.doubleAdjustDistance;
@@ -113,7 +113,7 @@ public class SKYSTONENewDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         encoderStraightDrive(dropDistance + 3*SKYSTONEAutonomousConstants.doubleAdjustDistance, 1.0);
         //Release the stone
         frontReleaseStone();
-        myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.frontHigh);
         //Drive Backwards
         encoderStraightDrive(-20,1);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");

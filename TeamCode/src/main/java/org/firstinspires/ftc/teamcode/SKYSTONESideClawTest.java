@@ -62,17 +62,17 @@ public class SKYSTONESideClawTest extends SKYSTONEAutonomousMethods {
         //SKYSTONEClass myRobot = this.myRobot;
         dashboard = FtcDashboard.getInstance();
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.frontHigh);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
         runtime.reset();
         getAngleWaitForStart();
 
         while(opModeIsActive()){
             frontGrabStone();
-            myRobot.frontLower.setPosition(SKYSTONEConstants.frontHigh);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.frontHigh);
             adaptiveEncoderDrive(-75, 0, 1, 1);
             sleep(800);
-            myRobot.frontLower.setPosition(SKYSTONEConstants.frontPlace);
+            myRobot.frontBase.setPosition(SKYSTONEConstants.frontPlace);
             sleep(800);
             myRobot.frontGrabber.setPosition(SKYSTONEConstants.frontLoosen);
             break;

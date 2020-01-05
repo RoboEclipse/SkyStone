@@ -69,7 +69,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         initialize(hardwareMap, telemetry);
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flUp);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         getAngleWaitForStart();
         runtime.reset();
@@ -77,7 +77,7 @@ public class SKYSTONEMixedAutonomousRed extends SKYSTONEAutonomousMethods {
 
         skyStonePosition = detectFirstStone(true);
         //Grab the stone
-        myRobot.frontLower.setPosition(SKYSTONEConstants.flDown);
+        myRobot.frontBase.setPosition(SKYSTONEConstants.flDown);
         sleep(800);
         //Drive backwards
         encoderStraightDriveNoStop(-5, 1);

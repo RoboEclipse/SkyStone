@@ -104,14 +104,16 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             autoRotate = Math.max(Math.min(1, autoRotate),0);
             autoGrab = Math.max(Math.min(1, autoGrab),0);
             sideFoundation = Math.max(Math.min(1, sideFoundation),0);
-            myRobot.frontLower.setPosition(autoRotate);
+            myRobot.frontBase.setPosition(autoRotate);
             myRobot.frontGrabber.setPosition(autoGrab);
-            myRobot.sideBaseServo.setPosition(sideServoPosition);
-            myRobot.sideClaw.setPosition(sideClawPosition);
+            myRobot.backBase.setPosition(sideServoPosition);
+            myRobot.backGrabber.setPosition(sideClawPosition);
             //myRobot.foundationServo.setPosition(sideFoundation);
 
 
             // Show the elapsed game time and wheel power.s
+            telemetry.addData("Front Color: ", getHue(myRobot.frontColor));
+            telemetry.addData("Back Color: ", getHue(myRobot.backColor));
             telemetry.addData("sideFoundation", sideFoundation);
             telemetry.addData("AutoRotate", autoRotate);
             telemetry.addData("AutoGrab", autoGrab);
