@@ -29,17 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.openftc.revextensions2.ExpansionHubEx;
-import org.openftc.revextensions2.RevBulkData;
 
 
 @TeleOp(name="TestBotTeleOp", group="Iterative Opmode")
@@ -83,7 +79,7 @@ public class TestBotTeleOp extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("leftDistance", myRobot.elevatorDistance.getDistance(DistanceUnit.INCH));
+        telemetry.addData("leftDistance", myRobot.leftDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("backDistance", myRobot.backDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("frontDistance", myRobot.frontDistance.getDistance(DistanceUnit.INCH));
         Log.d("Skystone: ", "Mroworeoriwopfwiefds");

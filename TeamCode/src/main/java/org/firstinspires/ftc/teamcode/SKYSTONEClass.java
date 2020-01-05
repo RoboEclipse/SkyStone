@@ -30,7 +30,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     ColorSensor frontColor, backColor;
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontBase, frontGrabber, capServo, backBase, backGrabber;
-    DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //elevatorDistance
+    DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //leftDistance
     ExpansionHubEx expansionHub;
     RevBulkData bulkData;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
@@ -73,7 +73,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         leftCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.leftCollectorMotor);
         rightCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.rightCollectorMotor);
-        //elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         //backLeftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backLeftDistance);

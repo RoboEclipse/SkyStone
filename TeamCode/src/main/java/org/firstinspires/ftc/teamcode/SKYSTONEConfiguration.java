@@ -31,7 +31,6 @@ class SKYSTONEConfiguration {
 
     //Distance Sensors
     final String frontDistance = "frontDistance";
-    final String rightDistance = "rightDistance";
     final String backDistance = "backDistance";
     //Previously elevatorHeight
     final String leftDistance = "leftDistance";

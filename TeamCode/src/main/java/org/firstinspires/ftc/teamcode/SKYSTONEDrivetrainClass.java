@@ -14,7 +14,7 @@ import org.openftc.revextensions2.ExpansionHubMotor;
 public class SKYSTONEDrivetrainClass {
     DcMotor lb, lf, rb, rf;
     ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
-    DistanceSensor elevatorDistance,backDistance, rightDistance, frontDistance;
+    DistanceSensor leftDistance,backDistance, frontDistance;
     SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
     // The IMU sensor object
     BNO055IMU imu;
@@ -24,9 +24,8 @@ public class SKYSTONEDrivetrainClass {
         lf = hardwareMap.dcMotor.get("frontLeft");
         rb = hardwareMap.dcMotor.get("backRight");
         rf = hardwareMap.dcMotor.get("frontRight");
-        elevatorDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
+        leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
-        rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);
         frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
