@@ -187,17 +187,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void encoderTurnNoStop(double targetAngle, double power, double tolerance) {
-        encoderTurnNoStopPowers(targetAngle, -power, power, tolerance);
+        encoderTurnNoStopPowers(targetAngle, -power, power, tolerance, true);
     }
-    void encoderTurnNoStopPowers(double targetAngle, double leftPower, double rightPower, double tolerance) {
+    void encoderTurnNoStopPowers(double targetAngle, double leftPower, double rightPower, double tolerance, boolean usePID) {
         double kR = SKYSTONEAutonomousConstants.kR;
         double kD = SKYSTONEAutonomousConstants.kD;
 
         //Undefined constants
         double d;
         double dt;
-        double leftProportionalPower;
-        double rightProportionalPower;
+        double leftProportionalPower = leftPower;
+        double rightProportionalPower = rightPower;
         //Initial error
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
@@ -206,22 +206,31 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Initial Time
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
-
+        double t2 = t1;
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
-            //Getting Error
-            currentAngle = getHorizontalAngle();
-            error = loopAround(targetAngle-currentAngle);
 
-            //Getting time difference
-            double t2 = clock.nanoseconds();
-            dt = t2-t1;
+                //Getting Error
+                currentAngle = getHorizontalAngle();
+                error = loopAround(targetAngle-currentAngle);
+            if(usePID){
+                //Getting time difference
+                t2 = clock.nanoseconds();
+                dt = t2-t1;
 
-            //Setting d action
-            d = (error-previousError)/dt*Math.pow(10,9);
-            //Setting p action
-            leftProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*leftPower;
-            rightProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*rightPower;
+                //Setting d action
+                d = (error-previousError)/dt*Math.pow(10,9);
+                //Setting p action
+                leftProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*leftPower;
+                rightProportionalPower = Math.max(Math.min(error*kR + d*kD, 1),-1)*rightPower;
+                Log.d("Skystone: ", "leftProportionalPower: " + leftProportionalPower + " rightProportionalPower: " + rightProportionalPower);
+                Log.d("Skystone: ", "dt: " + dt + "DerivativeAction: " + d*kD);
+            }
+            else{
+                leftProportionalPower = leftPower*Math.signum(error);
+                rightProportionalPower = rightPower*Math.signum(error);
+            }
+
             //Set real power
             double realLeftPower = Math.max(Math.abs(leftPower/2), Math.abs(leftProportionalPower))*Math.signum(leftProportionalPower);
             double realRightPower = Math.max(Math.abs(rightPower/2), Math.abs(rightProportionalPower))*Math.signum(rightProportionalPower);
@@ -229,11 +238,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
             //Store old values
             previousError = error;
-            t1 = t2;
+            if(usePID){
+                t1 = t2;
+            }
+
 
             //Logging
-            Log.d("Skystone: ", "leftProportionalPower: " + leftProportionalPower + " rightProportionalPower: " + rightProportionalPower);
-            Log.d("Skystone: ", "dt: " + dt + "DerivativeAction: " + d*kD);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + realLeftPower + "rightPower: " + realRightPower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -259,11 +269,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void encoderTurnNoStopLeftOnly(double targetAngle, double power, double tolerance) {
-        encoderTurnNoStopPowers(targetAngle, -power, 0, tolerance);
+        encoderTurnNoStopPowers(targetAngle, -power, 0, tolerance, true);
     }
 
     void encoderTurnNoStopRightOnly(double targetAngle, double power, double tolerance) {
-        encoderTurnNoStopPowers(targetAngle, 0, power, tolerance);
+        encoderTurnNoStopPowers(targetAngle, 0, power, tolerance, true);
     }
 
     int leftFrontEncoder(){

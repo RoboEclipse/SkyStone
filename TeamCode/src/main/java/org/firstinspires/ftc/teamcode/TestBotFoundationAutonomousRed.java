@@ -30,10 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -83,7 +80,7 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             encoderTurn(90, 1, 3);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopPowers(70, -1,-0.25,3, true);
             encoderTurnNoStopLeftOnly(0,1,3);
 
 

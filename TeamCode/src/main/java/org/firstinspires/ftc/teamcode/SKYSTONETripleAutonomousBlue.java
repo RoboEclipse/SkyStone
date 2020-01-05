@@ -119,7 +119,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             sleep(250);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopPowers(70, -1,-0.25,3, true);
             encoderTurnNoStopLeftOnly(0,1,3);
             encoderStraightDrive(-12,1);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);

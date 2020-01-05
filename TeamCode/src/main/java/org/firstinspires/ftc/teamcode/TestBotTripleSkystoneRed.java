@@ -87,7 +87,7 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
                     SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
             encoderTurn(90, 1, 3);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
+            encoderTurnNoStopPowers(70, -1,-0.25,3, true);
             encoderTurnNoStopLeftOnly(0,1,3);
             /*
             grabAndPlace(8.0/3+10, 20);

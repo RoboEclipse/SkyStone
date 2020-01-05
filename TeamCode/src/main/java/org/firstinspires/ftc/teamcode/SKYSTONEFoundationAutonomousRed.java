@@ -98,7 +98,7 @@ public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
             myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             sleep(250);
             encoderStrafeDriveInchesRight(12,1);
-            encoderTurnNoStopPowers(70, -1,-0.5,3);
+            encoderTurnNoStopPowers(70, -1,-0.5,3, true);
             encoderTurnNoStopLeftOnly(0,1,3);
             encoderStraightDrive(-18,1);
             myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
