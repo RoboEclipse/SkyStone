@@ -85,7 +85,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.firstStoneDriveX, SKYSTONEAutonomousConstants.firstStoneDriveY, true, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.firstStoneDriveX, SKYSTONEAutonomousConstants.firstStoneDriveY, true, 1,0);
             detectSkyStonePosition(wallDistance, skyStonePosition);
             backCarryStone();
             frontGrabStone();

@@ -73,7 +73,7 @@ public class SKYSTONEAutonomousConstants {
     public static double kR = 1.0/25;
     public static double kD = 0.004;
     //Coordinate Constants
-    public static double firstStoneDriveX = SKYSTONEAutonomousConstants.fieldSize - 29;
+    public static double firstStoneDriveX = SKYSTONEAutonomousConstants.fieldSize - 30;
     public static double firstStoneDriveY = 8.0/3 + 8.0;
     public static double firstStoneAwayX = SKYSTONEAutonomousConstants.fieldSize - 20;
     public static double firstStoneAwayY = 8.0/3 + 24.0;
