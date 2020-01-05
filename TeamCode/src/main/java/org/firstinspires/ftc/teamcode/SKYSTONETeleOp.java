@@ -43,7 +43,7 @@ public class SKYSTONETeleOp extends OpMode
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private SKYSTONEClass myRobot = new SKYSTONEClass();
-    private double clawRotator = SKYSTONEConstants.oppositeSide;
+    private double clawRotator = SKYSTONEConstants.straight;
     private double clawPosition = SKYSTONEConstants.loosen;
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
@@ -145,10 +145,10 @@ public class SKYSTONETeleOp extends OpMode
         }
 
         //Claw controls
-        if(gamepad2.y) {
+        if(gamepad2.x) {
             clawPosition = SKYSTONEConstants.tighten;
         }
-        else if(gamepad2.x) {
+        else if(gamepad2.y) {
             clawPosition = SKYSTONEConstants.loosen;
         }
 
@@ -165,16 +165,16 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
-            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
-            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
-            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
+            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
         }
         if(gamepad2.left_bumper){
-            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
-            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
-            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
-            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
+            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+            myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
+            myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
+            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
         }
 
         // TODO myRobot.moveFrontClaw(flClawPosition, frClawPosition);
@@ -246,7 +246,7 @@ public class SKYSTONETeleOp extends OpMode
     }
     private int stage = 0;
     private ElapsedTime timer = new ElapsedTime();
-    private void pickUpStone(){
+    /* private void pickUpStone(){
         //State 1: Raise elevator, then rotate claw
         if(stage == 0 && timer.milliseconds()>=2000){
             myRobot.runWithEncoder(0.5, 400, myRobot.elevator);
@@ -267,7 +267,7 @@ public class SKYSTONETeleOp extends OpMode
             timer.reset();
             stage=0;
         }
-    }
+    }*/
 
     void autoFoundationPull(){
 

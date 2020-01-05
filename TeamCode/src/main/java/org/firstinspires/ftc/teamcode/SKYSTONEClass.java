@@ -88,6 +88,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
+        frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
+        backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
         // Front is really back claw
         //frontBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
         //frontGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);

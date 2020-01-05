@@ -72,7 +72,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         //SKYSTONEClass myRobot = this.myRobot;
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
-        double wallDistance = 8.0/3 + 10.0;
+        double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);
         myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
         myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
@@ -85,16 +85,15 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
-            wallDistance = detectSkyStonePosition(wallDistance, skyStonePosition);
-            //TODO: Potentially switch claws
+            directionalDrive(SKYSTONEAutonomousConstants.firstStoneDriveX, SKYSTONEAutonomousConstants.firstStoneDriveY, true, 2,0);
+            detectSkyStonePosition(wallDistance, skyStonePosition);
             backCarryStone();
             frontGrabStone();
             frontCarryStone();
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, wallDistance+5, true, 2,0);
-            straighteningEncoderDrive(-75, 0, 50, 1);
+            directionalDrive(SKYSTONEAutonomousConstants.firstStoneAwayX, SKYSTONEAutonomousConstants.firstStoneAwayY, true, 2,0);
+            straighteningEncoderDrive(SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
             //grabFoundation();
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-14, true, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 2,0);
             frontReleaseStone();
             grabFoundation();
             /*
@@ -132,7 +131,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         encoderStraightDrive(5,1);
     }
 
-    private double detectSkyStonePosition(double wallDistance, String skyStonePosition) {
+    private void detectSkyStonePosition(double wallDistance, String skyStonePosition) {
         if(getHue(myRobot.frontColor)>70){
             skyStonePosition = "Depot";
         }
@@ -140,16 +139,13 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             skyStonePosition = "Bridge";
         }
         if(skyStonePosition.equals("Center")){
-            wallDistance+=8;
             distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
         if(skyStonePosition.equals("Bridge")){
-            wallDistance+=16;
             distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
-        return wallDistance;
     }
 
 

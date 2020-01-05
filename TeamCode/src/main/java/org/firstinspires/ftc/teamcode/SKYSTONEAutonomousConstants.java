@@ -56,17 +56,28 @@ public class SKYSTONEAutonomousConstants {
     public static double fbReady = 0.36;
     public static double fbDown = 0.28;
     public static double fbUp = 0.66;
+    public static double fbStartPosition = 0.75;
     //Front Side Autonomous Claw
-    public static double fsReady = 0.38; //Needs to be updated
-    public static double fsGrab = 0.45; //Needs to be updated
-    //Front Side base servo
-    public static double bbReady = 0.86;
+    public static double fsReady = 0.28; //Not right
+    public static double fsGrab = 0.45; //Not right
+    //Back Side base servo
+    public static double bbReady = 0.82;
     public static double bbDown = 0.91;
-    public static double bbUp = 0.6;
-    //Front Side Autonomous Claw
-    public static double bsReady = 0.28; //Not right
-    public static double bsGrab = 0.45; //Not right
-    //Pure pursuit constants
+    public static double bbUp = 0.54;
+    public static double bbStartPosition = 0.4;
+    //Back Side Autonomous Claw
+    public static double bsReady = 0.32;
+    public static double bsGrab = 0.18;
+
+    //PID drive constants
     public static double kR = 1.0/25;
     public static double kD = 0.004;
+    //Coordinate Constants
+    public static double firstStoneDriveX = SKYSTONEAutonomousConstants.fieldSize - 29;
+    public static double firstStoneDriveY = 8.0/3 + 8.0;
+    public static double firstStoneAwayX = SKYSTONEAutonomousConstants.fieldSize - 20;
+    public static double firstStoneAwayY = 8.0/3 + 24.0;
+    public static double stoneDropX = SKYSTONEAutonomousConstants.fieldSize - 27;
+    public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 14;
+    public static double firstBridgeCross = -75;
 }

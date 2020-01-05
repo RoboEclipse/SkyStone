@@ -90,6 +90,7 @@ public class Park extends SKYSTONEAutonomousMethods {
             telemetry.update();
             break;
         }
+        AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
     }
 }
     /*private void dashboardRecordPosition(int deltax, int deltay) {

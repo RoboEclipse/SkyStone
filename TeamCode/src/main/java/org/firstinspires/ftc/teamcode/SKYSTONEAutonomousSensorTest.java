@@ -93,13 +93,16 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
                sideFoundation -= 0.06;
             }
             if(gamepad1.a){
-                frontCarry();
+                frontCarryStone();
+                backCarryStone();
             }
             if(gamepad1.b){
                 frontGrabStone();
+                backGrabStone();
             }
             if(gamepad1.x){
                 frontReleaseStone();
+                backReleaseStone();
             }
             autoRotate = Math.max(Math.min(1, autoRotate),0);
             autoGrab = Math.max(Math.min(1, autoGrab),0);
@@ -133,21 +136,6 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             telemetry.addData("RightStickX", gamepad1.right_stick_x);
             telemetry.update();
         }
-    }
-    void frontCarry () {
-        sideServoPosition = SKYSTONEAutonomousConstants.fbUp;
-        sideClawPosition = SKYSTONEAutonomousConstants.fsGrab;
-    }
-    //Basic grab
-    void frontGrabStone (){
-        sideServoPosition = SKYSTONEAutonomousConstants.fbDown;
-        sideClawPosition = SKYSTONEAutonomousConstants.fsGrab;
-        sleep(100);
-    }
-    //frontRelease is both the release and the starting position before grab
-    void frontReleaseStone(){
-        sideServoPosition = SKYSTONEAutonomousConstants.fbReady;
-        sideClawPosition = SKYSTONEAutonomousConstants.fsReady;
     }
     public boolean opModeCheck(){
         return opModeIsActive();
