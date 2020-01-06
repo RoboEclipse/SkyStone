@@ -53,7 +53,7 @@ public class SKYSTONEAutonomousConstants {
     public static double flooringPower = 0.2;
 
     //Front Side base servo
-    public static double fbReady = 0.38;
+    public static double fbReady = 0.42;
     public static double fbDown = 0.24;
     public static double fbUp = 0.66;
     public static double fbStartPosition = 0.75;
@@ -83,7 +83,7 @@ public class SKYSTONEAutonomousConstants {
     public static double stoneDropX = SKYSTONEAutonomousConstants.fieldSize - 27;
     public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 6;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 14;
-    public static double firstBridgeCross = -75;
+    public static double firstBridgeCross = -65;
     public static double foundationClear = 16;
     public static double skyBridgeDrive = 35;
 }

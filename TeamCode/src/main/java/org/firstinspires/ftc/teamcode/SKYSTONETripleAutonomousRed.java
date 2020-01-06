@@ -94,7 +94,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             directionalDrive(SKYSTONEAutonomousConstants.firstStoneAwayX, SKYSTONEAutonomousConstants.firstStoneAwayY, true, 1,0);
             backCarryStone();
             straighteningEncoderDrive(SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX - 3, SKYSTONEAutonomousConstants.nearStoneDropY,
+            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.nearStoneDropY,
                     SKYSTONEAutonomousConstants.stoneGrabX-2, SKYSTONEAutonomousConstants.stoneGrabY+24, skyStonePosition);
             directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
             frontReleaseStone();
