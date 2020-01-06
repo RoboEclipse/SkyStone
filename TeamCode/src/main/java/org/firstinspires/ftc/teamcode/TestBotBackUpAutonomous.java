@@ -129,7 +129,7 @@ public class TestBotBackUpAutonomous extends SKYSTONEAutonomousMethods {
 
 
     void directionalDriveWithInterrupt(double targetX, double targetY, boolean PID, double tolerance, double targetAngle, DistanceSensor sensor){
-        double xDis = targetX - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+        double xDis = targetX - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
         double yDis = targetY - myRobot.backDistance.getDistance(DistanceUnit.INCH);
         double totalDistance;
         double kR = -0.01;
@@ -163,21 +163,21 @@ public class TestBotBackUpAutonomous extends SKYSTONEAutonomousMethods {
 
             switch (corner){
                 case LEFT_DOWN:
-                    xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                     yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
 
                     break;
                 case LEFT_UP:
-                    xRaw = myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                     yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
                     break;
                 case RIGHT_DOWN:
-                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                     yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
 
                     break;
                 case RIGHT_UP:
-                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.elevatorDistance.getDistance(DistanceUnit.INCH);
+                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                     yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
                     break;
             }

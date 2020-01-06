@@ -674,17 +674,26 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
         double xDis = targetX - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
         double yDis = targetY - myRobot.backDistance.getDistance(DistanceUnit.INCH);
-        double totalDistance;
+        double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
         double kR = -0.01;
         double maxVelocity = 1;
         double velocity = maxVelocity;
         double rotationVelocity = 0;
         double kP = 1.0/20;
+
+        double kD = 0;
+        double dDistance;
+        double dt;
+        double previousDistance = totalDistance;
+        ElapsedTime clock = new ElapsedTime();
+        double t1 = clock.nanoseconds();
+
         double currentAngle;
         double currentError;
         double xRaw = 0;
         double yRaw = 0;
         Localizer.Corner corner;
+
 
         if(targetX<SKYSTONEAutonomousConstants.fieldSize/2){
             if(targetY<SKYSTONEAutonomousConstants.fieldSize/2){
@@ -701,7 +710,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 corner = Localizer.Corner.RIGHT_UP;
             }
         }
-        Log.d("Skystone: ", "kP " + kP + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
+        Log.d("Skystone: ", "kP " + kP + "kD " + kD + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
             switch (corner){
                 case LEFT_DOWN:
@@ -723,6 +732,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                     yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
                     break;
             }
+
+            double t2 = clock.nanoseconds();
+            dt = t2-t1;
+
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
             if(xRaw>250 || yRaw>250){
@@ -736,10 +749,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
             Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
+
             totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
+            dDistance = (totalDistance-previousDistance)/dt*Math.pow(10,9);
+
             if(PID) {
-                velocity = Math.max(0.5, Math.abs(maxVelocity * getP(totalDistance, kP)));
+                velocity = Math.max(0.5, Math.abs(maxVelocity * getPD(totalDistance, dDistance, kP, kD)));
+                Log.d("Skystone", "Distance error = " + totalDistance + "Change in Distance error = " + dDistance + "dt = " + dt);
+                Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "DifferentialAction = " + dDistance*kD);
             }
+            //store old values
+            previousDistance = totalDistance;
+            t1=t2;
+
             double angle = Math.atan2(xDis,yDis);
             if(corner == Localizer.Corner.RIGHT_UP || corner == Localizer.Corner.RIGHT_DOWN){
                 angle = Math.PI+angle;
@@ -752,6 +774,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     double getP(double error, double kP){
         return Math.min(1,Math.abs(error)*kP);
+    }
+
+    double getPD(double error, double dError, double kP, double kD){
+        return Math.min(1, Math.abs(error*kP + dError*kD));
     }
 
     void freeDrive(double direction, double velocity, double rotationVelocity){
