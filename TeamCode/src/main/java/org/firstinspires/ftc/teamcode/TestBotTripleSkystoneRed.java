@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -48,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="TestBotTripleSkystoneRed", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
@@ -82,9 +83,9 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, 8.0/3+15.0, true, 2,0);
             straighteningEncoderDrive(-65, 0, 50, 1);
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
+                    SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0, "Depot");
             placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
+                    SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0, "Depot");
             directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
             encoderTurn(90, 1, 3);
             encoderTurnNoStopPowers(70, -1,-0.25,3, true);

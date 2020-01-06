@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -87,77 +85,29 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.firstStoneDriveX, SKYSTONEAutonomousConstants.firstStoneDriveY, true, 1,0);
-            detectSkyStonePosition(SKYSTONEAutonomousConstants.firstStoneDriveY, skyStonePosition);
-            encoderStrafeDriveInchesRight(1,1);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabX, SKYSTONEAutonomousConstants.stoneGrabY, true, 1,0);
+            skyStonePosition = detectSkyStonePosition(SKYSTONEAutonomousConstants.stoneGrabY, true);
+            encoderStrafeDriveInchesRight(2,1);
             frontGrabStone();
+            sleep(250);
             frontCarryStone();
-            directionalDrive(SKYSTONEAutonomousConstants.firstStoneAwayX, SKYSTONEAutonomousConstants.firstStoneAwayY, true, 2,0);
+            directionalDrive(SKYSTONEAutonomousConstants.firstStoneAwayX, SKYSTONEAutonomousConstants.firstStoneAwayY, true, 1,0);
             backCarryStone();
             straighteningEncoderDrive(SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-            //grabFoundation();
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 2,0);
+            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX - 3, SKYSTONEAutonomousConstants.nearStoneDropY,
+                    SKYSTONEAutonomousConstants.stoneGrabX-2, SKYSTONEAutonomousConstants.stoneGrabY+24, skyStonePosition);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
             frontReleaseStone();
-            sleep(250);
+            sleep(500);
             grabFoundation();
-            /*
-            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
-            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
-            frontReleaseStone();
-            encoderTurn(90, 1, 3);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
-            encoderTurnNoStopLeftOnly(0,1,3);
-            */
+            park(true);
             break;
             }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
 
-    private void grabFoundation() {
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        frontCarryStone();
-        encoderStrafeDriveInchesRight(-5,1);
-        encoderTurn(90, 1, 3);
-        encoderStraightDrive(-7,1);
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        sleep(250);
-        encoderTurnNoStopPowers(70, -1,-0.5,3, false);
-        encoderTurnNoStopLeftOnly(0,1,3);
-        encoderStraightDrive(-12,1);
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        sleep(250);
-        encoderStraightDrive(5,1);
-    }
-
-    private void detectSkyStonePosition(double baseDistance, String skyStonePosition) {
-        if(getHue(myRobot.frontColor)>70){
-            skyStonePosition = "Depot";
-        }
-        else if(getHue(myRobot.backColor)>70){
-            skyStonePosition = "Bridge";
-        }
-        if(skyStonePosition.equals("Center")){
-            distanceEncoderDrive(baseDistance+8,0.5,1,0, myRobot.frontDistance);
-            //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-        }
-        if(skyStonePosition.equals("Bridge")){
-            distanceEncoderDrive(baseDistance+16,0.5,1,0, myRobot.frontDistance);
-            //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-        }
-        Log.d("Skystone: ", " skyStonePosition: " + skyStonePosition);
-        telemetry.addData("SkystonePosition", skyStonePosition);
-        telemetry.update();
-    }
-
-
-    /*
+        /*
     private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
         y = vuforiaMethods.loopDetection(telemetry, detections);
         if(y > SKYSTONEConstants.stoneDiff){

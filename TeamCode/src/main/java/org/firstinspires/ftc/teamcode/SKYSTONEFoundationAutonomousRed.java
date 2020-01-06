@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -48,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="1FoundationAutonomousRed", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class SKYSTONEFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.

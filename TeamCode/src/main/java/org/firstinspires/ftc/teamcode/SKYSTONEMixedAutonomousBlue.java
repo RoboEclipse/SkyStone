@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -52,7 +53,7 @@ import java.util.List;
  */
 
 @Autonomous(name="1MixedAutonomousBlue", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class SKYSTONEMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
