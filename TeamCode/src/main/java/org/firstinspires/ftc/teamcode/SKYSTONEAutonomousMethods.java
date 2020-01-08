@@ -724,10 +724,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double xDis = targetX - xRaw;
         double yDis = targetY - yRaw;
         double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
-        Log.d("Skystone: ", "kP " + kP + "kD " + kD + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
-            xRaw = getXRaw(corner);
-            yRaw = getYRaw(corner);
+            currentAngle = loopAround(getHorizontalAngle());
+            currentError = targetAngle - currentAngle;
+            rotationVelocity = currentError * kR;
             double t2 = clock.nanoseconds();
             dt = t2-t1;
 
@@ -737,9 +737,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 Log.d("Skystone: ", "FinalX: "  + xRaw + " FinalY: " + yRaw);
                 break;
             }
-            currentAngle = loopAround(getHorizontalAngle());
-            currentError = targetAngle - currentAngle;
-            rotationVelocity = currentError * kR;
             telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,"");
             Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
             Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
@@ -850,8 +847,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //(x1, y1): Coordinates of where you place the stone
     //(x2, y2): Coordinates of where you grab the next stone for depot case
-    void placeAndReturn(double x1, double y1, double x2, double y2, String skyStonePosition) {
+    void placeAndReturn(double x1, double y1, double x2, double y2, String skyStonePosition, boolean isRedSide) {
         double adjustment = 0;
+        int multiplier = 1;
+        if(!isRedSide){
+            multiplier = -1;
+        }
         if(skyStonePosition.equals("Center")){
             adjustment = 8;
         }
@@ -865,21 +866,28 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontCarryStone();
         backCarryStone();
         directionalDrive(x1+7, y1-5, true, 1,0);
-        straighteningEncoderDrive(60, 0, 50, 1);
+        int returnDistance = 60;
+        straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
         frontReleaseStone();
         directionalDrive(x2, y2 + adjustment, true, 1,0);
         frontGrabStone();
         sleep(250);
         frontCarryStone();
         directionalDrive(x2+7, y2+5 + adjustment, true, 1,0);
-        straighteningEncoderDrive(-65, 0, 50, 1);
+        returnDistance = -65;
+        straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
     }
-    void grabFoundation() {
+    void grabFoundation(boolean isRedSide) {
+        int multiplier = 1;
+        if(!isRedSide){
+            multiplier = -1;
+        }
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         frontCarryStone();
-        encoderStrafeDriveInchesRight(-5,1);
-        encoderTurn(90, 1, 3);
+        backCarryStone();
+        encoderStrafeDriveInchesRight(multiplier*-5,1);
+        encoderTurn(multiplier*90, 1, 3);
         distanceEncoderDrive(38,1,1, 90, myRobot.frontDistance);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
@@ -893,7 +901,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderStraightDrive(5,1);
     }
 
-    String detectSkyStonePosition(double baseDistance, boolean isRedSide) {
+    String detectSkyStonePosition(boolean isRedSide) {
         double frontHue = getHue(myRobot.frontColor);
         double backHue = getHue(myRobot.backColor);
         String skyStonePosition = "Center";
@@ -909,11 +917,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
         }
         if(skyStonePosition.equals("Center")){
-            distanceEncoderDrive(baseDistance+8,0.5,1,0, myRobot.frontDistance);
+            encoderStraightDrive(-8, 1);
+            //distanceEncoderDrive(baseDistance+8,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
         if(skyStonePosition.equals("Bridge")){
-            distanceEncoderDrive(baseDistance+16,0.5,1,0, myRobot.frontDistance);
+            encoderStraightDrive(-16,1);
+            //distanceEncoderDrive(baseDistance+16,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
         Log.d("Skystone: ", " skyStonePosition: " + skyStonePosition);

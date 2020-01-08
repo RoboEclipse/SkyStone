@@ -85,24 +85,28 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabX, SKYSTONEAutonomousConstants.stoneGrabY, true, 1,0);
-            skyStonePosition = detectSkyStonePosition(SKYSTONEAutonomousConstants.stoneGrabY, true);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+            skyStonePosition = detectSkyStonePosition(true);
             encoderStrafeDriveInchesRight(2,1);
             frontGrabStone();
             sleep(250);
             frontCarryStone();
-            directionalDrive(SKYSTONEAutonomousConstants.firstStoneAwayX, SKYSTONEAutonomousConstants.firstStoneAwayY, true, 1,0);
+            encoderStrafeDriveInchesRight(-5,1);
+            if(skyStonePosition.equals("Bridge")){
+                encoderStraightDrive(10, 1);
+            }
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
             backCarryStone();
             straighteningEncoderDrive(SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.nearStoneDropY,
-                    SKYSTONEAutonomousConstants.stoneGrabX-2, SKYSTONEAutonomousConstants.stoneGrabY+24, skyStonePosition);
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.nearStoneDropY,
+                    SKYSTONEAutonomousConstants.stoneGrabXRed -2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
             frontReleaseStone();
             sleep(500);
-            grabFoundation();
+            grabFoundation(true);
             park(true);
             break;
-            }
+        }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
