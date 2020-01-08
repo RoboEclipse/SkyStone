@@ -725,9 +725,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double yDis = targetY - yRaw;
         double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
-currentAngle = loopAround(getHorizontalAngle());
+            currentAngle = loopAround(getHorizontalAngle());
             currentError = targetAngle - currentAngle;
-            rotationVelocity = currentError * kR;
             rotationVelocity = currentError * kR;
             double t2 = clock.nanoseconds();
             dt = t2-t1;
