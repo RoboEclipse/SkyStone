@@ -84,59 +84,27 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
 
         while(opModeIsActive()){
             frontReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, wallDistance, true, 2,0);
-            if(getHue(myRobot.frontColor)>70){
-                skyStonePosition = "Left";
-            }
-            else if(getHue(myRobot.backColor)>70){
-                skyStonePosition = "Right";
-            }
-            if(skyStonePosition.equals("Center")){
-                wallDistance+=8;
-                distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
-                //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-            }
-            if(skyStonePosition.equals("Right")){
-                wallDistance+=16;
-                distanceEncoderDrive(wallDistance,0.5,1,0, myRobot.frontDistance);
-                //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
-            }
+            backReleaseStone();
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabX, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+            skyStonePosition = detectSkyStonePosition(false);
+            encoderStrafeDriveInchesRight(2,1);
             frontGrabStone();
-            frontCarryStone();
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 20, wallDistance+5, true, 2,0);
-            straighteningEncoderDrive(-75, 0, 50, 1);
-            //grabFoundation();
-
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
-            frontReleaseStone();
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            frontCarryStone();
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            encoderTurn(90, 1, 3);
-            encoderStraightDrive(-5,1);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
             sleep(250);
-            encoderTurnNoStopPowers(70, -1,-0.25,3, true);
-            encoderTurnNoStopLeftOnly(0,1,3);
-            encoderStraightDrive(-12,1);
-            myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-            myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-            sleep(250);
-            encoderStraightDrive(36,1);
-            /*
-            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27,SKYSTONEAutonomousConstants.fieldSize-6,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 16.0/3+10.0);
-            placeAndReturn(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-13,
-                    SKYSTONEAutonomousConstants.fieldSize - 27, 8+10.0);
-            directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, SKYSTONEAutonomousConstants.fieldSize-21, true, 2,0);
+            frontCarryStone();
+            encoderStrafeDriveInchesRight(-5,1);
+            if(skyStonePosition.equals("Bridge")){
+                encoderStraightDrive(-10, 1);
+            }
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayX, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+            backCarryStone();
+            straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
+            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.nearStoneDropY,
+                    SKYSTONEAutonomousConstants.stoneGrabX-2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
             frontReleaseStone();
-            encoderTurn(90, 1, 3);
-            encoderTurnNoStopPowers(70, -1,-0.25,3);
-            encoderTurnNoStopLeftOnly(0,1,3);
-            */
+            sleep(500);
+            grabFoundation(false);
+            park(false);
             break;
             }
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
