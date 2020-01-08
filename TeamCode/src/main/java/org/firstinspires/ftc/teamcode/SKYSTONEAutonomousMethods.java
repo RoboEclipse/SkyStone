@@ -683,9 +683,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
-        double xDis = targetX - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-        double yDis = targetY - myRobot.backDistance.getDistance(DistanceUnit.INCH);
-        double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
         double kR = -0.01;
         double maxVelocity = 1;
         double velocity = maxVelocity;
@@ -695,7 +692,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double kD = 1.0/1000.0;
         double dDistance;
         double dt;
-        double previousDistance = totalDistance;
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
 
@@ -721,29 +717,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 corner = Localizer.Corner.RIGHT_UP;
             }
         }
+        xRaw = getXRaw(corner);
+        yRaw = getYRaw(corner);
+        double previousX = xRaw;
+        double previousY = yRaw;
+        double xDis = targetX - xRaw;
+        double yDis = targetY - yRaw;
+        double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
         Log.d("Skystone: ", "kP " + kP + "kD " + kD + " kR " + kR + " tolerance" + tolerance + " backDistance: " + (targetY-yDis) + " rightDistance: " + (targetX-xDis));
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
-            switch (corner){
-                case LEFT_DOWN:
-                    xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                    yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
-
-                    break;
-                case LEFT_UP:
-                    xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                    yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-                    break;
-                case RIGHT_DOWN:
-                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                    yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-
-                    break;
-                case RIGHT_UP:
-                    xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                    yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
-                    break;
-            }
-
+            xRaw = getXRaw(corner);
+            yRaw = getYRaw(corner);
             double t2 = clock.nanoseconds();
             dt = t2-t1;
 
@@ -761,16 +745,21 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
 
-            totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
-            dDistance = (totalDistance-previousDistance)/dt*Math.pow(10,9);
-
             if(PID) {
-                velocity = Math.min(1, 0.45+Math.abs(maxVelocity * getPD(totalDistance, dDistance, kP, kD)));
-                Log.d("Skystone", "Distance error = " + totalDistance + "Change in Distance error = " + dDistance + "dt = " + dt);
-                Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "DifferentialAction = " + dDistance*kD);
+                totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
+                double dYDis = (xRaw-previousX)/dt*Math.pow(10,9);
+                double dXDis = (yRaw-previousY)/dt*Math.pow(10,9);
+
+                double xVelocity = Math.min(1, 0.45+Math.abs(maxVelocity * getPD(xDis, dXDis, kP, kD)));
+                double yVelocity = Math.min(1, 0.45+Math.abs(maxVelocity * getPD(yDis, dYDis, kP, kD)));
+                velocity = Math.sqrt(xVelocity * xVelocity * yVelocity * yVelocity);
+
+                Log.d("Skystone", "Distance error = " + totalDistance + "Change in xDistance error = " + dXDis + "Change in yDistance error = " + dYDis + "dt = " + dt);
+                Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "DifferentialXAction = " + dXDis*kD + "DifferentialYAction = " + dYDis*kD);
             }
             //store old values
-            previousDistance = totalDistance;
+            previousX = xRaw;
+            previousY = yRaw;
             t1=t2;
 
             double angle = Math.atan2(xDis,yDis);
@@ -781,6 +770,44 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
 
         }
+    }
+
+    private double getXRaw(Localizer.Corner corner) {
+        double xRaw = 0;
+        switch (corner){
+            case LEFT_DOWN:
+                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case LEFT_UP:
+                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_DOWN:
+                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_UP:
+                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                break;
+        }
+        return xRaw;
+    }
+
+    private double getYRaw(Localizer.Corner corner) {
+        double yRaw = 0;
+        switch (corner){
+            case LEFT_DOWN:
+                yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case LEFT_UP:
+                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_DOWN:
+                yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_UP:
+                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+        }
+        return yRaw;
     }
 
     double getP(double error, double kP){
