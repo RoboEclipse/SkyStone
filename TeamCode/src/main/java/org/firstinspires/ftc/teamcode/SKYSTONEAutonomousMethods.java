@@ -683,13 +683,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
-        double kR = -0.01;
         double maxVelocity = 1;
         double velocity = maxVelocity;
         double rotationVelocity = 0;
-        double kP = 1.0/25;
 
-        double kD = 1.0/1000.0;
+        double kR = SKYSTONEAutonomousConstants.ddkR;
+        double kP = SKYSTONEAutonomousConstants.ddkP;
+        double kD = SKYSTONEAutonomousConstants.ddkD;
         double dDistance;
         double dt;
         ElapsedTime clock = new ElapsedTime();
