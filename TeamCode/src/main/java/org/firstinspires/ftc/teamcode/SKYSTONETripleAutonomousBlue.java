@@ -74,8 +74,6 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         final double speed = 1;
         double wallDistance = 8.0/3 + 10.0;
         initialize(hardwareMap, telemetry);
-        myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
-        myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
@@ -85,23 +83,23 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabX, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
             skyStonePosition = detectSkyStonePosition(false);
             encoderStrafeDriveInchesRight(2,1);
-            frontGrabStone();
+            backGrabStone();
             sleep(250);
-            frontCarryStone();
+            backCarryStone();
             encoderStrafeDriveInchesRight(-5,1);
             if(skyStonePosition.equals("Bridge")){
                 encoderStraightDrive(-10, 1);
             }
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayX, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
-            backCarryStone();
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+            frontCarryStone();
             straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.nearStoneDropY,
-                    SKYSTONEAutonomousConstants.stoneGrabX-2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropX, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
-            frontReleaseStone();
+            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
+                    SKYSTONEAutonomousConstants.stoneGrabXBlue-2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+            backReleaseStone();
             sleep(500);
             grabFoundation(false);
             park(false);

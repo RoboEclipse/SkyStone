@@ -886,6 +886,7 @@ currentAngle = loopAround(getHorizontalAngle());
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         frontCarryStone();
+        backCarryStone();
         encoderStrafeDriveInchesRight(multiplier*-5,1);
         encoderTurn(multiplier*90, 1, 3);
         distanceEncoderDrive(38,1,1, 90, myRobot.frontDistance);
