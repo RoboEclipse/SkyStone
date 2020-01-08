@@ -50,7 +50,7 @@ public class SKYSTONEAutonomousConstants {
     public static double shiftDistance = 7.5;
     //PID loop constants, in inches
     public static double reducePowerDistance = 30;
-    public static double flooringPower = 0.2;
+    public static double flooringPower = 0.3;
 
     //Front Side base servo
     public static double fbReady = 0.42;
@@ -77,14 +77,15 @@ public class SKYSTONEAutonomousConstants {
     public static double min = 0.5;
     public static double ddkR = -0.01;
     public static double ddkP = 1.0/25;
-    public static double ddkD = 1.0/1000.0;
+    public static double ddkD = 5.0/1000.0;
+    public static double minimumPower = 0.2;
     //Coordinate Constants
     public static double stoneGrabX = SKYSTONEAutonomousConstants.fieldSize - 26;
     public static double stoneGrabY = 4;
     public static double firstStoneAwayX = SKYSTONEAutonomousConstants.fieldSize - 20;
     public static double firstStoneAwayY = 8.0/3 + 24.0;
     public static double stoneDropX = SKYSTONEAutonomousConstants.fieldSize - 27;
-    public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 6;
+    public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 9;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 14;
     public static double firstBridgeCross = -65;
     public static double foundationClear = 16;

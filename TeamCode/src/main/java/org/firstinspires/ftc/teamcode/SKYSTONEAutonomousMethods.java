@@ -750,9 +750,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 double dYDis = (xRaw-previousX)/dt*Math.pow(10,9);
                 double dXDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
-                double xVelocity = Math.min(1, 0.45+Math.abs(maxVelocity * getPD(xDis, dXDis, kP, kD)));
-                double yVelocity = Math.min(1, 0.45+Math.abs(maxVelocity * getPD(yDis, dYDis, kP, kD)));
-                velocity = Math.sqrt(xVelocity * xVelocity * yVelocity * yVelocity);
+                double xVelocity = Math.min(1, SKYSTONEAutonomousConstants.minimumPower+Math.abs(maxVelocity * getPD(xDis, dXDis, kP, kD)));
+                double yVelocity = Math.min(1, SKYSTONEAutonomousConstants.minimumPower+Math.abs(maxVelocity * getPD(yDis, dYDis, kP, kD)));
+                velocity = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
 
                 Log.d("Skystone", "Distance error = " + totalDistance + "Change in xDistance error = " + dXDis + "Change in yDistance error = " + dYDis + "dt = " + dt);
                 Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "DifferentialXAction = " + dXDis*kD + "DifferentialYAction = " + dYDis*kD);
