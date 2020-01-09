@@ -72,7 +72,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         //SKYSTONEClass myRobot = this.myRobot;
         dashboard = FtcDashboard.getInstance();
         final double speed = 1;
-        double wallDistance = 8.0/3 + 10.0;
+        //double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
@@ -97,7 +97,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
             frontCarryStone();
             straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
             placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
-                    SKYSTONEAutonomousConstants.stoneGrabXBlue-2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
+                    SKYSTONEAutonomousConstants.stoneGrabXBlue +2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
             directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
             backReleaseStone();
             sleep(500);

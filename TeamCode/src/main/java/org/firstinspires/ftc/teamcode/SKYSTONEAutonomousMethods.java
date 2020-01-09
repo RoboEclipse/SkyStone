@@ -870,7 +870,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+7, y1-5, true, 1,0);
+        directionalDrive(x1+(7 * multiplier), y1- (5 * multiplier), true, 1,0);
         int returnDistance = 60;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
         frontReleaseStone();
@@ -878,7 +878,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontGrabStone();
         sleep(250);
         frontCarryStone();
-        directionalDrive(x2+7, y2+5 + adjustment, true, 1,0);
+        if (isRedSide) {
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 1, 0);
+        } else{
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 1, 0);
+        }
         returnDistance = -65;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
     }
