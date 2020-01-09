@@ -728,6 +728,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             currentAngle = loopAround(getHorizontalAngle());
             currentError = targetAngle - currentAngle;
             rotationVelocity = currentError * kR;
+            xRaw = getXRaw(corner);
+            yRaw = getYRaw(corner);
             double t2 = clock.nanoseconds();
             dt = t2-t1;
 
@@ -741,25 +743,28 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
             Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
-
+            double angle = 0;
             if(PID) {
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
                 double dYDis = (xRaw-previousX)/dt*Math.pow(10,9);
                 double dXDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
-                double xVelocity = Math.min(1, SKYSTONEAutonomousConstants.minimumPower+Math.abs(maxVelocity * getPD(xDis, dXDis, kP, kD)));
-                double yVelocity = Math.min(1, SKYSTONEAutonomousConstants.minimumPower+Math.abs(maxVelocity * getPD(yDis, dYDis, kP, kD)));
-                velocity = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+                double xVelocity = maxVelocity * getPD(xDis, dXDis, kP, kD);
+                double yVelocity = maxVelocity * getPD(yDis, dYDis, kP, kD);
+                angle = Math.atan2(xVelocity,yVelocity);
+
+                velocity = Math.min (1, SKYSTONEAutonomousConstants.minimumPower + Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity));
 
                 Log.d("Skystone", "Distance error = " + totalDistance + "Change in xDistance error = " + dXDis + "Change in yDistance error = " + dYDis + "dt = " + dt);
-                Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "DifferentialXAction = " + dXDis*kD + "DifferentialYAction = " + dYDis*kD);
+                Log.d("Skystone:", "Proportional Action = " + totalDistance*kP + "xVelocity = " + xVelocity + "yVelocity = " + yVelocity);
+            } else{
+                angle = Math.atan2(xDis,yDis);
             }
             //store old values
             previousX = xRaw;
             previousY = yRaw;
             t1=t2;
 
-            double angle = Math.atan2(xDis,yDis);
             if(corner == Localizer.Corner.RIGHT_UP || corner == Localizer.Corner.RIGHT_DOWN){
                 angle = Math.PI+angle;
             }
@@ -812,7 +817,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     double getPD(double error, double dError, double kP, double kD){
-        return Math.min(1, Math.abs(error*kP + dError*kD));
+        return error*kP + dError*kD;
     }
 
     void freeDrive(double direction, double velocity, double rotationVelocity){
@@ -933,6 +938,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void park(boolean isRedSide){
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
         if (isRedSide){
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.foundationClear, 1);
         } else{
