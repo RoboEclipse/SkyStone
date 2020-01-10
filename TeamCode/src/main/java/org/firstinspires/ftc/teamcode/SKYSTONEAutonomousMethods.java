@@ -746,8 +746,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             double angle = 0;
             if(PID) {
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
-                double dYDis = (xRaw-previousX)/dt*Math.pow(10,9);
-                double dXDis = (yRaw-previousY)/dt*Math.pow(10,9);
+                double dXDis = (xRaw-previousX)/dt*Math.pow(10,9);
+                double dYDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
                 double xVelocity = maxVelocity * getPD(xDis, dXDis, kP, kD);
                 double yVelocity = maxVelocity * getPD(yDis, dYDis, kP, kD);
