@@ -37,6 +37,10 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -55,6 +59,8 @@ import java.util.List;
 //@Disabled
 public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
+    //FtcDashboard dashboard = FtcDashboard.getInstance();
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
@@ -70,7 +76,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
-        dashboard = FtcDashboard.getInstance();
+        //dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         //double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);

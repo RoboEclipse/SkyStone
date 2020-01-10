@@ -17,6 +17,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object
@@ -683,6 +687,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+
         double maxVelocity = 1;
         double velocity = maxVelocity;
         double rotationVelocity = 0;
@@ -732,6 +738,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             yRaw = getYRaw(corner);
             double t2 = clock.nanoseconds();
             dt = t2-t1;
+
+            TelemetryPacket pack = new TelemetryPacket();
+            TelemetryPacket locationPack = new TelemetryPacket();
+            locationPack.fieldOverlay().setStrokeWidth(1).strokeCircle(xRaw-72,yRaw-72, 10);
+            pack.put("x", xRaw);
+            pack.put("y", yRaw);
+            //pack.fieldOverlay().
+            dashboard.sendTelemetryPacket(pack);
+            dashboard.sendTelemetryPacket(locationPack);
 
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
@@ -870,7 +885,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(500);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+(7 * multiplier), y1- (5 * multiplier), true, 1,0);
+        directionalDrive(x1+(7 * multiplier), y1- 5, true, 1,0);
         int returnDistance = 60;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
         frontReleaseStone();
