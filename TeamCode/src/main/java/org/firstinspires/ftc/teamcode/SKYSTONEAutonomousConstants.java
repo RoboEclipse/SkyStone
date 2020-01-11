@@ -53,44 +53,44 @@ public class SKYSTONEAutonomousConstants {
     public static double flooringPower = 0.3;
 
     //Front Side base servo
-    public static double fbReady = 0.42;
-    public static double fbDown = 0.24;
+    public static double fbReady = 0.37;
+    public static double fbDown = 0.20;
     public static double fbUp = 0.66;
-    public static double fbStartPosition = 0.75;
+    public static double fbStartPosition = 0.85;
     //Front Side Autonomous Claw
     public static double fsOpen = 0.15;
-    public static double fsReady = 0.28;
+    public static double fsReady = 0.22;
     public static double fsGrab = 0.45;
     //Back Side base servo
-    public static double bbReady = 0.82;
+    public static double bbReady = 0.86;
     public static double bbDown = 0.91;
     public static double bbUp = 0.54;
     public static double bbStartPosition = 0.4;
     //Back Side Autonomous Claw
     public static double bsOpen = 0.46;
-    public static double bsReady = 0.32;
-    public static double bsGrab = 0.18;
+    public static double bsReady = 0.35;
+    public static double bsGrab = 0.12;
 
     //PID drive constants
     public static double kR = 1.0/25;
     public static double kD = 0.004;
     public static double min = 0.5;
     public static double ddkR = -0.01;
-    public static double ddkP = 1.0/20;
-    public static double ddkD = 3.0/1000.0;
+    public static double ddkP = 0.05;
+    public static double ddkD = -6.0/1000.0;
     public static double minimumPower = 0.2;
     //Coordinate Constants
-    public static double stoneGrabXBlue = 27.5;
+    public static double stoneGrabXBlue = 28.5;
     public static double stoneGrabXRed = SKYSTONEAutonomousConstants.fieldSize - stoneGrabXBlue;
     public static double stoneGrabY = 4;
     public static double stoneAwayXBlue = 20;
     public static double stoneAwayXRed = SKYSTONEAutonomousConstants.fieldSize - stoneAwayXBlue;
     public static double stoneAwayY = 40.0;
-    public static double stoneDropXBlue = 27;
+    public static double stoneDropXBlue = 27.5;
     public static double stoneDropXRed = SKYSTONEAutonomousConstants.fieldSize - stoneDropXBlue;
-    public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 9;
+    public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 5;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 14;
     public static double firstBridgeCross = -50;
     public static double foundationClear = 16;
-    public static double skyBridgeDrive = 35;
+    public static double skyBridgeDrive = 25;
 }

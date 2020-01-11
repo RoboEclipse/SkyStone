@@ -17,6 +17,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object
@@ -683,6 +687,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
+        FtcDashboard dashboard;
+
+
         double maxVelocity = 1;
         double velocity = maxVelocity;
         double rotationVelocity = 0;
@@ -732,6 +739,27 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             yRaw = getYRaw(corner);
             double t2 = clock.nanoseconds();
             dt = t2-t1;
+
+            try {
+                dashboard = FtcDashboard.getInstance();
+                TelemetryPacket pack = new TelemetryPacket();
+                TelemetryPacket locationPack = new TelemetryPacket();
+                locationPack.fieldOverlay().setStrokeWidth(1).strokeCircle(xRaw - 72, yRaw - 72, 10).setStroke("red");
+
+                pack.put("x", xRaw);
+                pack.put("y", yRaw);
+                pack.put("xTarget", targetX);
+                pack.put("yTarget", targetY);
+
+                pack.put("xDis", xDis);
+                pack.put("yDis", yDis);
+
+                dashboard.sendTelemetryPacket(pack);
+                dashboard.sendTelemetryPacket(locationPack);
+            }catch (NullPointerException e){
+                telemetry.addData("FTCDashboard is gayyyy", null);
+                telemetry.update();
+            }
 
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
@@ -865,23 +893,23 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             adjustment = 16;
         }
         Log.d("Skystone: ", "Skystoneposition " + skyStonePosition);
-        directionalDrive(x1, y1, true, 1,0);
+        directionalDrive(x1, y1, true, 2,0);
         frontReleaseStone();
         sleep(500);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+(7 * multiplier), y1- (5 * multiplier), true, 1,0);
-        int returnDistance = 60;
+        directionalDrive(x1+(7 * multiplier), y1- 5, true, 2,0);
+        int returnDistance = 75;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
         frontReleaseStone();
-        directionalDrive(x2, y2 + adjustment, true, 1,0);
+        directionalDrive(x2, y2 + adjustment, true, 2,0);
         frontGrabStone();
         sleep(250);
         frontCarryStone();
         if (isRedSide) {
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 1, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 2, 0);
         } else{
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 1, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, true, 2, 0);
         }
         returnDistance = -65;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
@@ -903,7 +931,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         encoderTurnNoStopPowers(70, -1,-0.5,3, false);
         encoderTurnNoStopLeftOnly(0,1,3);
-        encoderStraightDrive(-12,1);
+        //encoderStraightDrive(-12,1);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         sleep(250);
@@ -946,6 +974,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
+        encoderTurn(0, 1, 2);
         if (isRedSide){
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.foundationClear, 1);
         } else{

@@ -33,9 +33,14 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 
 /**
@@ -55,6 +60,8 @@ import java.util.List;
 //@Disabled
 public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
+    //FtcDashboard dashboard = FtcDashboard.getInstance();
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
@@ -70,20 +77,23 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
-        dashboard = FtcDashboard.getInstance();
+        //dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         //double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
+        telemetry.addData("Skystone: ", "frontDistance = " + myRobot.getFrontDistance());
+        telemetry.addData("Skystone: ", "backDistance = " + myRobot.getBackDistance());
+        telemetry.addData("Skystone: ", "leftDistance = " + myRobot.leftDistance.getDistance(DistanceUnit.INCH));
         getAngleWaitForStart();
         runtime.reset();
 
         while(opModeIsActive()){
             frontReleaseStone();
             backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 2,0);
             skyStonePosition = detectSkyStonePosition(true);
             encoderStrafeDriveInchesRight(2,1);
             frontGrabStone();
@@ -93,12 +103,12 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
             if(skyStonePosition.equals("Bridge")){
                 encoderStraightDrive(10, 1);
             }
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true, 2,0);
             backCarryStone();
             straighteningEncoderDrive(SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
             placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.nearStoneDropY,
-                    SKYSTONEAutonomousConstants.stoneGrabXRed -2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+                    SKYSTONEAutonomousConstants.stoneGrabXRed - 3, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY, true, 2,0);
             frontReleaseStone();
             sleep(500);
             grabFoundation(true);
