@@ -80,7 +80,11 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            encoderTurn(90, 1, 3);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-10, 20,true,3,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-5,5,true,3,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-10, 5,true,3,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-5,20,true,3,0);
+            directionalDrive(SKYSTONEAutonomousConstants.fieldSize-10, 20,true,3,0);
             /*
             encoderStraightDrive(-4,1);
             encoderTurnNoStopPowers(70, -1,-0.25,3);
