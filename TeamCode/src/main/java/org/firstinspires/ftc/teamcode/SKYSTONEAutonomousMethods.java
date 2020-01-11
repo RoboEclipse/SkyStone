@@ -687,8 +687,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
-        FtcDashboard dashboard;
-
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        if (dashboard==null){
+            telemetry.addData("FTCDashboard is dumb",0);
+        }
+        Log.d("SkyStone:", "Target: (" + targetX + "," + targetY + ")");
 
         double maxVelocity = 1;
         double velocity = maxVelocity;
@@ -740,8 +743,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             double t2 = clock.nanoseconds();
             dt = t2-t1;
 
-            try {
-                dashboard = FtcDashboard.getInstance();
+            if (dashboard!=null){
+
                 TelemetryPacket pack = new TelemetryPacket();
                 TelemetryPacket locationPack = new TelemetryPacket();
                 locationPack.fieldOverlay().setStrokeWidth(1).strokeCircle(xRaw - 72, yRaw - 72, 10).setStroke("red");
@@ -756,9 +759,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
                 dashboard.sendTelemetryPacket(pack);
                 dashboard.sendTelemetryPacket(locationPack);
-            }catch (NullPointerException e){
-                telemetry.addData("FTCDashboard is gayyyy", null);
-                telemetry.update();
             }
 
             xDis = targetX - xRaw;
@@ -902,7 +902,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         int returnDistance = 75;
         straighteningEncoderDrive(returnDistance*multiplier, 0, 50, 1);
         frontReleaseStone();
-        directionalDrive(x2, y2 + adjustment, true, 2,0);
+        directionalDrive(x2, y2 + adjustment, true, 1,0);
         frontGrabStone();
         sleep(250);
         frontCarryStone();
