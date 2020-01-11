@@ -932,7 +932,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
         frontCarryStone();
         backCarryStone();
-        encoderStrafeDriveInchesRight(multiplier*-5,1);
+        encoderStrafeDriveInchesRight(-5,1);
         encoderTurn(90, 1, 3);
         distanceEncoderDrive(38,1,1, 90, myRobot.frontDistance);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
@@ -943,7 +943,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             encoderTurnNoStopLeftOnly(0,1,3);
         }
         else{
-            encoderTurnNoStopPowers(110, -0.5,-1,3, false);
+            encoderTurnNoStopPowers(110, 0.5,1,3, false);
             encoderTurnNoStopLeftOnly(178,1,3);
         }
 
@@ -955,6 +955,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     String detectSkyStonePosition(boolean isRedSide) {
+        int multiplier = 1;
         double frontHue = getHue(myRobot.frontColor);
         double backHue = getHue(myRobot.backColor);
         String skyStonePosition = "Center";
@@ -969,13 +970,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsOpen);
             myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
         }
+        else{
+            multiplier = -1;
+        }
         if(skyStonePosition.equals("Center")){
-            encoderStraightDrive(-8, 1);
+            encoderStraightDrive(-8*multiplier, 1);
             //distanceEncoderDrive(baseDistance+8,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
         if(skyStonePosition.equals("Bridge")){
-            encoderStraightDrive(-16,1);
+            encoderStraightDrive(-16*multiplier,1);
             //distanceEncoderDrive(baseDistance+16,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }

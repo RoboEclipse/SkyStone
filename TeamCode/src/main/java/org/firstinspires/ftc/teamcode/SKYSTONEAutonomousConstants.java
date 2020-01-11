@@ -76,7 +76,7 @@ public class SKYSTONEAutonomousConstants {
     public static double kD = 0.004;
     public static double min = 0.5;
     public static double ddkR = -0.01;
-    public static double ddkP = 0.05;
+    public static double ddkP = 0.06;
     public static double ddkD = -6.0/1000.0;
     public static double minimumPower = 0.2;
     //Coordinate Constants
