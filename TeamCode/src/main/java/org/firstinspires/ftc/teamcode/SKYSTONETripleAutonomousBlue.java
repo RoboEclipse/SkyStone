@@ -33,6 +33,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -77,6 +78,9 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
+        telemetry.addData("Skystone: ", "frontDistance = " + myRobot.getFrontDistance());
+        telemetry.addData("Skystone: ", "backDistance = " + myRobot.getBackDistance());
+        telemetry.addData("Skystone: ", "leftDistance = " + myRobot.leftDistance.getDistance(DistanceUnit.INCH));
         getAngleWaitForStart();
         runtime.reset();
 
@@ -93,12 +97,12 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
             if(skyStonePosition.equals("Bridge")){
                 encoderStraightDrive(-10, 1);
             }
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 2,0);
             frontCarryStone();
             straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
             placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
                     SKYSTONEAutonomousConstants.stoneGrabXBlue +2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 2,0);
             backReleaseStone();
             sleep(500);
             grabFoundation(false);
