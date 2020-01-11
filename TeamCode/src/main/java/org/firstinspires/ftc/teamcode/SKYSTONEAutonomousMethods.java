@@ -976,8 +976,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
         encoderTurn(0, 1, 2);
         if (isRedSide){
+            encoderTurn(0, 1, 2);
             encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.foundationClear, 1);
         } else{
+            encoderTurn(178, 1, 2);
             encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.foundationClear, 1);
         }
         encoderStraightDrive(SKYSTONEAutonomousConstants.skyBridgeDrive, 1);
