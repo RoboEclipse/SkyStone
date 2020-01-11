@@ -728,6 +728,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             currentAngle = loopAround(getHorizontalAngle());
             currentError = targetAngle - currentAngle;
             rotationVelocity = currentError * kR;
+            xRaw = getXRaw(corner);
+            yRaw = getYRaw(corner);
             double t2 = clock.nanoseconds();
             dt = t2-t1;
 
