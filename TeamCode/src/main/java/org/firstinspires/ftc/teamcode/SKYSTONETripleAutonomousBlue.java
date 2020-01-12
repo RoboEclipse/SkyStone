@@ -33,6 +33,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
@@ -78,6 +79,9 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         resetClaws();
+        telemetry.addData("Skystone: ", "frontDistance = " + myRobot.getFrontDistance());
+        telemetry.addData("Skystone: ", "backDistance = " + myRobot.getBackDistance());
+        telemetry.addData("Skystone: ", "leftDistance = " + myRobot.leftDistance.getDistance(DistanceUnit.INCH));
         getAngleWaitForStart();
         runtime.reset();
 
