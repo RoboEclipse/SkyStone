@@ -77,34 +77,32 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
+        resetClaws();
         getAngleWaitForStart();
         runtime.reset();
 
-        while(opModeIsActive()){
-            frontReleaseStone();
-            backReleaseStone();
-            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
-            skyStonePosition = detectSkyStonePosition(false);
-            encoderStrafeDriveInchesRight(2,1);
-            backGrabStone();
-            sleep(250);
-            backCarryStone();
-            encoderStrafeDriveInchesRight(-5,1);
-            if(skyStonePosition.equals("Bridge")){
-                encoderStraightDrive(-10, 1);
-            }
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
-            frontCarryStone();
-            straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-            placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
-                    SKYSTONEAutonomousConstants.stoneGrabXBlue +2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
-            directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
-            backReleaseStone();
-            sleep(500);
-            grabFoundation(false);
-            park(false);
-            break;
-            }
+        frontReleaseStone();
+        backReleaseStone();
+        directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+        skyStonePosition = detectSkyStonePosition(false);
+        encoderStrafeDriveInchesRight(2,1);
+        backGrabStone();
+        sleep(250);
+        backCarryStone();
+        encoderStrafeDriveInchesRight(-5,1);
+        if(skyStonePosition.equals("Bridge")){
+            encoderStraightDrive(-10, 1);
+        }
+        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+        frontCarryStone();
+        straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
+        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
+                SKYSTONEAutonomousConstants.stoneGrabXBlue + 2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+        backReleaseStone();
+        sleep(500);
+        grabFoundation(false);
+        park(false);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }

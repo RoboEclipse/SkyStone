@@ -165,10 +165,10 @@ public class SKYSTONETeleOp extends OpMode
 
         //Side Claw test{
         if(gamepad2.right_bumper){
-            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
+            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
             myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
             myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
-            myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
+            myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
         }
         if(gamepad2.left_bumper){
             myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);

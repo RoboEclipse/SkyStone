@@ -298,6 +298,9 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     double getFrontDistance() {
         return frontDistance.getDistance(DistanceUnit.INCH);
     }
+    double getLeftDistance() {
+        return leftDistance.getDistance(DistanceUnit.INCH);
+    }
 
     void resetAutonomous() {
         clawRotation.setPosition(SKYSTONEConstants.straight);
