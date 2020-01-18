@@ -59,9 +59,9 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
     private ElapsedTime runtime = new ElapsedTime();
     private double autoRotate = 0.5;
     private double autoGrab = 0.5;
-    private double sideFoundation = 0.5;
-    private double sideServoPosition = 0.5;
-    private double sideClawPosition = 0.5;
+    //private double sideFoundation = 0.5;
+    //private double sideServoPosition = 0.5;
+    //private double sideClawPosition = 0.5;
     @Override
     public void runOpMode() {
 
@@ -86,12 +86,6 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
             autoRotate += 0.06*gamepad2.left_stick_y;
             autoGrab += 0.06*gamepad2.right_stick_y;
-            if (gamepad2.dpad_up) {
-                sideFoundation += 0.06;
-            }
-            if (gamepad2.dpad_down) {
-               sideFoundation -= 0.06;
-            }
             if(gamepad1.a){
                 frontCarryStone();
                 backCarryStone();
@@ -106,22 +100,16 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             }
             autoRotate = Math.max(Math.min(1, autoRotate),0);
             autoGrab = Math.max(Math.min(1, autoGrab),0);
-            sideFoundation = Math.max(Math.min(1, sideFoundation),0);
-            myRobot.frontBase.setPosition(autoRotate);
-            myRobot.frontGrabber.setPosition(autoGrab);
-            myRobot.backBase.setPosition(sideServoPosition);
-            myRobot.backGrabber.setPosition(sideClawPosition);
+            frontReleaseStone();
+            backReleaseStone();
             //myRobot.foundationServo.setPosition(sideFoundation);
 
 
             // Show the elapsed game time and wheel power.s
             telemetry.addData("Front Color: ", getHue(myRobot.frontColor));
             telemetry.addData("Back Color: ", getHue(myRobot.backColor));
-            telemetry.addData("sideFoundation", sideFoundation);
             telemetry.addData("AutoRotate", autoRotate);
             telemetry.addData("AutoGrab", autoGrab);
-            telemetry.addData("sideServoPosition", sideServoPosition);
-            telemetry.addData("sideClawPosition", sideClawPosition);
             telemetry.addData("HorizontalAngle", getHorizontalAngle());
             telemetry.addData("RollAngle", getRoll());
             telemetry.addData("VerticalAngle", getVerticalAngle());

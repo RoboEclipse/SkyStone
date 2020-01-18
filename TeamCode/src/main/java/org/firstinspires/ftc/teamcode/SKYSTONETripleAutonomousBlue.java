@@ -97,12 +97,12 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         if(skyStonePosition.equals("Bridge")){
             encoderStraightDrive(-10, 1);
         }
-        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue + 1, SKYSTONEAutonomousConstants.stoneAwayY, true, 1,0);
         frontCarryStone();
         straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY,
+        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue - 0.5, SKYSTONEAutonomousConstants.nearStoneDropY,
                 SKYSTONEAutonomousConstants.stoneGrabXBlue + 2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
-        directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue - 0.5, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
         backReleaseStone();
         sleep(500);
         grabFoundation(false);
