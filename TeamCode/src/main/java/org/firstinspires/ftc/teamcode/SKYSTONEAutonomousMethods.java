@@ -19,22 +19,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.revextensions2.RevBulkData;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object
     //BNO055IMU imu;
-    Orientation angles;
+    private Orientation angles;
     //Software
     //private Telemetry telemetry;
 
-    int turnPValue = 15;
+    private int turnPValue = 15;
     //Classes
 
-    private SKYSTONEConfiguration skystoneNames = new SKYSTONEConfiguration();
-    private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
     SKYSTONEClass myRobot = new SKYSTONEClass();
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
@@ -127,62 +124,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         runMotors(0,0);
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    void newEncoderStrafeDriveInchesRight(double inches){
-        setModeAllDrive(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        int lfTarget = (int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH);
-        int lbTarget = -(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH);
-        int rfTarget = lbTarget;
-        int rbTarget = lfTarget;
-        boolean reached = false;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        runMotors(1, 1);
-        while (!reached && opModeIsActive()){
-            reached = true;
-            int lfPosition = myRobot.lf.getCurrentPosition();
-            int lbPosition = myRobot.lb.getCurrentPosition();
-            int rfPosition = myRobot.rf.getCurrentPosition();
-            int rbPosition = myRobot.rb.getCurrentPosition();
-            int lfError = lfTarget-lfPosition;
-            int lbError = lbTarget-lbPosition;
-            int rfError = rfTarget-rfPosition;
-            int rbError = rbTarget-rbPosition;
-
-            if(Math.abs(lfError)>20){
-                myRobot.lf.setPower(Math.max(Math.abs(lfError/500), 0.1)*Math.signum(lfError));
-            }
-            else{
-                myRobot.lf.setPower(0);
-                reached = false;
-            }
-            if(Math.abs(lbError)>20){
-                myRobot.lb.setPower(Math.max(Math.abs(lbError/500), 0.1)*Math.signum(lbError));
-            }
-            else{
-                myRobot.lb.setPower(0);
-                reached = false;
-            }
-            if(Math.abs(rfError)>20){
-                myRobot.rf.setPower(Math.max(Math.abs(rfError/500), 0.1)*Math.signum(rfError));
-            }
-            else{
-                myRobot.rf.setPower(0);
-                reached = false;
-            }
-            if(Math.abs(rbError)>20){
-                myRobot.rb.setPower(Math.max(Math.abs(rbError/500), 0.1)*Math.signum(rbError));
-            }
-            else{
-                myRobot.rf.setPower(0);
-                reached = false;
-            }
-            Log.d("SkyStone Left Front: ", lfPosition+"");
-            Log.d("SkyStone Left Back: ", lbPosition+"");
-            Log.d("SkyStone Right Front: ", rfPosition+"");
-            Log.d("SkyStone Right Back: ", rbPosition+"");
-        }
-        runMotors(0,0);
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
 
     //Positive = Clockwise, Negative = Counterclockwise
     void encoderTurn(double targetAngle, double power, double tolerance){
@@ -201,8 +142,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         //Undefined constants
         double d;
         double dt;
-        double leftProportionalPower = leftPower;
-        double rightProportionalPower = rightPower;
+        double leftProportionalPower;
+        double rightProportionalPower;
         //Initial error
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
@@ -416,9 +357,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             motor.setTargetPosition((int) Math.round(ticks));
         }
     }
-    private boolean anyBusy(){
-        return myRobot.lb.isBusy() || myRobot.lf.isBusy() || myRobot.rb.isBusy() || myRobot.rf.isBusy();
-    }
     private boolean notCloseEnough(int tolerance, DcMotor...motors){
         for(DcMotor motor : motors){
             if(Math.abs(motor.getCurrentPosition()-motor.getTargetPosition()) > tolerance){
@@ -515,55 +453,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Vuforia Stuff
 
     //Complex Methods
-    void pickUpStone(){
-        myRobot.clawRotation.setPosition(SKYSTONEConstants.right90);
-        myRobot.clawServo.setPosition(SKYSTONEConstants.loosen);
-        sleep(800);
-        myRobot.elevator.setPower(-0.3);
-        sleep(700);
-        myRobot.elevator.setPower(0);
-        myRobot.clawServo.setPosition(SKYSTONEConstants.tighten);
-        //sleep(1000);
-        //myRobot.clawRotation.setPosition(SKYSTONEConstants.straight);
-    }
-    void foundationPlaceRed(SKYSTONEClass myRobot) {
-        //Grab the foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        sleep(500);
-        //Turn the foundation
-        //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopLeftOnly(-SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
-        runMotors(0,0);
-        //Drive foundation towards wall
-        runMotors(-1, -1);
-        sleep(1000);
-        runMotors(0, 0);
-        //Release foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        sleep(500);
-
-    }
-    void foundationPlaceBlue(SKYSTONEClass myRobot) {
-        //Grab the foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        sleep(500);
-        //Turn the foundation
-        //Robot turns clockwise, therefore negative power
-        encoderTurnNoStopRightOnly(SKYSTONEAutonomousConstants.cFoundationTurn, 1, 3);
-        runMotors(0,0);
-        //Drive foundation towards wall
-        runMotors(-1, -1);
-        sleep(1000);
-        runMotors(0, 0);
-        //Release foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        sleep(500);
-
-    }
     void getAngleWaitForStart() {
         while (!isStarted()) {
             synchronized (this) {
@@ -583,114 +472,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 }
             }
         }
-    }
-    String detectFirstStone(boolean isRedSide) {
-        String skyStonePosition;//Drive the distance
-        double distance;
-        int scale;
-        if(isRedSide){
-            scale = 1;
-        }
-        else{
-            scale = -1;
-        }
-        distanceEncoderDrive(2,0.25,1,0, myRobot.frontDistance);
-        //Detect where the SkyStone is
-        float leftHue = getHue(myRobot.frontColor);
-        float rightHue = getHue(myRobot.backColor);
-        float depotSideHue = isRedSide?leftHue:rightHue;
-        float bridgeSideHue = isRedSide?rightHue:leftHue;
-        Log.d("Skystone:", "Bridge Side Hue: " + bridgeSideHue + ". Depot Side Hue: " + depotSideHue);
-        if(depotSideHue >= 70) {
-            skyStonePosition = "Left";
-            //First Strafe
-        }
-        else if(bridgeSideHue >= 70) {
-            //First Strafe
-            if(isRedSide) {
-                encoderStraightDrive(-3, 1);
-            }
-            encoderStrafeDriveInchesRight(scale*(SKYSTONEAutonomousConstants.doubleAdjustDistance+SKYSTONEAutonomousConstants.doubleCenterDistance), 1);
-            if(isRedSide){
-                encoderStraightDrive(1, 1);
-            }
-            else{
-                encoderStraightDrive(2, 1);
-            }
-
-            skyStonePosition  = "Right";
-
-        }
-        else {
-            //First strafe
-            encoderStrafeDriveInchesRight(scale*SKYSTONEAutonomousConstants.doubleCenterDistance, 1);
-            skyStonePosition = "Center";
-        }
-        Log.d("SkyStone:", "SkyStone Position: " + skyStonePosition);
-
-
-        return skyStonePosition;
-    }
-    void grabFoundation(double speed, boolean blue) {
-        //Raise up foundation servos
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        if (blue){
-            //Turns to match Foundation
-            encoderTurn(-173, 1, 1.5);
-            //Let go of stone
-            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
-        } else {
-            //Turns to match Foundation
-            encoderTurn(-179, 1, 1.5);
-            //Let go of stone
-            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
-        }
-
-        //Drive to foundation
-        encoderStraightDrive(SKYSTONEAutonomousConstants.foundationDistance, speed);
-        runMotors(-0.25, -0.25);
-        sleep(350);
-        runMotors(0,0);
-        //Grab the foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        //encoderStrafeDriveInchesRight(-3, 1);
-        sleep(200);
-    }
-    void fastGrabFoundation(double speed, boolean blue) {
-        //Raise up foundation servos
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        if (blue){
-            //Turns to match Foundation
-            encoderTurn(-173, 1, 2);
-            //Let go of stone
-            myRobot.frontGrabber.setPosition(SKYSTONEConstants.frUp);
-        } else {
-            //Turns to match Foundation
-            encoderTurn(-178, 1, 2);
-            //Let go of stone
-            myRobot.frontBase.setPosition(SKYSTONEConstants.flUp);
-        }
-
-        //Drive to foundation
-        encoderStraightDrive(SKYSTONEAutonomousConstants.foundationDistance, speed);
-        runMotors(-0.35, -0.35);
-        sleep(200);
-        runMotors(0,0);
-        //Grab the foundation
-        myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
-        myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
-        encoderStrafeDriveInchesRight(-3, 1);
-        sleep(200);
-    }
-    void coordinateDrive(Localizer.Corner corner, double targetX, double targetY, boolean PID, double tolerance){
-
-        switch (corner){
-            case LEFT_UP:
-        }
-
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -973,13 +754,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             //encoderStrafeDriveInchesRight(10,1);
             encoderTurnNoStopPowers(55, -1,-0.5,3, false);
             encoderTurnNoStopRightOnly(0,1,3);
-            encoderStraightDrive(-3, 1);
+            //encoderStraightDrive(-3, 1);
         }
         else{
-            encoderStrafeDriveInchesRight(-10,1);
-            encoderTurnNoStopPowers(110, 0.5,1,3, false);
-            encoderTurnNoStopRightOnly(178,1,3);
-            encoderStraightDrive(-3, 1);
+            //encoderStrafeDriveInchesRight(-10,1);
+            encoderTurnNoStopPowers(125, 0.5,1,3, false);
+            encoderTurnNoStopLeftOnly(178,-1,3);
+            //encoderStraightDrive(-3, 1);
         }
         //encoderStraightDrive(-12,1);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
