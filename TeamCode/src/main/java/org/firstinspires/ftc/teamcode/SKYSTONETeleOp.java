@@ -153,11 +153,11 @@ public class SKYSTONETeleOp extends OpMode
         }
 
         //Collector Servos
-        if(gamepad2.right_trigger>0.7){
-            collectorPower = -0.75;
+        if(gamepad2.right_trigger>0.3){
+            collectorPower = -1;
         }
-        else if(gamepad2.left_trigger>0.7){
-            collectorPower = 0.75;
+        else if(gamepad2.left_trigger>0.3){
+            collectorPower = 1;
         }
         else{
             collectorPower = 0;

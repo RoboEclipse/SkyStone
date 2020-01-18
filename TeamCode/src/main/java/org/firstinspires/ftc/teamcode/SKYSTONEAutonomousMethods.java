@@ -798,7 +798,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 Log.d("Skystone", "Distance error = " + totalDistance + " Change in xDistance error = " + dXDis + " Change in yDistance error = " + dYDis + " dt = " + dt);
                 Log.d("Skystone:", " Proportional Action = " + totalDistance*kP + " xVelocity = " + xVelocity + " yVelocity = " + yVelocity);
             } else{
-                angle = Math.atan2(xDis,yDis);
+                angle = Math.atan2(xDis * SKYSTONEAutonomousConstants.lateralFactor ,yDis);
             }
             //store old values
             previousX = xRaw;
