@@ -104,7 +104,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
                 SKYSTONEAutonomousConstants.stoneGrabXBlue + 2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
         directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue - 0.5, SKYSTONEAutonomousConstants.farStoneDropY, true, 1,0);
         backReleaseStone();
-        sleep(500);
+        sleep(250);
         grabFoundation(false);
         park(false);
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");

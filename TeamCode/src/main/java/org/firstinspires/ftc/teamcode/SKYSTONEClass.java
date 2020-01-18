@@ -31,9 +31,6 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
     Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontBase, frontGrabber, capServo, backBase, backGrabber;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //leftDistance
-    ExpansionHubEx expansionHub;
-    RevBulkData bulkData;
-    ExpansionHubMotor lbBR, lfBR, rbBR, rfBR;
 
     MotionProfile1D mp;
     //Software
@@ -104,26 +101,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
 
     //Methods
     //Shortcuts
-    void initializeBR (HardwareMap hardwareMap){
-        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 1");
 
-        lbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backLeftMotor);
-        lfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontLeftMotor);
-        rbBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.backRightMotor);
-        rfBR = (ExpansionHubMotor) hardwareMap.dcMotor.get(skystoneNames.frontRightMotor);
-
-    }
-
-    void readEncodersBR(){
-        bulkData = expansionHub.getBulkInputData();
-        telemetry.addData(
-                "Encoders from Bulk Read", "lf: " + bulkData.getMotorCurrentPosition(lfBR)
-                        + " lb: " + bulkData.getMotorCurrentPosition(lbBR)
-                        + " rf: " + bulkData.getMotorCurrentPosition(rfBR)
-                        + " rb: "+ bulkData.getMotorCurrentPosition(rbBR)
-        );
-
-    }
 
     //Drive Stuff
     //Preferably Do Not Touch

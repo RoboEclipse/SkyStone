@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.openftc.revextensions2.RevBulkData;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -211,7 +212,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
         double t2 = t1;
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
 
                 //Getting Error
@@ -475,11 +476,21 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         return values[0];
     }
     //For carrying the blocks
+    void frontCarryStone () {
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+    }
     void backCarryStone () {
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbUp);
         myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsGrab);
     }
     //Basic grab
+    void frontGrabStone (){
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbDown);
+        sleep(250);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
+        sleep(250);
+    }
     void backGrabStone (){
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbDown);
         sleep(250);
@@ -492,24 +503,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(100);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
     }
-    void frontCarryStone () {
-        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbUp);
-        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
-    }
-    //Basic grab
-    void frontGrabStone (){
-        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbDown);
-        sleep(100);
-        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsGrab);
-        sleep(300);
-    }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
         sleep(100);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
-
-
     }
 
     //VuforiaDetectionStuff
@@ -741,13 +739,26 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double previousY = yRaw;
         double xDis = targetX - xRaw;
         double yDis = targetY - yRaw;
-        double totalDistance=Math.sqrt(xDis*xDis+yDis*yDis);;
+        double totalDistance;
 
         Log.d("Skystone: ", "Direct Drive Target:(" + targetX + "," + targetY +
                 ") kP " + kP + "kD " + kD + " kR " + kR
                 + " tolerance" + tolerance + " Start At: (" + xRaw + "," + yRaw + ")");
 
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
+            RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
+            int lfPosition = encoderData.getMotorCurrentPosition(myRobot.lf);
+            int lbPosition = encoderData.getMotorCurrentPosition(myRobot.lb);
+            int rfPosition = encoderData.getMotorCurrentPosition(myRobot.rf);
+            int rbPosition = encoderData.getMotorCurrentPosition(myRobot.rb);
+            int lfVelocity = encoderData.getMotorVelocity(myRobot.lf);
+            int lbVelocity = encoderData.getMotorVelocity(myRobot.lb);
+            int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
+            int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
+            Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
+                " rf: " + rfPosition + " rb: " + rbPosition);
+            Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
+                    " rf: " + rfVelocity + " rb: " + rbVelocity);
             currentAngle = loopAround(getHorizontalAngle());
             currentError = targetAngle - currentAngle;
             rotationVelocity = currentError * kR;
@@ -791,7 +802,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
                 double xVelocity = maxVelocity * getPD(xDis, dXDis, kP, kD);
                 double yVelocity = maxVelocity * getPD(yDis, dYDis, kP, kD);
-                angle = Math.atan2(xVelocity,yVelocity);
+                angle = Math.atan2(xVelocity * SKYSTONEAutonomousConstants.lateralFactor, yVelocity);
 
                 velocity = Math.min (1, SKYSTONEAutonomousConstants.minimumPower + Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity));
 
@@ -913,10 +924,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             backReleaseStone();
         }
 
-        sleep(500);
+        sleep(250);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+(7 * multiplier), y1- 5, false, 2,0);
+        directionalDrive(x1+(5 * multiplier), y1- 5, false, 2,0);
         int returnDistance = 75;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
@@ -952,16 +963,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         encoderStrafeDriveInchesRight(-5,1);
         encoderTurn(90, 1, 3);
         //distanceEncoderDrive(38,1,0.8, 90, myRobot.frontDistance);
-        runMotors(-0.5,-0.5);
-        sleep(400);
+        runMotors(-0.4,-0.4);
+        sleep(500);
         runMotors(0,0);
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lDown);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rDown);
         sleep(250);
         if(isRedSide){
-            encoderStrafeDriveInchesRight(10,1);
-            encoderTurnNoStopPowers(70, -1,-0.5,3, false);
-            encoderTurnNoStopLeftOnly(0,1,3);
+            //encoderStrafeDriveInchesRight(10,1);
+            encoderTurnNoStopPowers(55, -1,-0.5,3, false);
+            encoderTurnNoStopRightOnly(0,1,3);
             encoderStraightDrive(-3, 1);
         }
         else{

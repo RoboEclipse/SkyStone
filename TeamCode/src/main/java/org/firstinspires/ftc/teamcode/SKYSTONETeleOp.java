@@ -116,6 +116,9 @@ public class SKYSTONETeleOp extends OpMode
         //Elevator controls
         double elevatorPower = -gamepad2.left_stick_y;
         myRobot.runElevatorMotors(elevatorPower);
+        if(Math.abs(elevatorPower)<0.05){
+            elevatorPower = 0.05;
+        }
 
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
