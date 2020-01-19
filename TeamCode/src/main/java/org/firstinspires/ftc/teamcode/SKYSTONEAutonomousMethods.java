@@ -201,7 +201,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
             currentAngle = getHorizontalAngle();
-            runMotors(-leftPower, rightPower);
+            error = targetAngle-currentAngle;
+            error = loopAround(error);
+            runMotors(leftPower, rightPower);
             Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftPower + "rightPower: " + rightPower + "CurrentAngle: " + currentAngle);
         }
     }
@@ -735,7 +737,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontCarryStone();
         backCarryStone();
         directionalDrive(x1+(5 * multiplier), y1- 5, false, 2,0);
-        int returnDistance = 75;
+        int returnDistance = 70;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
             frontReleaseStone();
@@ -778,8 +780,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         if(isRedSide){
             //encoderStrafeDriveInchesRight(10,1);
-            turn(50, 1, 0.5, 3);
-            turn(0, 0, -1, 3);
+            turn(35, 1, 0.5, 6);
+            turn(0, 0, -1, 6);
             //encoderStraightDrive(-3, 1);
         }
         else{
