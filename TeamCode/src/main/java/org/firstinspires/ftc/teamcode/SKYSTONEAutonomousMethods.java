@@ -570,16 +570,19 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             double angle = 0;
             if(PID) {
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
-                double dXDis = (xRaw-previousX)/dt*Math.pow(10,9);
-                double dYDis = (yRaw-previousY)/dt*Math.pow(10,9);
+                //double dXDis = (xRaw-previousX)/dt*Math.pow(10,9);
+                //double dYDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
-                double xVelocity = maxVelocity * getPD(xDis, dXDis, kP, kD);
-                double yVelocity = maxVelocity * getPD(yDis, dYDis, kP, kD);
+                double dY = getdY(encoderData, corner);
+                double dX = getdX(encoderData, corner);
+
+                double xVelocity = maxVelocity * getPD(xDis, dX, kP, kD);
+                double yVelocity = maxVelocity * getPD(yDis, dY, kP, kD);
                 angle = Math.atan2(xVelocity * SKYSTONEAutonomousConstants.lateralFactor, yVelocity);
 
                 velocity = Math.min (1, SKYSTONEAutonomousConstants.minimumPower + Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity));
 
-                Log.d("Skystone", "Distance error = " + totalDistance + " Change in xDistance error = " + dXDis + " Change in yDistance error = " + dYDis + " dt = " + dt);
+                Log.d("Skystone", "Distance error = " + totalDistance + " Change in xDistance error = " + dX + " Change in yDistance error = " + dY + " dt = " + dt);
                 Log.d("Skystone:", " Proportional Action = " + totalDistance*kP + " xVelocity = " + xVelocity + " yVelocity = " + yVelocity);
             } else{
                 angle = Math.atan2(xDis * SKYSTONEAutonomousConstants.lateralFactor ,yDis);
@@ -597,6 +600,37 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
         }
     }
+
+    void backUpEncoder(RevBulkData prevData, RevBulkData curData, double xRaw){
+
+
+    }
+
+    double getdY(RevBulkData bulkData, Localizer.Corner corner){
+        //Robot heading is flipped on red, so positive encoder = negative position
+        int multiplier = 1;
+        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
+            multiplier = -1;
+        }
+        return (bulkData.getMotorVelocity(myRobot.lf)
+                + bulkData.getMotorVelocity(myRobot.lb)
+                + bulkData.getMotorVelocity(myRobot.rf)
+                + bulkData.getMotorVelocity(myRobot.rb))
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
+    }
+    double getdX(RevBulkData bulkData, Localizer.Corner corner){
+        //Robot heading is flipped on red, so positive encoder = negative position
+        int multiplier = 1;
+        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
+            multiplier = -1;
+        }
+        return (bulkData.getMotorVelocity(myRobot.lf)
+                - bulkData.getMotorVelocity(myRobot.lb)
+                - bulkData.getMotorVelocity(myRobot.rf)
+                + bulkData.getMotorVelocity(myRobot.rb))
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
+    }
+
 
     private double getXRaw(Localizer.Corner corner) {
         double xRaw = 0;

@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.openftc.revextensions2.RevBulkData;
 
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
+
             telemetry.addData("OpModeIsActive", opModeStatus());
             //Drive motor controls
             double lx = gamepad1.left_stick_x;
@@ -84,6 +87,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             double v_theta = Math.sqrt(lx * lx + ly * ly);
             double v_rotation = gamepad1.right_stick_x;
             myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
+
             autoRotate += 0.06*gamepad2.left_stick_y;
             autoGrab += 0.06*gamepad2.right_stick_y;
             if(gamepad1.a){
@@ -123,6 +127,8 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
             telemetry.addData("LeftStickX", gamepad1.left_stick_x);
             telemetry.addData("RightStickX", gamepad1.right_stick_x);
+            telemetry.addData("YVelocity", getdY(encoderData, Localizer.Corner.LEFT_DOWN));
+            telemetry.addData("XVelocity", getdX(encoderData, Localizer.Corner.LEFT_DOWN));
             telemetry.update();
         }
     }

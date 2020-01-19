@@ -50,9 +50,7 @@ public class SKYSTONEConstants {
     public static double flDown = 0.78;
     public static double flUp = 0.3;
     public static double flSuperUp = 0.28;
-
     //Mode Switch Servo
     public static double deliverMode = 0.6;
     public static double stackingMode = 0.2;
-
 }
