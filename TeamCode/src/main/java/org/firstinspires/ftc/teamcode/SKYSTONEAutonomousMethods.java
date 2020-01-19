@@ -786,8 +786,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         else{
             //encoderStrafeDriveInchesRight(-10,1);
-            encoderTurnNoStopPowers(125, 0.5,1,3, false);
-            encoderTurnNoStopLeftOnly(178,1,3);
+            turn(145, 0.5,1,6);
+            turn(178,-1, 0,6);
             //encoderStraightDrive(-3, 1);
         }
         //encoderStraightDrive(-12,1);
