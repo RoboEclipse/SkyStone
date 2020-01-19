@@ -89,7 +89,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         backReleaseStone();
         directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
         skyStonePosition = detectSkyStonePosition(false);
-        encoderStrafeDriveInchesRight(2,1);
+        //encoderStrafeDriveInchesRight(2,1);
         backGrabStone();
         sleep(250);
         backCarryStone();
@@ -97,12 +97,12 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         if(skyStonePosition.equals("Bridge")){
             encoderStraightDrive(-10, 1);
         }
-        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue + 1, SKYSTONEAutonomousConstants.stoneAwayY, false, 1,0);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, false, 1,0);
         frontCarryStone();
         straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross, 0, 50, 1);
-        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue - 0.5, SKYSTONEAutonomousConstants.farStoneDropY,
-                SKYSTONEAutonomousConstants.stoneGrabXBlue + 2, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
-        directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue - 0.5, SKYSTONEAutonomousConstants.nearStoneDropY, true, 1,0);
+        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY,
+                SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, false);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.nearStoneDropY, true, 1,0);
         backReleaseStone();
         sleep(250);
         grabFoundation(false);

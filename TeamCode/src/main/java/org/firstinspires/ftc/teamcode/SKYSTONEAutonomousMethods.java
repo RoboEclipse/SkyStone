@@ -153,7 +153,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
         double t2 = t1;
-        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
 
                 //Getting Error
@@ -195,22 +195,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
 
     void turn(double targetAngle, double leftPower, double rightPower, double tolerance){
-        double kR = 1/60;
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
         error = loopAround(error);
-        double leftDrivePower;
-        double rightDrivePower;
-        setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
             currentAngle = getHorizontalAngle();
-            error = loopAround(targetAngle-currentAngle);
-            leftDrivePower = Math.max(Math.min(error*kR, 1),-1)*Math.abs(leftPower);
-            rightDrivePower = Math.max(Math.min(error*kR, 1),-1)*Math.abs(rightPower);
-            leftDrivePower = floorPower(leftDrivePower, 0.45);
-            rightDrivePower = floorPower(rightDrivePower, 0.45);
-            runMotors(-leftDrivePower, rightDrivePower);
-            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftDrivePower + "rightPower: " + rightDrivePower + "CurrentAngle: " + currentAngle);
+            runMotors(-leftPower, rightPower);
+            Log.d("Skystone: ", "encoderTurn Error: " + error + " leftPower: " + leftPower + "rightPower: " + rightPower + "CurrentAngle: " + currentAngle);
         }
     }
 
@@ -752,14 +744,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         if(isRedSide){
             //encoderStrafeDriveInchesRight(10,1);
-            encoderTurnNoStopPowers(55, -1,-0.5,3, false);
-            encoderTurnNoStopRightOnly(0,1,3);
+            turn(50, 1, 0.5, 3);
+            turn(0, 0, -1, 3);
             //encoderStraightDrive(-3, 1);
         }
         else{
             //encoderStrafeDriveInchesRight(-10,1);
             encoderTurnNoStopPowers(125, 0.5,1,3, false);
-            encoderTurnNoStopLeftOnly(178,-1,3);
+            encoderTurnNoStopLeftOnly(178,1,3);
             //encoderStraightDrive(-3, 1);
         }
         //encoderStraightDrive(-12,1);

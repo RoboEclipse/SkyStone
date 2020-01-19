@@ -48,6 +48,7 @@ public class SKYSTONETeleOp extends OpMode
     private double leftFoundationPosition = SKYSTONEConstants.lDown;
     private double rightFoundationPosition = SKYSTONEConstants.rDown;
     private double collectorPower = 0;
+    private double modeSwitchPosition = SKYSTONEConstants.stackingMode;
     private double capStonePosition = 0.33;
     private double flClawPosition = SKYSTONEConstants.frontHigh;
     private double frClawPosition = SKYSTONEConstants.frontLoosen;
@@ -115,10 +116,13 @@ public class SKYSTONETeleOp extends OpMode
 
         //Elevator controls
         double elevatorPower = -gamepad2.left_stick_y;
-        myRobot.runElevatorMotors(elevatorPower);
-        if(Math.abs(elevatorPower)<0.05){
-            elevatorPower = 0.05;
+        if(Math.abs(elevatorPower)<0.1 && myRobot.limitSwitch.getState()){
+            elevatorPower = 0.1;
         }
+        if(elevatorPower<0 && !myRobot.limitSwitch.getState()){
+            elevatorPower = 0;
+        }
+        myRobot.runElevatorMotors(elevatorPower);
 
         //Slide controls
         double slidePower = gamepad2.right_stick_y;
@@ -160,7 +164,8 @@ public class SKYSTONETeleOp extends OpMode
             collectorPower = -1;
         }
         else if(gamepad2.left_trigger>0.3){
-            collectorPower = 1;
+
+                collectorPower = 1;
         }
         else{
             collectorPower = 0;
@@ -192,6 +197,12 @@ public class SKYSTONETeleOp extends OpMode
             rightFoundationPosition = SKYSTONEConstants.rDown;
 
         }
+        if(gamepad1.right_bumper){
+            modeSwitchPosition = SKYSTONEConstants.deliverMode;
+        }
+        if(gamepad1.left_bumper){
+            modeSwitchPosition = SKYSTONEConstants.stackingMode;
+        }
 
         //Reset to Autonomous starting position
         /* if(gamepad1.x){
@@ -207,6 +218,7 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.rotateStackingClaw(clawRotator);
         myRobot.grabStones(clawPosition);
         myRobot.runCollectorServos(collectorPower);
+        myRobot.modeSwitch.setPosition(modeSwitchPosition);
         myRobot.leftFoundationServo.setPosition(leftFoundationPosition);
         myRobot.rightFoundationServo.setPosition(rightFoundationPosition);
         // Show the elapsed game time and wheel power.

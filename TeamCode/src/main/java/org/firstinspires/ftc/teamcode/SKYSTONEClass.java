@@ -5,6 +5,7 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -29,8 +30,9 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //Hardware
     ColorSensor frontColor, backColor;
     DcMotor clawSlide, elevator, rightCollectorMotor, leftCollectorMotor;
-    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontBase, frontGrabber, capServo, backBase, backGrabber;
+    Servo clawRotation, leftFoundationServo, rightFoundationServo, clawServo, frontBase, frontGrabber, capServo, backBase, backGrabber, modeSwitch;
     DistanceSensor /*frontDistance, rightDistance,*/ backLeftDistance, backRightDistance; //leftDistance
+    DigitalChannel limitSwitch;
 
     MotionProfile1D mp;
     //Software
@@ -54,6 +56,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         rf.setDirection(DcMotorSimple.Direction.REVERSE);
         */
+        limitSwitch = hardwareMap.digitalChannel.get(skystoneNames.limitSwitch);
         frontColor = hardwareMap.colorSensor.get(skystoneNames.frontColor);
         backColor = hardwareMap.colorSensor.get(skystoneNames.backColor);
         clawRotation = hardwareMap.servo.get(skystoneNames.rotationServo);
@@ -70,6 +73,7 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         backDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backDistance);
         leftCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.leftCollectorMotor);
         rightCollectorMotor = hardwareMap.dcMotor.get(skystoneNames.rightCollectorMotor);
+        modeSwitch = hardwareMap.servo.get(skystoneNames.modeSwitch);
         //leftDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.leftDistance);
         //frontDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.frontDistance);
         //rightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.rightDistance);

@@ -13,6 +13,7 @@ class SKYSTONEConfiguration {
     final String rightCollectorMotor = "rightCollector";
     final String leftCollectorMotor = "leftCollector";
     //Autonomous Servos
+    final String modeSwitch = "modeSwitch";
     final String leftFoundationServo = "leftFoundationServo";
     final String rightFoundationServo = "rightFoundationServo";
     //Previously frontBase
@@ -38,4 +39,7 @@ class SKYSTONEConfiguration {
     //Color Sensors
     final String frontColor = "frontColor";
     final String backColor = "backColor";
+
+    //Limit Switch
+    final String limitSwitch = "limitSwitch";
 }

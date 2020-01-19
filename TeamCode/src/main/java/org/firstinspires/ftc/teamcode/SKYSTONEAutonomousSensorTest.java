@@ -106,6 +106,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
 
 
             // Show the elapsed game time and wheel power.s
+            telemetry.addData("Limit Switch: ", myRobot.limitSwitch.getState());
             telemetry.addData("Front Color: ", getHue(myRobot.frontColor));
             telemetry.addData("Back Color: ", getHue(myRobot.backColor));
             telemetry.addData("AutoRotate", autoRotate);
