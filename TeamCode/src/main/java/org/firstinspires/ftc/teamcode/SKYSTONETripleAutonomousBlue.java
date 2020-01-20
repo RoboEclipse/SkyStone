@@ -90,11 +90,11 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
         skyStonePosition = detectSkyStonePosition(false);
         //encoderStrafeDriveInchesRight(2,1);
-        encoderStrafeDriveInchesRight(-3,1);
+        encoderStrafeDriveInchesRight(3,1);
         backGrabStone();
         sleep(250);
         backCarryStone();
-        encoderStrafeDriveInchesRight(7,1);
+        encoderStrafeDriveInchesRight(-8,1);
         double adjustment = 0;
         if(skyStonePosition.equals("Center")){
             adjustment = 8;

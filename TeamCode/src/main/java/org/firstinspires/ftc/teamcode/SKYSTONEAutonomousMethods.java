@@ -1,25 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-import android.util.Log;
+        import android.graphics.Color;
+        import android.util.Log;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
+        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+        import com.qualcomm.robotcore.hardware.ColorSensor;
+        import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DistanceSensor;
+        import com.qualcomm.robotcore.hardware.HardwareMap;
+        import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.openftc.revextensions2.RevBulkData;
+        import org.firstinspires.ftc.robotcore.external.Telemetry;
+        import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+        import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+        import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+        import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+        import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+        import org.openftc.revextensions2.RevBulkData;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+        import com.acmerobotics.dashboard.FtcDashboard;
+        import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
@@ -36,7 +36,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
-        
+
         this.telemetry = telemetry;
         //Sensors
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -156,9 +156,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         setModeAllDrive(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while(Math.abs(error)>tolerance && opModeIsActive()){
 
-                //Getting Error
-                currentAngle = getHorizontalAngle();
-                error = loopAround(targetAngle-currentAngle);
+            //Getting Error
+            currentAngle = getHorizontalAngle();
+            error = loopAround(targetAngle-currentAngle);
             if(usePID){
                 //Getting time difference
                 t2 = clock.nanoseconds();
@@ -354,7 +354,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     private boolean notCloseEnough(int tolerance, DcMotor...motors){
         for(DcMotor motor : motors){
             if(Math.abs(motor.getCurrentPosition()-motor.getTargetPosition()) > tolerance){
-                return true;                
+                return true;
             }
         }
         return false;
@@ -469,9 +469,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
         FtcDashboard dashboard = FtcDashboard.getInstance();
-        if (dashboard==null){
-            telemetry.addData("FTCDashboard is dumb",0);
-        }
 
         double maxVelocity = 1;
         double velocity = maxVelocity;
@@ -519,7 +516,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         Log.d("Skystone: ", "Direct Drive Target:(" + targetX + "," + targetY +
                 ") kP " + kP + "kD " + kD + " kR " + kR
                 + " tolerance" + tolerance + " Start At: (" + xRaw + "," + yRaw + ")");
-
+        RevBulkData prevData = myRobot.expansionHub.getBulkInputData();
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
             int lfPosition = encoderData.getMotorCurrentPosition(myRobot.lf);
@@ -530,16 +527,27 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             int lbVelocity = encoderData.getMotorVelocity(myRobot.lb);
             int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
             int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
-            Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
-                " rf: " + rfPosition + " rb: " + rbPosition);
-            Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
-                    " rf: " + rfVelocity + " rb: " + rbVelocity);
             currentAngle = loopAround(getHorizontalAngle());
             currentError = targetAngle - currentAngle;
             rotationVelocity = currentError * kR;
+            double encoderX = backUpEncoderX(prevData, encoderData, xRaw, corner);
+            double encoderY = backUpEncoderY(prevData, encoderData, yRaw, corner);
             xRaw = getXRaw(corner);
             yRaw = getYRaw(corner);
-            double t2 = clock.nanoseconds();
+            Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
+                    " rf: " + rfPosition + " rb: " + rbPosition);
+            Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
+                    " rf: " + rfVelocity + " rb: " + rbVelocity);
+            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw + " encoderX " + encoderX + " encoderY " + encoderY + " Targets: targetX = " + targetX + " targetY = " + targetY);
+            if(xRaw>250 || Math.abs(encoderX-xRaw)>5){
+                xRaw = encoderX;
+                Log.d("Skystone: ", "XOutOfBounds encoderX: " + xRaw);
+            }
+            if(yRaw>250 || Math.abs(encoderY-yRaw)>5){
+                yRaw = encoderY;
+                Log.d("Skystone: ", "YOutOfBounds encoderY: " + yRaw);
+            }
+          double t2 = clock.nanoseconds();
             dt = t2-t1;
 
             if (dashboard!=null){
@@ -549,6 +557,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
                 pack.put("x", xRaw);
                 pack.put("y", yRaw);
+                pack.put("encoderX", encoderX);
+                pack.put("encoderY", encoderY);
                 pack.put("xTarget", targetX);
                 pack.put("yTarget", targetY);
 
@@ -561,14 +571,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
-            if(xRaw>250 || yRaw>250){
-                Log.d("Skystone: ", "FinalX: "  + xRaw + " FinalY: " + yRaw);
-                break;
-            }
-            telemetry.addData("Skystone: xDis = " + xDis + " yDis = " + yDis,"");
+
             Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
-            Log.d("Skystone:"," Targets: targetX = " + targetX + " targetY = " + targetY);
-            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw);
             double angle = 0;
             if(PID) {
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
@@ -599,13 +603,41 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             }
             freeDrive(angle, velocity, rotationVelocity);
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
-
+            prevData = encoderData;
         }
     }
 
-    void backUpEncoder(RevBulkData prevData, RevBulkData curData, double xRaw){
+    double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw, Localizer.Corner corner){
+        int multiplier = 1;
+        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
+            multiplier = -1;
+        }
+        return (getTotalXPositions(curData)-getTotalXPositions(prevData))
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + xRaw;
 
+    }
 
+    double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw, Localizer.Corner corner){
+        int multiplier = 1;
+        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
+            multiplier = -1;
+        }
+        return (getTotalYPositions(curData) - getTotalYPositions(prevData))
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + yRaw;
+    }
+
+    private int getTotalXPositions(RevBulkData curData) {
+        return curData.getMotorCurrentPosition(myRobot.lf)
+                - curData.getMotorCurrentPosition(myRobot.lb)
+                - curData.getMotorCurrentPosition(myRobot.rf)
+                + curData.getMotorCurrentPosition(myRobot.rb);
+    }
+
+    private int getTotalYPositions(RevBulkData curData){
+        return curData.getMotorCurrentPosition(myRobot.lf)
+                + curData.getMotorCurrentPosition(myRobot.lb)
+                + curData.getMotorCurrentPosition(myRobot.rf)
+                + curData.getMotorCurrentPosition(myRobot.rb);
     }
 
     double getdY(RevBulkData bulkData, Localizer.Corner corner){
@@ -736,7 +768,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+(5 * multiplier), y1- 5, false, 2,0);
+        directionalDrive(x1+(5 * multiplier), y1 - 5, false, 2,0);
         int returnDistance = 70;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
@@ -753,12 +785,12 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontCarryStone();
         backCarryStone();
         if (isRedSide) {
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, false, 2, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, false, 2, 0);
         } else{
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, false, 2, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, false, 2, 0);
         }
         returnDistance = -50;
-        straighteningEncoderDriveNoStop((returnDistance + adjustment)*multiplier, 0, 50, 1);
+        straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
     }
     void grabFoundation(boolean isRedSide) {
         int multiplier = 1;
@@ -786,7 +818,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         else{
             //encoderStrafeDriveInchesRight(-10,1);
-            turn(140, 0.5,1,6);
+            turn(140, 0.35,1,6);
             turn(178,-1, 0,6);
             //encoderStraightDrive(-3, 1);
         }
@@ -802,7 +834,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double frontHue = getHue(myRobot.frontColor);
         double backHue = getHue(myRobot.backColor);
         String skyStonePosition = "Center";
-        if(frontHue>60 && frontHue>backHue){
+        if(frontHue>50 && frontHue>backHue){
             if(isRedSide){
                 skyStonePosition = "Depot";
             }
@@ -810,7 +842,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 skyStonePosition = "Bridge";
             }
         }
-        else if(backHue>60 && backHue>frontHue){
+        else if(backHue>50 && backHue>frontHue){
             if(isRedSide){
                 skyStonePosition = "Bridge";
             }

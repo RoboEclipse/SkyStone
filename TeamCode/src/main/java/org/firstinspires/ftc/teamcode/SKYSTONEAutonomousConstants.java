@@ -71,7 +71,7 @@ public class SKYSTONEAutonomousConstants {
     public static double min = 0.5;
     public static double ddkR = -0.01;
     public static double ddkP = 0.1;
-    public static double ddkD = -0.0167;
+    public static double ddkD = -0.03;
     public static double minimumPower = 0.25;
     public static double lateralFactor = 1.23;
     //Coordinate Constants
@@ -84,7 +84,7 @@ public class SKYSTONEAutonomousConstants {
     public static double stoneDropXBlue = 32;
     public static double stoneDropXRed = SKYSTONEAutonomousConstants.fieldSize - stoneDropXBlue;
     public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 5;
-    public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 18;
+    public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 16;
     public static double firstBridgeCross = -45;
     public static double foundationClear = 12;
     public static double skyBridgeDrive = 28;
