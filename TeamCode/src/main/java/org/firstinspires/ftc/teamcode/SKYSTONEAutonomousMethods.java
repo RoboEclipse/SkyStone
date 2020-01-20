@@ -757,8 +757,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         } else{
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY + adjustment, false, 2, 0);
         }
-        returnDistance = -65;
-        straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
+        returnDistance = -50;
+        straighteningEncoderDriveNoStop((returnDistance + adjustment)*multiplier, 0, 50, 1);
     }
     void grabFoundation(boolean isRedSide) {
         int multiplier = 1;
@@ -780,13 +780,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         if(isRedSide){
             //encoderStrafeDriveInchesRight(10,1);
-            turn(35, 1, 0.5, 6);
+            turn(40, 1, 0.5, 6);
             turn(0, 0, -1, 6);
             //encoderStraightDrive(-3, 1);
         }
         else{
             //encoderStrafeDriveInchesRight(-10,1);
-            turn(145, 0.5,1,6);
+            turn(140, 0.5,1,6);
             turn(178,-1, 0,6);
             //encoderStraightDrive(-3, 1);
         }
@@ -850,7 +850,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         int angle;
         if (isRedSide){
             angle = 0;
-            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.foundationClear - 6, 1);
+            encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.foundationClear, 1);
             encoderTurn(angle, 1, 2);
             /*
             runMotors(-.7,-.7);
@@ -860,7 +860,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             */
         } else{
             angle = 180;
-            encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.foundationClear + 2, 1);
+            encoderStrafeDriveInchesRight(-SKYSTONEAutonomousConstants.foundationClear, 1);
             encoderTurn(angle, 1, 2);
         }
         encoderStraightDrive(skyBridgeDistance, 1);

@@ -71,7 +71,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
 
         //SKYSTONEAutonomousMethods methods = this;
         //SKYSTONEClass myRobot = this.myRobot;
-        dashboard = FtcDashboard.getInstance();
+        //dashboard = FtcDashboard.getInstance();
         final double speed = 1;
         //double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);
