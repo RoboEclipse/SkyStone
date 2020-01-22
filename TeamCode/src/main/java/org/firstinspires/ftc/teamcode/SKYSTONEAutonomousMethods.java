@@ -539,11 +539,11 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
                     " rf: " + rfVelocity + " rb: " + rbVelocity);
             Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw + " encoderX " + encoderX + " encoderY " + encoderY + " Targets: targetX = " + targetX + " targetY = " + targetY);
-            if(xRaw>250 || Math.abs(encoderX-xRaw)>5){
+            if(xRaw>250 || xRaw<-100){
                 xRaw = encoderX;
                 Log.d("Skystone: ", "XOutOfBounds encoderX: " + xRaw);
             }
-            if(yRaw>250 || Math.abs(encoderY-yRaw)>5){
+            if(yRaw>250 || yRaw<-100){
                 yRaw = encoderY;
                 Log.d("Skystone: ", "YOutOfBounds encoderY: " + yRaw);
             }
