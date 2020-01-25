@@ -99,13 +99,13 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
                 backGrabStone();
             }
             if(gamepad1.x){
-                frontReleaseStone();
-                backReleaseStone();
+                frontReadyStone();
+                backReadyStone();
             }
             autoRotate = Math.max(Math.min(1, autoRotate),0);
             autoGrab = Math.max(Math.min(1, autoGrab),0);
-            frontReleaseStone();
-            backReleaseStone();
+            frontReadyStone();
+            backReadyStone();
             //myRobot.foundationServo.setPosition(sideFoundation);
 
 

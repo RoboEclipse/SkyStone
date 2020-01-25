@@ -83,7 +83,7 @@ public class SKYSTONEAutonomousConstants {
     public static double stoneAwayXBlue = 23;
     public static double stoneAwayXRed = SKYSTONEAutonomousConstants.fieldSize - stoneAwayXBlue;
     public static double stoneAwayY = 40.0;
-    public static double stoneDropXBlue = 33;
+    public static double stoneDropXBlue = 33.5;
     public static double stoneDropXRed = SKYSTONEAutonomousConstants.fieldSize - stoneDropXBlue;
     public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 5;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 16;

@@ -432,18 +432,33 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
     }
     //frontRelease is both the release and the starting position before grab
-    void backReleaseStone(){
+    void backReadyStone(){
         myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
         sleep(100);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
-        sleep(200);
+        sleep(250);
     }
     //frontRelease is both the release and the starting position before grab
-    void frontReleaseStone(){
+    void frontReadyStone(){
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
         sleep(100);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        sleep(250);
+    }
+    void backReleaseStone(){
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
         sleep(200);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
+        sleep(100);
+
+    }
+    void frontReleaseStone(){
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
+        sleep(200);
+        myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
+        sleep(100);
     }
 
     //VuforiaDetectionStuff
@@ -780,20 +795,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         else{
             backReleaseStone();
         }
-
-        sleep(250);
-        frontCarryStone();
-        backCarryStone();
-        directionalDrive(x1+(5 * multiplier), y1 - 5, true, 2,0);
+        directionalDrive(x1+(6 * multiplier), y1 - 5, true, 2,0);
         int returnDistance = 70;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
-            frontReleaseStone();
+            frontReadyStone();
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             frontGrabStone();
         }
         else{
-            backReleaseStone();
+            backReadyStone();
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             backGrabStone();
         }
@@ -815,10 +826,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         myRobot.leftFoundationServo.setPosition(SKYSTONEConstants.lUp);
         myRobot.rightFoundationServo.setPosition(SKYSTONEConstants.rUp);
-        frontCarryStone();
-        backCarryStone();
+        if(isRedSide){
+            frontReleaseStone();
+        }
+        else{
+            backReleaseStone();
+        }
+
+
         encoderStrafeDriveInchesRight(-5,1);
-        encoderTurn(90, 1, 3);
+        encoderTurn(90, 0.8, 2);
         //distanceEncoderDrive(38,1,0.8, 90, myRobot.frontDistance);
         runMotors(-0.4,-0.4);
         sleep(500);

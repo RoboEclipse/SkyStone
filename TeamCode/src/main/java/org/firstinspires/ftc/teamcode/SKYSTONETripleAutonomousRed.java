@@ -37,10 +37,6 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import java.util.List;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -87,8 +83,8 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         getAngleWaitForStart();
         runtime.reset();
 
-        frontReleaseStone();
-        backReleaseStone();
+        frontReadyStone();
+        backReadyStone();
         directionalDrive(SKYSTONEAutonomousConstants.stoneDetectXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
         skyStonePosition = detectSkyStonePosition(true);
         encoderStrafeDriveInchesRight(3,1);
@@ -115,7 +111,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY,
                 SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
         directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.nearStoneDropY, true, 2,0);
-        frontReleaseStone();
+        frontReadyStone();
         sleep(250);
         grabFoundation(true);
         park(true);
