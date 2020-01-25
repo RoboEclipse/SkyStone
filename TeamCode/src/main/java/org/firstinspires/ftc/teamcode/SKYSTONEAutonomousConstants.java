@@ -88,6 +88,6 @@ public class SKYSTONEAutonomousConstants {
     public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 5;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 16;
     public static double firstBridgeCross = -45;
-    public static double foundationClear = 12;
-    public static double skyBridgeDrive = 28;
+    public static double foundationClear = 11;
+    public static double skyBridgeDrive = 30;
 }
