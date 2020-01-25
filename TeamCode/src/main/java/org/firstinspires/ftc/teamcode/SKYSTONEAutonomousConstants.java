@@ -53,7 +53,7 @@ public class SKYSTONEAutonomousConstants {
     public static double fbStartPosition = 0.85;
     //Front Side Autonomous Claw
     public static double fsOpen = 0.15;
-    public static double fsReady = 0.22;
+    public static double fsReady = 0.21;
     public static double fsGrab = 0.45;
     //Back Side base servo
     public static double bbReady = 0.86;
@@ -70,18 +70,20 @@ public class SKYSTONEAutonomousConstants {
     public static double kD = 0.004;
     public static double min = 0.5;
     public static double ddkR = -0.01;
-    public static double ddkP = 0.1;
+    public static double ddkP = 0.08;
     public static double ddkD = -0.016;
     public static double minimumPower = 0.2;
     public static double lateralFactor = 1.23;
     //Coordinate Constants
-    public static double stoneGrabXBlue = 29;
+    public static double stoneGrabXBlue = 31.5;
     public static double stoneGrabXRed = SKYSTONEAutonomousConstants.fieldSize - stoneGrabXBlue;
+    public static double stoneDetectXBlue = stoneGrabXBlue;
+    public static double stoneDetectXRed = fieldSize - stoneDetectXBlue;
     public static double stoneGrabY = 4;
     public static double stoneAwayXBlue = 23;
     public static double stoneAwayXRed = SKYSTONEAutonomousConstants.fieldSize - stoneAwayXBlue;
     public static double stoneAwayY = 40.0;
-    public static double stoneDropXBlue = 32;
+    public static double stoneDropXBlue = 33;
     public static double stoneDropXRed = SKYSTONEAutonomousConstants.fieldSize - stoneDropXBlue;
     public static double farStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 5;
     public static double nearStoneDropY = SKYSTONEAutonomousConstants.fieldSize - 16;

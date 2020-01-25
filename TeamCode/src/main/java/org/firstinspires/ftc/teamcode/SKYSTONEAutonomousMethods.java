@@ -114,8 +114,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.rf.setTargetPosition(-(int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         myRobot.rb.setTargetPosition((int) Math.round(inches*SKYSTONEConstants.TICKS_PER_INCH));
         setModeAllDrive(DcMotor.RunMode.RUN_TO_POSITION);
+        ElapsedTime killTimer = new ElapsedTime();
         runMotors(power, power);
-        while (notCloseEnough(20, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive()){
+        while (notCloseEnough(20, myRobot.lf, myRobot.lb, myRobot.rf, myRobot.rb) && opModeIsActive() && killTimer.seconds()<2){
             Log.d("SkyStone Left Front: ", myRobot.lf.getCurrentPosition()+"");
             Log.d("SkyStone Left Back: ", myRobot.lb.getCurrentPosition()+"");
             Log.d("SkyStone Right Front: ", myRobot.rf.getCurrentPosition()+"");
@@ -198,8 +199,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double currentAngle = getHorizontalAngle();
         double error = targetAngle-currentAngle;
         error = loopAround(error);
+        ElapsedTime killTimer = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        while(Math.abs(error)>tolerance && opModeIsActive()){
+        while(Math.abs(error)>tolerance && opModeIsActive() && killTimer.seconds()<3){
             currentAngle = getHorizontalAngle();
             error = targetAngle-currentAngle;
             error = loopAround(error);
@@ -434,12 +436,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
         sleep(100);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
+        sleep(200);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReleaseStone(){
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
         sleep(100);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        sleep(200);
     }
 
     //VuforiaDetectionStuff
@@ -671,15 +675,27 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         switch (corner){
             case LEFT_DOWN:
                 xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw>30){
+                    xRaw = 400;
+                }
                 break;
             case LEFT_UP:
                 xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw>30){
+                    xRaw = 400;
+                }
                 break;
             case RIGHT_DOWN:
                 xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
+                    xRaw = 400;
+                }
                 break;
             case RIGHT_UP:
                 xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
+                    xRaw = 400;
+                }
                 break;
         }
         return xRaw;
@@ -768,7 +784,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         frontCarryStone();
         backCarryStone();
-        directionalDrive(x1+(5 * multiplier), y1 - 5, false, 2,0);
+        directionalDrive(x1+(5 * multiplier), y1 - 5, true, 2,0);
         int returnDistance = 70;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
@@ -785,9 +801,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontCarryStone();
         backCarryStone();
         if (isRedSide) {
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, false, 2, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true, 2, 0);
         } else{
-            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, false, 2, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 2, 0);
         }
         returnDistance = -50;
         straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
@@ -812,13 +828,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         sleep(250);
         if(isRedSide){
             //encoderStrafeDriveInchesRight(10,1);
-            turn(40, 1, 0.5, 6);
+            turn(43, 1, 0.4, 6);
             turn(0, 0, -1, 6);
             //encoderStraightDrive(-3, 1);
         }
         else{
             //encoderStrafeDriveInchesRight(-10,1);
-            turn(140, 0.35,1,6);
+            turn(143, 0.28,1,6);
             turn(178,-1, 0,6);
             //encoderStraightDrive(-3, 1);
         }
@@ -834,7 +850,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double frontHue = getHue(myRobot.frontColor);
         double backHue = getHue(myRobot.backColor);
         String skyStonePosition = "Center";
-        if(frontHue>50 && frontHue>backHue){
+        if(frontHue>70 && frontHue>backHue){
             if(isRedSide){
                 skyStonePosition = "Depot";
             }
@@ -842,7 +858,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 skyStonePosition = "Bridge";
             }
         }
-        else if(backHue>50 && backHue>frontHue){
+        else if(backHue>70 && backHue>frontHue){
             if(isRedSide){
                 skyStonePosition = "Bridge";
             }
