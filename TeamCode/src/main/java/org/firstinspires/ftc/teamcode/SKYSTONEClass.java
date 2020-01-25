@@ -81,12 +81,8 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
         //backRightDistance = hardwareMap.get(DistanceSensor.class, skystoneNames.backRightDistance);
         //Motor Settings
 
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         clawSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         clawRotation.setPosition(SKYSTONEConstants.straight);
         //frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);

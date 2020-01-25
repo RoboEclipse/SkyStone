@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -116,11 +117,26 @@ public class SKYSTONETeleOp extends OpMode
 
         //Elevator controls
         double elevatorPower = -gamepad2.left_stick_y;
-        if(Math.abs(elevatorPower)<0.1 && myRobot.limitSwitch.getState()){
-            elevatorPower = 0.1;
+        boolean limitSwitch = myRobot.limitSwitch.getState();
+        int elevatorPosition = myRobot.elevator.getCurrentPosition();
+        if(!limitSwitch){
+            myRobot.elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            myRobot.elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            telemetry.addData("ElevatorAction:","ResetingEncoder");
         }
-        if(elevatorPower<0 && !myRobot.limitSwitch.getState()){
-            elevatorPower = 0;
+        if(Math.abs(elevatorPower)<0.01 && limitSwitch){
+            elevatorPower = 0.001;
+            telemetry.addData("ElevatorAction:","HoldingEncoder");
+        }
+        if(elevatorPower<0){
+            if(!limitSwitch){
+                elevatorPower = 0;
+                telemetry.addData("ElevatorAction:","StoppingReduction");
+            }
+            if(elevatorPosition<700){
+                elevatorPower *= 0.5;
+                telemetry.addData("ElevatorAction:","SlowingDown");
+            }
         }
         myRobot.runElevatorMotors(elevatorPower);
 
@@ -222,6 +238,7 @@ public class SKYSTONETeleOp extends OpMode
         myRobot.leftFoundationServo.setPosition(leftFoundationPosition);
         myRobot.rightFoundationServo.setPosition(rightFoundationPosition);
         // Show the elapsed game time and wheel power.
+        telemetry.addData("LimitSwitch", limitSwitch);
         telemetry.addData("ElevatorPower", elevatorPower);
         telemetry.addData("SlidePower", slidePower);
         telemetry.addData("ClawRotationPosition", clawRotator);
@@ -246,7 +263,7 @@ public class SKYSTONETeleOp extends OpMode
             + " lb: " + myRobot.lb.getCurrentPosition()
             + " rf: " + myRobot.rf.getCurrentPosition()
             + " rb: "+ myRobot.rb.getCurrentPosition()
-            + " elevator: " + myRobot.elevator.getCurrentPosition()
+            + " elevator: " + elevatorPosition
             + " slide motor: " + horizSlidePosition
         );
 
