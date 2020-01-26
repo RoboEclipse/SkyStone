@@ -125,7 +125,7 @@ public class SKYSTONETeleOp extends OpMode
             telemetry.addData("ElevatorAction:","ResetingEncoder");
         }
         if(Math.abs(elevatorPower)<0.01 && limitSwitch){
-            elevatorPower = 0.001;
+            elevatorPower = 0.0005;
             telemetry.addData("ElevatorAction:","HoldingEncoder");
         }
         if(elevatorPower<0){
@@ -161,10 +161,10 @@ public class SKYSTONETeleOp extends OpMode
             clawRotator = SKYSTONEConstants.left90;
         }
         else if(gamepad2.dpad_down){
-            clawRotator = SKYSTONEConstants.straight;
+            clawRotator = SKYSTONEConstants.oppositeSide;
         }
         else if(gamepad2.dpad_up){
-            clawRotator = SKYSTONEConstants.oppositeSide;
+            clawRotator = SKYSTONEConstants.straight;
         }
 
         //Claw controls

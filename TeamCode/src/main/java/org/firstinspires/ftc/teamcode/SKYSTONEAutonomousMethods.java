@@ -434,21 +434,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //frontRelease is both the release and the starting position before grab
     void backReadyStone(){
         myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
-        sleep(100);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
-        sleep(250);
     }
     //frontRelease is both the release and the starting position before grab
     void frontReadyStone(){
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
-        sleep(100);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
-        sleep(250);
     }
     void backReleaseStone(){
-        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
+        myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbReady);
         myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
-        sleep(200);
+        sleep(300);
         myRobot.backBase.setPosition(SKYSTONEAutonomousConstants.bbStartPosition);
         sleep(100);
 
@@ -456,7 +452,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     void frontReleaseStone(){
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbReady);
         myRobot.frontGrabber.setPosition(SKYSTONEAutonomousConstants.fsReady);
-        sleep(200);
+        sleep(300);
         myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.fbStartPosition);
         sleep(100);
     }

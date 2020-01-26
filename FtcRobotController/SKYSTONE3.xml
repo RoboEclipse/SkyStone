@@ -11,6 +11,7 @@
             <Servo name="modeSwitch" port="3" />
             <Servo name="leftFoundationServo" port="4" />
             <Servo name="rightFoundationServo" port="5" />
+            <DigitalDevice name="limitSwitch" port="0" />
             <LynxEmbeddedIMU name="imu 1" port="0" bus="0" />
             <LynxColorSensor name="backColor" port="0" bus="2" />
             <LynxColorSensor name="frontColor" port="0" bus="3" />
@@ -25,7 +26,6 @@
             <Servo name="backGrabber" port="3" />
             <Servo name="frontBase" port="4" />
             <Servo name="frontGrabber" port="5" />
-            <DigitalDevice name="limitSwitch" port="0" />
             <REV_VL53L0X_RANGE_SENSOR name="backDistance" port="0" bus="3" />
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
             <REV_VL53L0X_RANGE_SENSOR name="frontDistance" port="0" bus="1" />
