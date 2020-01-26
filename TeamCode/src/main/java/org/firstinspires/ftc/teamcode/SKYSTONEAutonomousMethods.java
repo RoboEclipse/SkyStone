@@ -553,7 +553,8 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                     " rf: " + rfPosition + " rb: " + rbPosition);
             Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
                     " rf: " + rfVelocity + " rb: " + rbVelocity);
-            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw + " encoderX " + encoderX + " encoderY " + encoderY + " Targets: targetX = " + targetX + " targetY = " + targetY);
+            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw + " encoderX " + encoderX +
+                    " encoderY " + encoderY + " Targets: targetX = " + targetX + " targetY = " + targetY);
             if(xRaw>250 || xRaw<-100){
                 xRaw = encoderX;
                 Log.d("Skystone: ", "XOutOfBounds encoderX: " + xRaw);
@@ -619,6 +620,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             freeDrive(angle, velocity, rotationVelocity);
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
             prevData = encoderData;
+        }
+        if(!opModeIsActive()){
+            runMotors(0,0);
         }
     }
 

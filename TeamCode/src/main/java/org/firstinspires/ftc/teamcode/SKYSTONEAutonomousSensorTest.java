@@ -122,6 +122,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
                     ", rf: " + rightFrontEncoder() + ", rb: " + rightBackEncoder());
             telemetry.addData("BackDistance: ", myRobot.getBackDistance());
             telemetry.addData("FrontDistance: ", myRobot.getFrontDistance());
+            telemetry.addData("LeftDistance: ", myRobot.getLeftDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("LeftStickY", gamepad1.left_stick_y);
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
