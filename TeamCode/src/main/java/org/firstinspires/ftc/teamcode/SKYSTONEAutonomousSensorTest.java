@@ -128,8 +128,8 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
             telemetry.addData("LeftStickX", gamepad1.left_stick_x);
             telemetry.addData("RightStickX", gamepad1.right_stick_x);
-            telemetry.addData("YVelocity", getdY(encoderData, Localizer.Corner.LEFT_DOWN));
-            telemetry.addData("XVelocity", getdX(encoderData, Localizer.Corner.LEFT_DOWN));
+            //telemetry.addData("YVelocity", getdY(encoderData, Localizer.Corner.LEFT_DOWN));
+            //telemetry.addData("XVelocity", getdX(encoderData, Localizer.Corner.LEFT_DOWN));
             telemetry.update();
         }
     }

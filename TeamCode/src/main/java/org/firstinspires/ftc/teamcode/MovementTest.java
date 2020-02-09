@@ -62,7 +62,7 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        myRobot.initialize(hardwareMap, telemetry);
+        initialize(hardwareMap, telemetry);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
@@ -79,7 +79,9 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            grabFoundation(true);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, true,2, 0);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
+            //grabFoundation(true);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize-5, 5, true,0.5, 0);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize-20, 20, true, 0.5, 0);
 

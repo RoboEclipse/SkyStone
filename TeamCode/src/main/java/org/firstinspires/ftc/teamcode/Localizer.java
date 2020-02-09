@@ -63,8 +63,8 @@ public class Localizer {
         int lbVelocity = encoderData.getMotorVelocity(myRobot.lb);
         int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
         int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
-        double encoderX = backUpEncoderX(prevData, encoderData, x, corner);
-        double encoderY = backUpEncoderY(prevData, encoderData, y, corner);
+        double encoderX = backUpEncoderX(prevData, encoderData, x);
+        double encoderY = backUpEncoderY(prevData, encoderData, y);
         x = getXRaw();
         y = getYRaw();
         Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
@@ -84,7 +84,7 @@ public class Localizer {
         updateCorner();
     }
 
-    private double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw, Localizer.Corner corner){
+    private double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw){
         int multiplier = 1;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
             multiplier = -1;
@@ -94,7 +94,7 @@ public class Localizer {
 
     }
 
-    private double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw, Localizer.Corner corner){
+    private double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw){
         int multiplier = 1;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
             multiplier = -1;
