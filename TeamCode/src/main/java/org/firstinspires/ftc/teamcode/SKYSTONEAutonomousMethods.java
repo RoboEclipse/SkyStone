@@ -18,9 +18,6 @@ package org.firstinspires.ftc.teamcode;
         import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
         import org.openftc.revextensions2.RevBulkData;
 
-        import com.acmerobotics.dashboard.FtcDashboard;
-        import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object
@@ -33,11 +30,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Classes
 
     SKYSTONEClass myRobot = new SKYSTONEClass();
+    Localizer localizer;
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
-
+        localizer = new Localizer(myRobot);
         this.telemetry = telemetry;
+
         //Sensors
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -483,7 +482,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
     }
     void directionalDrive(double targetX, double targetY, boolean PID, double tolerance, double targetAngle){
-        FtcDashboard dashboard = FtcDashboard.getInstance();
 
         double maxVelocity = 1;
         double velocity = maxVelocity;
@@ -493,111 +491,39 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double kP = SKYSTONEAutonomousConstants.ddkP;
         double kD = SKYSTONEAutonomousConstants.ddkD;
 
-        double dDistance;
         double dt;
         ElapsedTime clock = new ElapsedTime();
         double t1 = clock.nanoseconds();
 
-        double currentAngle;
-        double currentError;
-        double xRaw = 0;
-        double yRaw = 0;
-        Localizer.Corner corner;
-
-
-        if(targetX<SKYSTONEAutonomousConstants.fieldSize/2){
-            if(targetY<SKYSTONEAutonomousConstants.fieldSize/2){
-                corner = Localizer.Corner.LEFT_DOWN;
-            }
-            else{
-                corner = Localizer.Corner.LEFT_UP;
-            }
-        } else {
-            if(targetY<SKYSTONEAutonomousConstants.fieldSize/2){
-                corner = Localizer.Corner.RIGHT_DOWN;
-            }
-            else{
-                corner = Localizer.Corner.RIGHT_UP;
-            }
-        }
-        xRaw = getXRaw(corner);
-        yRaw = getYRaw(corner);
-        double previousX = xRaw;
-        double previousY = yRaw;
-        double xDis = targetX - xRaw;
-        double yDis = targetY - yRaw;
+        double xDis = targetX - localizer.getX();
+        double yDis = targetY - localizer.getY();
         double totalDistance;
 
-        Log.d("Skystone: ", "Direct Drive Target:(" + targetX + "," + targetY +
+        Log.d("Skystone: ",
+                "Direct Drive Target:(" + targetX + "," + targetY +
                 ") kP " + kP + "kD " + kD + " kR " + kR
-                + " tolerance" + tolerance + " Start At: (" + xRaw + "," + yRaw + ")");
+                + " tolerance" + tolerance + " Start At: ("
+                + localizer.getX() + "," + localizer.getY() + ")");
         RevBulkData prevData = myRobot.expansionHub.getBulkInputData();
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
             //Start of update
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
-            int lfPosition = encoderData.getMotorCurrentPosition(myRobot.lf);
-            int lbPosition = encoderData.getMotorCurrentPosition(myRobot.lb);
-            int rfPosition = encoderData.getMotorCurrentPosition(myRobot.rf);
-            int rbPosition = encoderData.getMotorCurrentPosition(myRobot.rb);
-            int lfVelocity = encoderData.getMotorVelocity(myRobot.lf);
-            int lbVelocity = encoderData.getMotorVelocity(myRobot.lb);
-            int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
-            int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
-            currentAngle = loopAround(getHorizontalAngle());
-            currentError = targetAngle - currentAngle;
-            rotationVelocity = currentError * kR;
-            double encoderX = backUpEncoderX(prevData, encoderData, xRaw, corner);
-            double encoderY = backUpEncoderY(prevData, encoderData, yRaw, corner);
-            xRaw = getXRaw(corner);
-            yRaw = getYRaw(corner);
-            Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
-                    " rf: " + rfPosition + " rb: " + rbPosition);
-            Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
-                    " rf: " + rfVelocity + " rb: " + rbVelocity);
-            Log.d("Skystone: ", "xRaw: " + xRaw + " yRaw: " + yRaw + " encoderX " + encoderX +
-                    " encoderY " + encoderY + " Targets: targetX = " + targetX + " targetY = " + targetY);
-            if(xRaw>250 || xRaw<-100){
-                xRaw = encoderX;
-                Log.d("Skystone: ", "XOutOfBounds encoderX: " + xRaw);
-            }
-            if(yRaw>250 || yRaw<-100){
-                yRaw = encoderY;
-                Log.d("Skystone: ", "YOutOfBounds encoderY: " + yRaw);
-            }
-          double t2 = clock.nanoseconds();
-            dt = t2-t1;
-
-            if (dashboard!=null){
-                TelemetryPacket pack = new TelemetryPacket();
-                TelemetryPacket locationPack = new TelemetryPacket();
-                locationPack.fieldOverlay().setStrokeWidth(1).strokeCircle(xRaw - 72, yRaw - 72, 10).setStroke("red");
-
-                pack.put("x", xRaw);
-                pack.put("y", yRaw);
-                pack.put("encoderX", encoderX);
-                pack.put("encoderY", encoderY);
-                pack.put("xTarget", targetX);
-                pack.put("yTarget", targetY);
-
-                pack.put("xDis", xDis);
-                pack.put("yDis", yDis);
-
-                dashboard.sendTelemetryPacket(pack);
-                dashboard.sendTelemetryPacket(locationPack);
-            }
+            localizer.update(prevData, encoderData);
             //End of update
-            xDis = targetX - xRaw;
-            yDis = targetY - yRaw;
+            double t2 = clock.nanoseconds();
+            dt = t2-t1;
+            xDis = targetX - localizer.getX();
+            yDis = targetY - localizer.getY();
 
-            Log.d("Skystone:", "GyroError: " + currentError + " Rotation Velocity: " + rotationVelocity);
+            Log.d("Skystone:", "GyroError: " + rotationVelocity);
             double angle = 0;
             if(PID) {
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
                 //double dXDis = (xRaw-previousX)/dt*Math.pow(10,9);
                 //double dYDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
-                double dY = getdY(encoderData, corner);
-                double dX = getdX(encoderData, corner);
+                double dY = localizer.getdY(encoderData);
+                double dX = localizer.getdX(encoderData);
 
                 double xVelocity = maxVelocity * getPD(xDis, dX, kP, kD);
                 double yVelocity = maxVelocity * getPD(yDis, dY, kP, kD);
@@ -610,12 +536,10 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             } else{
                 angle = Math.atan2(xDis * SKYSTONEAutonomousConstants.lateralFactor ,yDis);
             }
-            //store old values
-            previousX = xRaw;
-            previousY = yRaw;
             t1=t2;
 
-            if(corner == Localizer.Corner.RIGHT_UP || corner == Localizer.Corner.RIGHT_DOWN){
+            if(localizer.getCorner() == Localizer.Corner.RIGHT_UP
+                    || localizer.getCorner() == Localizer.Corner.RIGHT_DOWN){
                 angle = Math.PI+angle;
             }
             freeDrive(angle, velocity, rotationVelocity);
@@ -624,116 +548,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         }
         runMotors(0,0);
     }
-
-    double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw, Localizer.Corner corner){
-        int multiplier = 1;
-        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
-        }
-        return (getTotalXPositions(curData)-getTotalXPositions(prevData))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + xRaw;
-
-    }
-
-    double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw, Localizer.Corner corner){
-        int multiplier = 1;
-        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
-        }
-        return (getTotalYPositions(curData) - getTotalYPositions(prevData))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + yRaw;
-    }
-
-    private int getTotalXPositions(RevBulkData curData) {
-        return curData.getMotorCurrentPosition(myRobot.lf)
-                - curData.getMotorCurrentPosition(myRobot.lb)
-                - curData.getMotorCurrentPosition(myRobot.rf)
-                + curData.getMotorCurrentPosition(myRobot.rb);
-    }
-
-    private int getTotalYPositions(RevBulkData curData){
-        return curData.getMotorCurrentPosition(myRobot.lf)
-                + curData.getMotorCurrentPosition(myRobot.lb)
-                + curData.getMotorCurrentPosition(myRobot.rf)
-                + curData.getMotorCurrentPosition(myRobot.rb);
-    }
-
-    double getdY(RevBulkData bulkData, Localizer.Corner corner){
-        //Robot heading is flipped on red, so positive encoder = negative position
-        int multiplier = 1;
-        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
-        }
-        return (bulkData.getMotorVelocity(myRobot.lf)
-                + bulkData.getMotorVelocity(myRobot.lb)
-                + bulkData.getMotorVelocity(myRobot.rf)
-                + bulkData.getMotorVelocity(myRobot.rb))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
-    }
-    double getdX(RevBulkData bulkData, Localizer.Corner corner){
-        //Robot heading is flipped on red, so positive encoder = negative position
-        int multiplier = 1;
-        if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
-        }
-        return (bulkData.getMotorVelocity(myRobot.lf)
-                - bulkData.getMotorVelocity(myRobot.lb)
-                - bulkData.getMotorVelocity(myRobot.rf)
-                + bulkData.getMotorVelocity(myRobot.rb))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
-    }
-
-
-    private double getXRaw(Localizer.Corner corner) {
-        double xRaw = 0;
-        switch (corner){
-            case LEFT_DOWN:
-                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw>30){
-                    xRaw = 400;
-                }
-                break;
-            case LEFT_UP:
-                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw>30){
-                    xRaw = 400;
-                }
-                break;
-            case RIGHT_DOWN:
-                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
-                    xRaw = -400;
-                }
-                break;
-            case RIGHT_UP:
-                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
-                    xRaw = -400;
-                }
-                break;
-        }
-        return xRaw;
-    }
-
-    private double getYRaw(Localizer.Corner corner) {
-        double yRaw = 0;
-        switch (corner){
-            case LEFT_DOWN:
-                yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
-                break;
-            case LEFT_UP:
-                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-                break;
-            case RIGHT_DOWN:
-                yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-                break;
-            case RIGHT_UP:
-                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
-                break;
-        }
-        return yRaw;
-    }
-
     double getP(double error, double kP){
         return Math.min(1,Math.abs(error)*kP);
     }

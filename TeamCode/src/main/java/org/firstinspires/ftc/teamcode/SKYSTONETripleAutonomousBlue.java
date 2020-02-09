@@ -34,9 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-
-import java.util.List;
 
 
 /**
@@ -58,26 +55,13 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
-    //Second Strafe
-    double wallDistance = SKYSTONEAutonomousConstants.doubleWallDistance;
-    //double y = 0;
     FtcDashboard dashboard;
-    List<Recognition> updatedRecognitions;
-    String skyStonePosition = "Left";
+
 
     @Override
     public void runOpMode() {
-
-        //SKYSTONEAutonomousMethods methods = this;
-        //SKYSTONEClass myRobot = this.myRobot;
-        //dashboard = FtcDashboard.getInstance();
-        final double speed = 1;
-        //double wallDistance = 8.0/3 + 8.0;
+        String skyStonePosition;
         initialize(hardwareMap, telemetry);
-        String skyStonePosition = "Center";
-        // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
         resetClaws();
         telemetry.addData("Skystone: ", "frontDistance = " + myRobot.getFrontDistance());
         telemetry.addData("Skystone: ", "backDistance = " + myRobot.getBackDistance());
@@ -89,7 +73,6 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         backReadyStone();
         directionalDrive(SKYSTONEAutonomousConstants.stoneDetectXBlue, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
         skyStonePosition = detectSkyStonePosition(false);
-        //encoderStrafeDriveInchesRight(2,1);
         encoderStrafeDriveInchesRight(3,1);
         backGrabStone();
         sleep(250);
@@ -102,12 +85,6 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         if(skyStonePosition.equals("Bridge")){
             adjustment = 16;
         }
-        /*
-        if(skyStonePosition.equals("Bridge")){
-            encoderStraightDrive(-10, 1);
-        }
-        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, false, 1,0);
-         */
         frontCarryStone();
         straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross + adjustment, 0, 50, 1);
         placeAndReturn(
@@ -122,32 +99,4 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         AutoTransitioner.transitionOnStop(this, "SKYSTONETeleOp");
 
     }
-
-
-    /*
-    private void getSkystonePosition(SKYSTONEVuforiaDetection vuforiaMethods, List<VuforiaTrackable> detections) {
-        y = vuforiaMethods.loopDetection(telemetry, detections);
-        if(y > SKYSTONEConstants.stoneDiff){
-            skyStonePosition = "Right";
-            Log.d("SkystonePosition", "Right: " + y);
-            telemetry.addData("SkystonePosition", "Right");
-        }
-        else if(Math.abs(y)< SKYSTONEConstants.stoneDiff){
-            skyStonePosition = "Center";
-            Log.d("SkystonePosition", "Center: " + y);
-        }
-        else{
-            Log.d("SkyStonePosition", "Left: " + y);
-        }
-    }
-    */
-    /*private void dashboardRecordPosition(int deltax, int deltay) {
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("cat", 3.7);
-        packet.fieldOverlay().setFill("blue").fillRect(x,y,x+ deltax,y + deltay +2);
-
-        dashboard.sendTelemetryPacket(packet);
-        x = x + deltax;
-        y = y + deltay;
-    }*/
 }

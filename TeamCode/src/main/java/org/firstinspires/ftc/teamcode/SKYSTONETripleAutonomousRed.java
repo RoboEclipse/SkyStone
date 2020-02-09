@@ -66,6 +66,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
     String skyStonePosition = "Left";
+    Localizer localizer;
 
     @Override
     public void runOpMode() {
