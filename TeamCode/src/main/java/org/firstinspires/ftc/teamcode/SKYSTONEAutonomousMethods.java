@@ -201,7 +201,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         error = loopAround(error);
         ElapsedTime killTimer = new ElapsedTime();
         setModeAllDrive(DcMotor.RunMode.RUN_USING_ENCODER);
-        while(Math.abs(error)>tolerance && opModeIsActive() && killTimer.seconds()<2){
+        while(Math.abs(error)>tolerance && opModeIsActive() && killTimer.seconds()<3){
             currentAngle = getHorizontalAngle();
             error = targetAngle-currentAngle;
             error = loopAround(error);
@@ -533,6 +533,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 + " tolerance" + tolerance + " Start At: (" + xRaw + "," + yRaw + ")");
         RevBulkData prevData = myRobot.expansionHub.getBulkInputData();
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
+            //Start of update
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
             int lfPosition = encoderData.getMotorCurrentPosition(myRobot.lf);
             int lbPosition = encoderData.getMotorCurrentPosition(myRobot.lb);
@@ -584,7 +585,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
                 dashboard.sendTelemetryPacket(pack);
                 dashboard.sendTelemetryPacket(locationPack);
             }
-
+            //End of update
             xDis = targetX - xRaw;
             yDis = targetY - yRaw;
 
@@ -621,9 +622,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
             prevData = encoderData;
         }
-        if(!opModeIsActive()){
-            runMotors(0,0);
-        }
+        runMotors(0,0);
     }
 
     double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw, Localizer.Corner corner){
@@ -703,13 +702,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             case RIGHT_DOWN:
                 xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                 if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
-                    xRaw = 400;
+                    xRaw = -400;
                 }
                 break;
             case RIGHT_UP:
                 xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                 if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
-                    xRaw = 400;
+                    xRaw = -400;
                 }
                 break;
         }
