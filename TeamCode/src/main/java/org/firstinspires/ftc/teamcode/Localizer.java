@@ -93,9 +93,9 @@ public class Localizer {
     }
 
     private double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw){
-        int multiplier = 1;
+        double multiplier = SKYSTONEAutonomousConstants.strafeRatio;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
+            multiplier = - SKYSTONEAutonomousConstants.strafeRatio;
         }
         return (getTotalXPositions(curData)-getTotalXPositions(prevData))
                 /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + xRaw;
@@ -103,9 +103,9 @@ public class Localizer {
     }
 
     private double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw){
-        int multiplier = 1;
+        double multiplier = SKYSTONEAutonomousConstants.straightRatio;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = -1;
+            multiplier = - SKYSTONEAutonomousConstants.straightRatio;
         }
         return (getTotalYPositions(curData) - getTotalYPositions(prevData))
                 /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + yRaw;

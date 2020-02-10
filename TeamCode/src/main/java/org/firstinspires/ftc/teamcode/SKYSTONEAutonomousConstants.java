@@ -95,4 +95,7 @@ public class SKYSTONEAutonomousConstants {
     public static double firstBridgeCross = -45;
     public static double foundationClear = 11;
     public static double skyBridgeDrive = 30;
+    //Kinematics Ratio with Encoder
+    public static double strafeRatio = 0.9;
+    public static double straightRatio = 1.1;
 }
