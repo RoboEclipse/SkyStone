@@ -487,6 +487,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double velocity = maxVelocity;
         double rotationVelocity = 0;
 
+        double currentAngle;
+        double currentError;
+
         double kR = SKYSTONEAutonomousConstants.ddkR;
         double kP = SKYSTONEAutonomousConstants.ddkP;
         double kD = SKYSTONEAutonomousConstants.ddkD;
@@ -508,6 +511,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
             //Start of update
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
+            currentAngle = loopAround(getHorizontalAngle());
+            currentError = targetAngle - currentAngle;
+            rotationVelocity = currentError * kR;
             localizer.update(prevData, encoderData);
             //End of update
             double t2 = clock.nanoseconds();

@@ -9,6 +9,7 @@ public class Localizer {
     private double x = 0;
     private double y = 0;
     private SKYSTONEClass myRobot;
+    private boolean encoder = false;
     private Corner corner = Corner.LEFT_DOWN;
 
     public Localizer(SKYSTONEClass input) {
@@ -30,6 +31,7 @@ public class Localizer {
     public void setCoordinates(int newX, int newY){
         x = newX;
         y = newY;
+        updateCorner();
     }
     private void updateCorner(){
         if(x <SKYSTONEAutonomousConstants.fieldSize/2){
@@ -65,22 +67,28 @@ public class Localizer {
         int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
         double encoderX = backUpEncoderX(prevData, encoderData, x);
         double encoderY = backUpEncoderY(prevData, encoderData, y);
-        x = getXRaw();
-        y = getYRaw();
+        if (!encoder) {
+            x = getXRaw();
+            y = getYRaw();
+
+            if (x > 250 || x < -100) {
+                x = encoderX;
+                Log.d("Skystone: ", "XOutOfBounds encoderX: " + x);
+            }
+            if (y > 250 || y < -100) {
+                y = encoderY;
+                Log.d("Skystone: ", "YOutOfBounds encoderY: " + y);
+            }
+        } else {
+            x = encoderX;
+            y = encoderY;
+        }
         Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
                 " rf: " + rfPosition + " rb: " + rbPosition);
         Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
                 " rf: " + rfVelocity + " rb: " + rbVelocity);
-        Log.d("Skystone: ", "x: " + x + " y: " + y + " encoderX " + encoderX +
+        Log.d("Skystone: ", "finalPosition: x: " + x + " y: " + y + " encoderX " + encoderX +
                 " encoderY " + encoderY);
-        if(x >250 || x <-100){
-            x = encoderX;
-            Log.d("Skystone: ", "XOutOfBounds encoderX: " + x);
-        }
-        if(y >250 || y <-100){
-            y = encoderY;
-            Log.d("Skystone: ", "YOutOfBounds encoderY: " + y);
-        }
         updateCorner();
     }
 
@@ -179,4 +187,11 @@ public class Localizer {
                 /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
     }
 
+    public void useEncoderOnlyToggle(boolean useEncoderOnly){
+        if (useEncoderOnly){
+            encoder = true;
+        } else if (!useEncoderOnly){
+            encoder = false;
+        }
+    }
 }
