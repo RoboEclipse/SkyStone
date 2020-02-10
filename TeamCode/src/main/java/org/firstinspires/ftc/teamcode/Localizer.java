@@ -2,19 +2,31 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Log;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.openftc.revextensions2.RevBulkData;
+
+import java.util.ArrayList;
 
 public class Localizer {
     private double x = 0;
     private double y = 0;
+
+    //Kinematics Ratio with Encoder
+    public static double strafeRatio = 0.9;
+    public static double straightRatio = 1.1;
+
     private SKYSTONEClass myRobot;
     private boolean encoder = false;
     private Corner corner = Corner.LEFT_DOWN;
+    ElapsedTime clock;
+    ArrayList<PiP> ALPIP;
 
     public Localizer(SKYSTONEClass input) {
         this.myRobot = input;
-
+        clock = new ElapsedTime();
+        ALPIP = new ArrayList<PiP>();
     }
     enum Corner {
         LEFT_UP,
@@ -65,11 +77,15 @@ public class Localizer {
         int lbVelocity = encoderData.getMotorVelocity(myRobot.lb);
         int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
         int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
-        double encoderX = backUpEncoderX(prevData, encoderData, x);
-        double encoderY = backUpEncoderY(prevData, encoderData, y);
+        double newDiffEncoderX = diffEncoderX(prevData, encoderData);
+        double encoderX = newDiffEncoderX + x;
+        double newDiffEncoderY = newDiffEncoderY(prevData, encoderData);
+        double encoderY = newDiffEncoderY + y;
         if (!encoder) {
-            x = getXRaw();
-            y = getYRaw();
+            double newDiffOpticalX = getXRaw() - x;
+            x = newDiffOpticalX + x;
+            double newDiffOpticalY = getYRaw() - y;
+            y = newDiffOpticalY + y;
 
             if (x > 250 || x < -100) {
                 x = encoderX;
@@ -79,10 +95,17 @@ public class Localizer {
                 y = encoderY;
                 Log.d("Skystone: ", "YOutOfBounds encoderY: " + y);
             }
+            double t1 = clock.nanoseconds();
+            PiP value1 = new PiP(newDiffOpticalX/newDiffEncoderX, newDiffOpticalY/newDiffEncoderY, t1, x, y, t1);
+            if (ALPIP.size() >= 10){
+                ALPIP.remove(0);
+            }
+            ALPIP.add(value1);
         } else {
             x = encoderX;
             y = encoderY;
         }
+
         Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
                 " rf: " + rfPosition + " rb: " + rbPosition);
         Log.d("Skystone: ", "Wheel Velocities: lf: " + lfVelocity + " lb: " + lbVelocity +
@@ -92,23 +115,23 @@ public class Localizer {
         updateCorner();
     }
 
-    private double backUpEncoderX(RevBulkData prevData, RevBulkData curData, double xRaw){
-        double multiplier = SKYSTONEAutonomousConstants.strafeRatio;
+    private double diffEncoderX(RevBulkData prevData, RevBulkData curData){
+        double multiplier = strafeRatio;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = - SKYSTONEAutonomousConstants.strafeRatio;
+            multiplier = - strafeRatio;
         }
         return (getTotalXPositions(curData)-getTotalXPositions(prevData))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + xRaw;
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
 
     }
 
-    private double backUpEncoderY(RevBulkData prevData, RevBulkData curData, double yRaw){
-        double multiplier = SKYSTONEAutonomousConstants.straightRatio;
+    private double newDiffEncoderY(RevBulkData prevData, RevBulkData curData){
+        double multiplier = straightRatio;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = - SKYSTONEAutonomousConstants.straightRatio;
+            multiplier = - straightRatio;
         }
         return (getTotalYPositions(curData) - getTotalYPositions(prevData))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier + yRaw;
+                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
     }
 
     private int getTotalXPositions(RevBulkData curData) {
@@ -193,5 +216,18 @@ public class Localizer {
         } else if (!useEncoderOnly){
             encoder = false;
         }
+    }
+
+    public void averageDiffs(){
+        double xSum = 0;
+        double ySum = 0;
+        double size = ALPIP.size();
+        for(int i = 0; i < size; i++){
+            xSum = xSum + ALPIP.get(i).rX;
+            ySum = ySum + ALPIP.get(i).rY;
+        }
+        strafeRatio = xSum/size;
+        straightRatio = ySum/size;
+        Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
     }
 }

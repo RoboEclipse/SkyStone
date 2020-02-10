@@ -85,6 +85,7 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
             directionalDrive(144, 28, true,2, 0);
             localizer.useEncoderOnlyToggle(true);
+            localizer.averageDiffs();
             directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, true,2, 0);
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
             directionalDrive(144, 28, true,2, 0);
