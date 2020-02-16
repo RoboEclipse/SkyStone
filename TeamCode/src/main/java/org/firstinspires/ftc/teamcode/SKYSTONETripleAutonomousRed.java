@@ -66,7 +66,6 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
     FtcDashboard dashboard;
     List<Recognition> updatedRecognitions;
     String skyStonePosition = "Left";
-    Localizer localizer;
 
     @Override
     public void runOpMode() {
@@ -80,6 +79,8 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
+        localizer.useEncoderOnlyToggle(false);
+        localizer.setCoordinates(SKYSTONEAutonomousConstants.fieldSize, 25);
         resetClaws();
         getAngleWaitForStart();
         runtime.reset();
@@ -88,12 +89,12 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         backReadyStone();
         directionalDrive(SKYSTONEAutonomousConstants.stoneDetectXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
         skyStonePosition = detectSkyStonePosition(true);
-        encoderStrafeDriveInchesRight(3,1);
+        //encoderStrafeDriveInchesRight(3,1);
         //encoderStrafeDriveInchesRight(2,1);
         frontGrabStone();
         sleep(250);
         frontCarryStone();
-        encoderStrafeDriveInchesRight(-9,1);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneDetectXRed+8, SKYSTONEAutonomousConstants.stoneGrabY+32, true, 1,0);
         double adjustment = 0;
         if(skyStonePosition.equals("Center")){
             adjustment = -8;
@@ -108,7 +109,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, false, 2,0);
          */
         backCarryStone();
-        straighteningEncoderDriveNoStop(SKYSTONEAutonomousConstants.firstBridgeCross + adjustment, 0, 50, 1);
+        //straighteningEncoderDriveNoStop(SKYSTONEAutonomousConstants.firstBridgeCross + adjustment, 0, 50, 1);
         placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY,
                 SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
         directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.nearStoneDropY, true, 2,0);

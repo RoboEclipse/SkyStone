@@ -40,7 +40,7 @@ public class Localizer {
     public double getY(){
         return y;
     }
-    public void setCoordinates(int newX, int newY){
+    public void setCoordinates(double newX, double newY){
         x = newX;
         y = newY;
         updateCorner();
@@ -78,9 +78,9 @@ public class Localizer {
         int rfVelocity = encoderData.getMotorVelocity(myRobot.rf);
         int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
         double newDiffEncoderX = diffEncoderX(prevData, encoderData);
-        double encoderX = newDiffEncoderX + x;
-        double newDiffEncoderY = newDiffEncoderY(prevData, encoderData);
-        double encoderY = newDiffEncoderY + y;
+        double encoderX = strafeRatio * newDiffEncoderX + x;
+        double newDiffEncoderY = diffEncoderY(prevData, encoderData);
+        double encoderY = straightRatio * newDiffEncoderY + y;
         if (!encoder) {
             double newDiffOpticalX = getXRaw() - x;
             x = newDiffOpticalX + x;
@@ -96,14 +96,23 @@ public class Localizer {
                 Log.d("Skystone: ", "YOutOfBounds encoderY: " + y);
             }
             double t1 = clock.nanoseconds();
-            PiP value1 = new PiP(newDiffOpticalX/newDiffEncoderX, newDiffOpticalY/newDiffEncoderY, t1, x, y, t1);
-            if (ALPIP.size() >= 10){
+            Log.d("Skystone:: ", "OpticalX: " + newDiffOpticalX +  " EncoderX: " + newDiffEncoderX );
+            Log.d("Skystone:: ", "OpticalY: " + newDiffOpticalY + " EncoderY: " + newDiffEncoderY);
+            double potentialXRatio = newDiffOpticalX/newDiffEncoderX;
+            double potentialYRatio = newDiffOpticalY/newDiffEncoderY;
+            if(newDiffEncoderX != 0 && newDiffEncoderY != 0
+                && newDiffOpticalX != 0 && newDiffOpticalY != 0
+                && Math.abs(potentialXRatio)<3 && Math.abs(potentialYRatio)<3){
+                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, x, y, t1);
+                ALPIP.add(value1);
+            }
+            if (ALPIP.size() >= 100){
                 ALPIP.remove(0);
             }
-            ALPIP.add(value1);
         } else {
             x = encoderX;
             y = encoderY;
+            Log.d("Skystone:: ", "lf: " + lfPosition + " lb: " + lbPosition + " rf: " + rfPosition + " rb: " + rbPosition);
         }
 
         Log.d("Skystone: ", "Encoder Positions: lf: " + lfPosition + " lb: " + lbPosition +
@@ -116,23 +125,23 @@ public class Localizer {
     }
 
     private double diffEncoderX(RevBulkData prevData, RevBulkData curData){
-        double multiplier = strafeRatio;
+        double multiplier = 1;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = - strafeRatio;
+            multiplier = -1;
         }
         return (getTotalXPositions(curData)-getTotalXPositions(prevData))
                 /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
 
     }
 
-    private double newDiffEncoderY(RevBulkData prevData, RevBulkData curData){
-        double multiplier = straightRatio;
+    private double diffEncoderY(RevBulkData prevData, RevBulkData curData){
+        double multiplier = 1;
         if(corner == Localizer.Corner.RIGHT_DOWN || corner == Localizer.Corner.RIGHT_UP){
-            multiplier = - straightRatio;
+            multiplier = -1;
         }
         return (getTotalYPositions(curData) - getTotalYPositions(prevData))
-                /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
-    }
+            /SKYSTONEConstants.TICKS_PER_INCH/4*multiplier;
+}
 
     private int getTotalXPositions(RevBulkData curData) {
         return curData.getMotorCurrentPosition(this.myRobot.lf)

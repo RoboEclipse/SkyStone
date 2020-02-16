@@ -610,15 +610,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         directionalDrive(x1, y1, true, 2,0);
         if(isRedSide){
             frontReleaseStone();
+            sleep(300);
         }
         else{
             backReleaseStone();
         }
         directionalDrive(x1+(7 * multiplier), y1 - 5, true, 2,0);
         int returnDistance = 70;
-        straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
+        //straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
             frontReadyStone();
+            directionalDrive(x1+7*multiplier, y2 + adjustment - 10, true, 1,0);
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             frontGrabStone();
         }
@@ -636,7 +638,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 2, 0);
         }
         returnDistance = -50;
-        straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
+        //straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
     }
     void grabFoundation(boolean isRedSide) {
         int multiplier = 1;

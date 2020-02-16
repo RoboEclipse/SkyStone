@@ -81,6 +81,8 @@ public class SKYSTONEAutonomousConstants {
     //Adjust to detect using sensorTest
     public static double stoneDetectXBlue = stoneGrabXBlue - 1;
     public static double stoneDetectXRed = fieldSize - stoneDetectXBlue;
+    public static double stoneCrossXBlue = stoneDetectXBlue - 8;
+    public static double stoneCrossXRed = fieldSize - stoneCrossXBlue;
     public static double stoneGrabY = 4;
     //
     public static double stoneAwayXBlue = 23;
