@@ -30,7 +30,7 @@ public class LocalizerReader extends Thread {
     }
 
     private void setLocalizer(Localizer loc) {
-        this.localizer = loc;
+        localizer = loc;
     }
 
     @Override
