@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class Localizer {
     private double x = 0;
     private double y = 0;
+    volatile double opticalX = 0;
+    volatile double opticalY = 0;
 
     //Kinematics Ratio with Encoder
     public static double strafeRatio = 0.9;
@@ -159,41 +161,37 @@ public class Localizer {
                 + curData.getMotorCurrentPosition(myRobot.rb);
     }
     private double getXRaw() {
-        double xRaw = 0;
-        switch (corner){
-            case LEFT_DOWN: case LEFT_UP:
-                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw>30){
-                    xRaw = 400;
-                }
-                break;
-            case RIGHT_DOWN: case RIGHT_UP:
-                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
-                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
-                    xRaw = -400;
-                }
-                break;
-        }
-        return xRaw;
+        double eTime = clock.milliseconds();
+        return opticalX;
     }
 
     private double getYRaw() {
-        double yRaw = 0;
+        return opticalY;
+    }
+
+    void updateOptical() {
         switch (corner){
-            case LEFT_DOWN:
-                yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+            case LEFT_DOWN: case LEFT_UP:
+                opticalX = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                 break;
-            case LEFT_UP:
-                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-                break;
-            case RIGHT_DOWN:
-                yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
-                break;
-            case RIGHT_UP:
-                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
+            case RIGHT_DOWN: case RIGHT_UP:
+                opticalX = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                 break;
         }
-        return yRaw;
+        switch (corner){
+            case LEFT_DOWN:
+                opticalY = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case LEFT_UP:
+                opticalY = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_DOWN:
+                opticalY = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_UP:
+                opticalY = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+        }
     }
 
     public double getdY(RevBulkData bulkData){
