@@ -17,15 +17,20 @@ import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
  * Where 'Robot Teleop' is replaced with the NAME of your teleop program. See full documentation
  * on kno3.net/resources for more info.
  */
-public class AutoTransitioner extends Thread {
-    private static final AutoTransitioner INSTANCE = new AutoTransitioner(); //Create singleton instance
 
+public class LocalizerReader extends Thread {
+    Localizer localizer;
+    private static final LocalizerReader INSTANCE = new LocalizerReader(); //Create singleton instance
     private OpMode onStop;
     private String transitionTo;
     private OpModeManagerImpl opModeManager;
 
-    private AutoTransitioner() {
+    private LocalizerReader() {
         this.start(); //Start the watcher thread
+    }
+
+    private void setLocalizer(Localizer loc) {
+        this.localizer = loc;
     }
 
     @Override
@@ -41,6 +46,7 @@ public class AutoTransitioner extends Thread {
                         reset(); //Reset the AutoTransitioner
                     }
                 }
+                localizer.updateOptical();
                 Thread.sleep(50); //Sleep 50 seconds to minimize performance impact to the rest of your program
             }
         } catch (InterruptedException ex) {
@@ -70,4 +76,5 @@ public class AutoTransitioner extends Thread {
     public static void transitionOnStop(OpMode onStop, String transitionTo) {
         INSTANCE.setNewTransition(onStop, transitionTo);
     }
+
 }
