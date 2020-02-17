@@ -566,7 +566,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
             prevData = encoderData;
         }
-        runMotors(0,0);
     }
     double getP(double error, double kP){
         return Math.min(1,Math.abs(error)*kP);
@@ -621,7 +620,9 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             adjustment = 16;
         }
         Log.d("Skystone: ", "Skystoneposition " + skyStonePosition);
-        directionalDrive(x1+(7 * multiplier), y1 - 5, true, 2,0);
+        localizer.useEncoderOnlyToggle(false);
+        directionalDrive(x1+(7 * multiplier), y1 - 5, false, 2,0);
+        localizer.useEncoderOnlyToggle(true);
         directionalDrive(x1, y1, true, 2,0);
         if(isRedSide) {
             frontReleaseStone();
@@ -633,12 +634,14 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             sleep(300);
             backCarryStone();
         }
-        directionalDrive(x1+(7 * multiplier), y1 - 5, true, 2,0);
+        directionalDrive(x1+(7 * multiplier), y1 - 5, false, 2,0);
         int returnDistance = 70;
         //straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
-            directionalDrive(x1+7*multiplier, y2 + adjustment - 10, true, 1,0);
+            localizer.useEncoderOnlyToggle(false);
+            directionalDrive(x1+7*multiplier, y2 + adjustment - 10, false, 1,0);
             frontReadyStone();
+            localizer.useEncoderOnlyToggle(true);
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             frontGrabStone();
         }

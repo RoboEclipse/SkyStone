@@ -94,7 +94,7 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         frontGrabStone();
         sleep(250);
         frontCarryStone();
-        directionalDrive(SKYSTONEAutonomousConstants.stoneCrossXRed, SKYSTONEAutonomousConstants.stoneGrabY+32, true, 1,0);
+        directionalDrive(SKYSTONEAutonomousConstants.stoneCrossXRed, SKYSTONEAutonomousConstants.stoneGrabY+32, false, 1,0);
         double adjustment = 0;
         if(skyStonePosition.equals("Center")){
             adjustment = -8;

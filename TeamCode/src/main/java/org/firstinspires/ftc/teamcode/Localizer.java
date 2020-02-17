@@ -86,7 +86,7 @@ public class Localizer {
             x = newDiffOpticalX + x;
             double newDiffOpticalY = getYRaw() - y;
             y = newDiffOpticalY + y;
-
+            //Failsafe
             if (x > 250 || x < -100) {
                 x = encoderX;
                 Log.d("Skystone: ", "XOutOfBounds encoderX: " + x);
@@ -109,7 +109,9 @@ public class Localizer {
             if (ALPIP.size() >= 100){
                 ALPIP.remove(0);
             }
-        } else {
+        }
+        //Manual
+        else {
             x = encoderX;
             y = encoderY;
             Log.d("Skystone:: ", "lf: " + lfPosition + " lb: " + lbPosition + " rf: " + rfPosition + " rb: " + rbPosition);
