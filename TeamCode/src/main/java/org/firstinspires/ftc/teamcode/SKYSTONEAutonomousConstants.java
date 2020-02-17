@@ -65,15 +65,21 @@ public class SKYSTONEAutonomousConstants {
     public static double bsReady = 0.35;
     public static double bsGrab = 0.12;
 
-    //PID drive constants
+    //Distance sensor drive constants
     public static double kR = 1.0/25;
     public static double kD = 0.004;
     public static double min = 0.5;
+    //Distance sensor PID
     public static double ddkR = -0.01;
     public static double ddkP = 0.08;
     public static double ddkD = -0.016;
+    //Encoder PID
+    public static double ekR = -0.01;
+    public static double ekP = 0.08;
+    public static double ekD = -0.016;
     public static double minimumPower = 0.2;
     public static double lateralFactor = 1.23;
+    //Encoder drive constants
     //Coordinate Constants
     //Adjust in autonomous run
     public static double stoneGrabXBlue = 31.5;
@@ -81,7 +87,7 @@ public class SKYSTONEAutonomousConstants {
     //Adjust to detect using sensorTest
     public static double stoneDetectXBlue = stoneGrabXBlue - 1;
     public static double stoneDetectXRed = fieldSize - stoneDetectXBlue;
-    public static double stoneCrossXBlue = stoneDetectXBlue - 8;
+    public static double stoneCrossXBlue = stoneDetectXBlue - 10;
     public static double stoneCrossXRed = fieldSize - stoneCrossXBlue;
     public static double stoneGrabY = 4;
     //

@@ -226,6 +226,9 @@ public class Localizer {
             encoder = false;
         }
     }
+    boolean getEncoderOnly(){
+        return encoder;
+    }
 
     public void averageDiffs(){
         double xSum = 0;

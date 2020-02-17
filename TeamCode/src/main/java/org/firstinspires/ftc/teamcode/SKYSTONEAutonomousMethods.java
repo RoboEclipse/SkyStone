@@ -490,25 +490,38 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         double currentAngle;
         double currentError;
 
-        double kR = SKYSTONEAutonomousConstants.ddkR;
-        double kP = SKYSTONEAutonomousConstants.ddkP;
-        double kD = SKYSTONEAutonomousConstants.ddkD;
-
         double dt;
-        ElapsedTime clock = new ElapsedTime();
-        double t1 = clock.nanoseconds();
 
-        double xDis = targetX - localizer.getX();
-        double yDis = targetY - localizer.getY();
+        double t1 = 0;
+        double xDis = 0;
+        double yDis = 0;
         double totalDistance;
-
-        Log.d("Skystone: ",
-                "Direct Drive Target:(" + targetX + "," + targetY +
-                ") kP " + kP + "kD " + kD + " kR " + kR
-                + " tolerance" + tolerance + " Start At: ("
-                + localizer.getX() + "," + localizer.getY() + ")");
         RevBulkData prevData = myRobot.expansionHub.getBulkInputData();
+        ElapsedTime clock = new ElapsedTime();
+        if(opModeIsActive()){
+            t1 = clock.nanoseconds();
+            xDis = targetX - localizer.getX();
+            yDis = targetY - localizer.getY();
+            Log.d("Skystone: ",
+                    "Direct Drive Target:(" + targetX + "," + targetY
+                            + " tolerance" + tolerance + " Start At: ("
+                            + localizer.getX() + "," + localizer.getY() + ")");
+
+        }
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
+            double kR;
+            double kP;
+            double kD;
+            if(localizer.getEncoderOnly()){
+                kR = SKYSTONEAutonomousConstants.ekR;
+                kP = SKYSTONEAutonomousConstants.ekP;
+                kD = SKYSTONEAutonomousConstants.ekD;
+            }
+            else{
+                kR = SKYSTONEAutonomousConstants.ddkR;
+                kP = SKYSTONEAutonomousConstants.ddkP;
+                kD = SKYSTONEAutonomousConstants.ddkD;
+            }
             //Start of update
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
             currentAngle = loopAround(getHorizontalAngle());
@@ -539,6 +552,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
                 Log.d("Skystone", "Distance error = " + totalDistance + " Change in xDistance error = " + dX + " Change in yDistance error = " + dY + " dt = " + dt);
                 Log.d("Skystone:", " Proportional Action = " + totalDistance*kP + " xVelocity = " + xVelocity + " yVelocity = " + yVelocity);
+                Log.d("Skystone", " kP: " + kP + "kD: " + kD + " kR: " + kR);
             } else{
                 angle = Math.atan2(xDis * SKYSTONEAutonomousConstants.lateralFactor ,yDis);
             }
@@ -607,20 +621,24 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             adjustment = 16;
         }
         Log.d("Skystone: ", "Skystoneposition " + skyStonePosition);
+        directionalDrive(x1+(7 * multiplier), y1 - 5, true, 2,0);
         directionalDrive(x1, y1, true, 2,0);
-        if(isRedSide){
+        if(isRedSide) {
             frontReleaseStone();
             sleep(300);
+            frontCarryStone();
         }
         else{
             backReleaseStone();
+            sleep(300);
+            backCarryStone();
         }
         directionalDrive(x1+(7 * multiplier), y1 - 5, true, 2,0);
         int returnDistance = 70;
         //straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
-            frontReadyStone();
             directionalDrive(x1+7*multiplier, y2 + adjustment - 10, true, 1,0);
+            frontReadyStone();
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             frontGrabStone();
         }
@@ -714,12 +732,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             multiplier = -1;
         }
         if(skyStonePosition.equals("Center")){
-            encoderStraightDrive(-8*multiplier, 1);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY + 24 + 8,
+                    true, 2, 0);
+            //encoderStraightDrive(-8*multiplier, 1);
             //distanceEncoderDrive(baseDistance+8,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
         if(skyStonePosition.equals("Bridge")){
-            encoderStraightDrive(-16*multiplier,1);
+            directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY + 24 + 16,
+                    true, 2, 0);
+            //encoderStraightDrive(-16*multiplier,1);
             //distanceEncoderDrive(baseDistance+16,0.5,1,0, myRobot.frontDistance);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize - 27, 8.0/3+18.0, true, 2,0);
         }
