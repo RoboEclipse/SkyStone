@@ -89,7 +89,6 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
             directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, true,2, 0);
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
             directionalDrive(144, 28, true,2, 0);
-
             //grabFoundation(true);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize-5, 5, true,0.5, 0);
             //directionalDrive(SKYSTONEAutonomousConstants.fieldSize-20, 20, true, 0.5, 0);
