@@ -31,10 +31,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     SKYSTONEClass myRobot = new SKYSTONEClass();
     Localizer localizer;
+    LocalizerReader localizerReader;
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
         localizer = new Localizer(myRobot);
+        localizerReader = LocalizerReader.INSTANCE;
+        localizerReader.setLocalizer(localizer);
         this.telemetry = telemetry;
 
         //Sensors
