@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
         import android.graphics.Color;
         import android.util.Log;
 
+        import com.acmerobotics.dashboard.FtcDashboard;
+        import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.hardware.ColorSensor;
         import com.qualcomm.robotcore.hardware.DcMotor;
@@ -31,10 +33,15 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     SKYSTONEClass myRobot = new SKYSTONEClass();
     Localizer localizer;
+    LocalizerReader localizerReader;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    TelemetryPacket packet = new TelemetryPacket();
     //Backend
     void initialize(HardwareMap hardwareMap, Telemetry telemetry){
         myRobot.initialize(hardwareMap, telemetry);
         localizer = new Localizer(myRobot);
+        localizerReader = LocalizerReader.INSTANCE;
+        localizerReader.setLocalizer(localizer);
         this.telemetry = telemetry;
 
         //Sensors
@@ -528,6 +535,16 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             currentError = targetAngle - currentAngle;
             rotationVelocity = currentError * kR;
             localizer.update(prevData, encoderData);
+
+            if (dashboard != null && localizer.ALPIP.size() != 0) {
+                packet.put("xRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rX);
+                packet.put("yRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rY);
+                packet.put("x", localizer.getX());
+                packet.put("y", localizer.getY());
+                //packet.fieldOverlay().setFill("black").fillCircle(x, y, 1);
+                dashboard.sendTelemetryPacket(packet);
+            }
+
             //End of update
             double t2 = clock.nanoseconds();
             dt = t2-t1;

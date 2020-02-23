@@ -24,11 +24,13 @@ public class Localizer {
     private Corner corner = Corner.LEFT_DOWN;
     ElapsedTime clock;
     ArrayList<PiP> ALPIP;
+    ArrayList<OCoord> ALOC;
 
     public Localizer(SKYSTONEClass input) {
         this.myRobot = input;
         clock = new ElapsedTime();
         ALPIP = new ArrayList<PiP>();
+        ALOC = new ArrayList<OCoord>();
     }
     enum Corner {
         LEFT_UP,
@@ -85,30 +87,31 @@ public class Localizer {
         double encoderY = straightRatio * newDiffEncoderY + y;
         if (!encoder) {
             double newDiffOpticalX = getXRaw() - x;
-            x = newDiffOpticalX + x;
             double newDiffOpticalY = getYRaw() - y;
+            double potentialXRatio = newDiffOpticalX/newDiffEncoderX;
+            double potentialYRatio = newDiffOpticalY/newDiffEncoderY;
+            x = newDiffOpticalX + x;
             y = newDiffOpticalY + y;
             //Failsafe
-            if (x > 250 || x < -100) {
+            if ((x > 250 || x < -100) || Math.abs(potentialXRatio)>3) {
                 x = encoderX;
                 Log.d("Skystone: ", "XOutOfBounds encoderX: " + x);
             }
-            if (y > 250 || y < -100) {
+            if ((y > 250 || y < -100) || Math.abs(potentialYRatio)>3) {
                 y = encoderY;
                 Log.d("Skystone: ", "YOutOfBounds encoderY: " + y);
             }
             double t1 = clock.nanoseconds();
-            Log.d("Skystone:: ", "OpticalX: " + newDiffOpticalX +  " EncoderX: " + newDiffEncoderX );
-            Log.d("Skystone:: ", "OpticalY: " + newDiffOpticalY + " EncoderY: " + newDiffEncoderY);
-            double potentialXRatio = newDiffOpticalX/newDiffEncoderX;
-            double potentialYRatio = newDiffOpticalY/newDiffEncoderY;
+            Log.d("Skystone:: ", "OpticalX: " + newDiffOpticalX +  " EncoderX: " + newDiffEncoderX
+                    + " OpticalY: " + newDiffOpticalY + " EncoderY: " + newDiffEncoderY);
             if(newDiffEncoderX != 0 && newDiffEncoderY != 0
                 && newDiffOpticalX != 0 && newDiffOpticalY != 0
                 && Math.abs(potentialXRatio)<3 && Math.abs(potentialYRatio)<3){
-                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, x, y, t1);
+                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, encoderX, encoderY);
                 ALPIP.add(value1);
             }
-            if (ALPIP.size() >= 100){
+
+            if (ALPIP.size() >= 25){
                 ALPIP.remove(0);
             }
         }
@@ -161,12 +164,41 @@ public class Localizer {
                 + curData.getMotorCurrentPosition(myRobot.rb);
     }
     private double getXRaw() {
-        double eTime = clock.milliseconds();
-        return opticalX;
+        double xRaw = 0;
+        switch (corner){
+            case LEFT_DOWN: case LEFT_UP:
+                xRaw = myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw>30){
+                    xRaw = 400;
+                }
+                break;
+            case RIGHT_DOWN: case RIGHT_UP:
+                xRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                if(xRaw<SKYSTONEAutonomousConstants.fieldSize - 35){
+                    xRaw = -400;
+                }
+                break;
+        }
+        return xRaw;
     }
 
     private double getYRaw() {
-        return opticalY;
+        double yRaw = 0;
+        switch (corner){
+            case LEFT_DOWN:
+                yRaw = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case LEFT_UP:
+                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_DOWN:
+                yRaw = myRobot.frontDistance.getDistance(DistanceUnit.INCH);
+                break;
+            case RIGHT_UP:
+                yRaw = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                break;
+        }
+        return yRaw;
     }
 
     void updateOptical() {
@@ -191,6 +223,13 @@ public class Localizer {
             case RIGHT_UP:
                 opticalY = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
                 break;
+        }
+        double t2 = clock.nanoseconds();
+        OCoord value2 = new OCoord(t2, opticalX, opticalY);
+        ALOC.add(value2);
+
+        if (ALOC.size() >= 25){
+            ALOC.remove(0);
         }
     }
 
@@ -241,5 +280,6 @@ public class Localizer {
         strafeRatio = xSum/size;
         straightRatio = ySum/size;
         Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
+
     }
 }

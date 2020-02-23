@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
+
+import java.util.ArrayList;
 
 /**
  * Created by AutoTransitionerKNO3 Robotics
@@ -20,7 +23,7 @@ import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
 
 public class LocalizerReader extends Thread {
     Localizer localizer;
-    private static final LocalizerReader INSTANCE = new LocalizerReader(); //Create singleton instance
+    public static final LocalizerReader INSTANCE = new LocalizerReader(); //Create singleton instance
     private OpMode onStop;
     private String transitionTo;
     private OpModeManagerImpl opModeManager;
@@ -29,7 +32,7 @@ public class LocalizerReader extends Thread {
         this.start(); //Start the watcher thread
     }
 
-    private void setLocalizer(Localizer loc) {
+    void setLocalizer(Localizer loc) {
         localizer = loc;
     }
 
@@ -45,9 +48,14 @@ public class LocalizerReader extends Thread {
                         opModeManager.initActiveOpMode(transitionTo); //Request initialization of the teleop
                         reset(); //Reset the AutoTransitioner
                     }
+                    if (localizer != null) {
+                        localizer.updateOptical();
+                    }
+
                 }
-                localizer.updateOptical();
-                Thread.sleep(50); //Sleep 50 seconds to minimize performance impact to the rest of your program
+                if (localizer == null) {
+                    Thread.sleep(50); //Sleep 50 seconds to minimize performance impact to the rest of your program
+                }
             }
         } catch (InterruptedException ex) {
             Log.e(FtcRobotControllerActivity.TAG, "AutoTransitioner shutdown, thread interrupted");

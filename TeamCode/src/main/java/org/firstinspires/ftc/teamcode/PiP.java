@@ -3,17 +3,15 @@ package org.firstinspires.ftc.teamcode;
 public class PiP {
     double rX;
     double rY;
-    double oX;
-    double oY;
+    double eX;
+    double eY;
     double eTS;
-    double oTS;
 
-    public PiP(double ratioX, double ratioY, double encoderTS, double opticalX, double opticalY, double opticalTS){
+    public PiP(double ratioX, double ratioY, double encoderTS, double encoderX, double encoderY){
         rX = ratioX;
         rY = ratioY;
         eTS = encoderTS;
-        oX = opticalX;
-        oY = opticalY;
-        oTS = opticalTS;
+        eX = encoderX;
+        eY = encoderY;
     }
 }
