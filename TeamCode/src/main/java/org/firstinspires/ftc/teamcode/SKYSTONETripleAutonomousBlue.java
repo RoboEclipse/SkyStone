@@ -87,7 +87,7 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         }
         frontCarryStone();
         straighteningEncoderDrive(-SKYSTONEAutonomousConstants.firstBridgeCross + adjustment, 0, 50, 1);
-        placeAndReturn(
+        placeAndGrab(
                 SKYSTONEAutonomousConstants.stoneDropXBlue, SKYSTONEAutonomousConstants.farStoneDropY,
                 SKYSTONEAutonomousConstants.stoneGrabXBlue, SKYSTONEAutonomousConstants.stoneGrabY,
                 skyStonePosition, false);

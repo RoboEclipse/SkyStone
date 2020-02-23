@@ -33,10 +33,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-
-import java.util.List;
-
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -55,30 +51,15 @@ import java.util.List;
 //@Disabled
 public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
-    //FtcDashboard dashboard = FtcDashboard.getInstance();
-
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    double dropDistance = SKYSTONEAutonomousConstants.doubleBridgeCross;
-    //Second Strafe
-    double wallDistance = SKYSTONEAutonomousConstants.doubleWallDistance;
-    //double y = 0;
     FtcDashboard dashboard;
-    List<Recognition> updatedRecognitions;
-    String skyStonePosition = "Left";
 
     @Override
     public void runOpMode() {
-
-        //SKYSTONEAutonomousMethods methods = this;
-        //SKYSTONEClass myRobot = this.myRobot;
-        //dashboard = FtcDashboard.getInstance();
-        final double speed = 1;
-        //double wallDistance = 8.0/3 + 8.0;
         initialize(hardwareMap, telemetry);
         String skyStonePosition = "Center";
         // Wait for the game to start (driver presses PLAY)
-        //methods.waitForStart2();
         localizer.useEncoderOnlyToggle(false);
         localizer.setCoordinates(SKYSTONEAutonomousConstants.fieldSize, 25);
         resetClaws();
@@ -87,30 +68,19 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
 
         frontReadyStone();
         backReadyStone();
+        //Get to reading position
         directionalDrive(SKYSTONEAutonomousConstants.stoneDetectXRed, SKYSTONEAutonomousConstants.stoneGrabY+24, true, 1,0);
+        //Get to grabbing position
         skyStonePosition = detectSkyStonePosition(true);
-        //encoderStrafeDriveInchesRight(3,1);
-        //encoderStrafeDriveInchesRight(2,1);
+        //Grab stone
         frontGrabStone();
         sleep(250);
         frontCarryStone();
+        //Get ready to cross bridge
         directionalDrive(SKYSTONEAutonomousConstants.stoneCrossXRed, SKYSTONEAutonomousConstants.stoneGrabY+32, false, 1,0);
-        double adjustment = 0;
-        if(skyStonePosition.equals("Center")){
-            adjustment = -8;
-        }
-        if(skyStonePosition.equals("Bridge")){
-            adjustment = -16;
-        }
-        /*
-        if(skyStonePosition.equals("Bridge")){
-            straighteningEncoderDriveNoStop(10, 0, 40, 1);
-        }
-        directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, false, 2,0);
-         */
+        //Lift stone
         backCarryStone();
-        //straighteningEncoderDriveNoStop(SKYSTONEAutonomousConstants.firstBridgeCross + adjustment, 0, 50, 1);
-        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY - 16,
+        placeAndGrab(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY - 16,
                 SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, skyStonePosition, true);
         if(skyStonePosition.equals("Bridge")){
             skyStonePosition = "Center";
@@ -118,8 +88,9 @@ public class SKYSTONETripleAutonomousRed extends SKYSTONEAutonomousMethods {
         else{
             skyStonePosition = "Bridge";
         }
-        placeAndReturn(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY - 8,
+        placeAndGrab(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.farStoneDropY - 8,
                 SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY + 24, skyStonePosition, true);
+        //Place stone
         directionalDrive(SKYSTONEAutonomousConstants.stoneDropXRed, SKYSTONEAutonomousConstants.nearStoneDropY, true, 2,0);
         frontReadyStone();
         sleep(250);

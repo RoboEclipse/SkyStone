@@ -607,7 +607,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
 
     //(x1, y1): Coordinates of where you place the stone
     //(x2, y2): Coordinates of where you grab the next stone for depot case
-    void placeAndReturn(double x1, double y1, double x2, double y2, String skyStonePosition, boolean isRedSide) {
+    void placeAndGrab(double x1, double y1, double x2, double y2, String skyStonePosition, boolean isRedSide) {
         double adjustment = 0;
         int multiplier = 1;
         if(!isRedSide){
@@ -620,10 +620,13 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             adjustment = 16;
         }
         Log.d("Skystone: ", "Skystoneposition " + skyStonePosition);
-        localizer.useEncoderOnlyToggle(false);
+        //Cross bridge
+        //localizer.useEncoderOnlyToggle(true);
         directionalDrive(x1+(7 * multiplier), y1 - 5, false, 2,0);
-        localizer.useEncoderOnlyToggle(true);
+        //Get in position to place stone
+        localizer.useEncoderOnlyToggle(false);
         directionalDrive(x1, y1, true, 2,0);
+        //Place stone
         if(isRedSide) {
             frontReleaseStone();
             sleep(300);
@@ -634,14 +637,17 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             sleep(300);
             backCarryStone();
         }
+        //Prepare to cross bridge
         directionalDrive(x1+(7 * multiplier), y1 - 5, false, 2,0);
         int returnDistance = 70;
         //straighteningEncoderDriveNoStop(returnDistance*multiplier, 0, 50, 1);
         if(isRedSide){
-            localizer.useEncoderOnlyToggle(false);
+            //Cross Bridge
+            //localizer.useEncoderOnlyToggle(true);
             directionalDrive(x1+7*multiplier, y2 + adjustment - 10, false, 1,0);
             frontReadyStone();
-            localizer.useEncoderOnlyToggle(true);
+            //Pick up stone
+            localizer.useEncoderOnlyToggle(false);
             directionalDrive(x2, y2 + adjustment, true, 1,0);
             frontGrabStone();
         }
@@ -654,6 +660,7 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
         frontCarryStone();
         backCarryStone();
         if (isRedSide) {
+            //Prepare to cross bridge
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true, 2, 0);
         } else{
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXBlue, SKYSTONEAutonomousConstants.stoneAwayY, true, 2, 0);
