@@ -271,5 +271,6 @@ public class Localizer {
         strafeRatio = xSum/size;
         straightRatio = ySum/size;
         Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
+
     }
 }
