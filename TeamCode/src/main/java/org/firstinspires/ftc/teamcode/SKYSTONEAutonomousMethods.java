@@ -20,7 +20,6 @@ package org.firstinspires.ftc.teamcode;
         import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
         import org.openftc.revextensions2.RevBulkData;
 
-
 abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
     //Hardware
     // The IMU sensor object

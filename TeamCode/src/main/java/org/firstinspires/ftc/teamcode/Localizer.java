@@ -105,11 +105,11 @@ public class Localizer {
             if(newDiffEncoderX != 0 && newDiffEncoderY != 0
                 && newDiffOpticalX != 0 && newDiffOpticalY != 0
                 && Math.abs(potentialXRatio)<3 && Math.abs(potentialYRatio)<3){
-                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, x, y, t1);
+                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, encoderX, encoderY);
                 ALPIP.add(value1);
             }
 
-            if (ALPIP.size() >= 100){
+            if (ALPIP.size() >= 25){
                 ALPIP.remove(0);
             }
         }

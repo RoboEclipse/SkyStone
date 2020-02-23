@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeManagerImpl;
+
+import java.util.ArrayList;
 
 /**
  * Created by AutoTransitionerKNO3 Robotics
@@ -24,9 +27,13 @@ public class LocalizerReader extends Thread {
     private OpMode onStop;
     private String transitionTo;
     private OpModeManagerImpl opModeManager;
+    ElapsedTime clock;
+    ArrayList<OCoord> ALOC;
 
     private LocalizerReader() {
         this.start(); //Start the watcher thread
+        clock = new ElapsedTime();
+        ALOC = new ArrayList<OCoord>();
     }
 
     void setLocalizer(Localizer loc) {
@@ -46,8 +53,16 @@ public class LocalizerReader extends Thread {
                         reset(); //Reset the AutoTransitioner
                     }
                     if (localizer != null) {
+                        double t2 = clock.nanoseconds();
                         localizer.updateOptical();
+                        OCoord value2 = new OCoord(t2, localizer.opticalX, localizer.opticalY);
+                        ALOC.add(value2);
+
+                        if (ALOC.size() >= 25){
+                            ALOC.remove(0);
+                        }
                     }
+
                 }
                 if (localizer == null) {
                     Thread.sleep(50); //Sleep 50 seconds to minimize performance impact to the rest of your program
