@@ -27,13 +27,9 @@ public class LocalizerReader extends Thread {
     private OpMode onStop;
     private String transitionTo;
     private OpModeManagerImpl opModeManager;
-    ElapsedTime clock;
-    ArrayList<OCoord> ALOC;
 
     private LocalizerReader() {
         this.start(); //Start the watcher thread
-        clock = new ElapsedTime();
-        ALOC = new ArrayList<OCoord>();
     }
 
     void setLocalizer(Localizer loc) {
@@ -53,14 +49,7 @@ public class LocalizerReader extends Thread {
                         reset(); //Reset the AutoTransitioner
                     }
                     if (localizer != null) {
-                        double t2 = clock.nanoseconds();
                         localizer.updateOptical();
-                        OCoord value2 = new OCoord(t2, localizer.opticalX, localizer.opticalY);
-                        ALOC.add(value2);
-
-                        if (ALOC.size() >= 25){
-                            ALOC.remove(0);
-                        }
                     }
 
                 }

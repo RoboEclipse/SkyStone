@@ -24,11 +24,13 @@ public class Localizer {
     private Corner corner = Corner.LEFT_DOWN;
     ElapsedTime clock;
     ArrayList<PiP> ALPIP;
+    ArrayList<OCoord> ALOC;
 
     public Localizer(SKYSTONEClass input) {
         this.myRobot = input;
         clock = new ElapsedTime();
         ALPIP = new ArrayList<PiP>();
+        ALOC = new ArrayList<OCoord>();
     }
     enum Corner {
         LEFT_UP,
@@ -221,6 +223,13 @@ public class Localizer {
             case RIGHT_UP:
                 opticalY = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
                 break;
+        }
+        double t2 = clock.nanoseconds();
+        OCoord value2 = new OCoord(t2, opticalX, opticalY);
+        ALOC.add(value2);
+
+        if (ALOC.size() >= 25){
+            ALOC.remove(0);
         }
     }
 

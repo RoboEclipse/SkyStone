@@ -61,6 +61,7 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
     @Override
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
+        telemetry = dashboard.getTelemetry();
         final double speed = 0.75;
         initialize(hardwareMap, telemetry);
         localizer.setCoordinates(144,28);
