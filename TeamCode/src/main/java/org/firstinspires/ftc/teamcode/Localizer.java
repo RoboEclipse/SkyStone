@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -22,6 +24,8 @@ public class Localizer {
     private SKYSTONEClass myRobot;
     private boolean encoder = false;
     private Corner corner = Corner.LEFT_DOWN;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    TelemetryPacket packet = new TelemetryPacket();
     ElapsedTime clock;
     ArrayList<PiP> ALPIP;
     ArrayList<OCoord> ALOC;
@@ -83,8 +87,10 @@ public class Localizer {
         int rbVelocity = encoderData.getMotorVelocity(myRobot.rb);
         double newDiffEncoderX = diffEncoderX(prevData, encoderData);
         double encoderX = strafeRatio * newDiffEncoderX + x;
+        double rEncoderX = newDiffEncoderX + x;
         double newDiffEncoderY = diffEncoderY(prevData, encoderData);
         double encoderY = straightRatio * newDiffEncoderY + y;
+        double rEncoderY = newDiffEncoderY + y;
         if (!encoder) {
             double newDiffOpticalX = getXRaw() - x;
             double newDiffOpticalY = getYRaw() - y;
@@ -107,7 +113,7 @@ public class Localizer {
             if(newDiffEncoderX != 0 && newDiffEncoderY != 0
                 && newDiffOpticalX != 0 && newDiffOpticalY != 0
                 && Math.abs(potentialXRatio)<3 && Math.abs(potentialYRatio)<3){
-                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, encoderX, encoderY);
+                PiP value1 = new PiP(potentialXRatio, potentialYRatio, t1, rEncoderX, rEncoderY);
                 ALPIP.add(value1);
             }
 
@@ -129,6 +135,7 @@ public class Localizer {
         Log.d("Skystone: ", "finalPosition: x: " + x + " y: " + y + " encoderX " + encoderX +
                 " encoderY " + encoderY);
         updateCorner();
+        dashboardGraphing();
     }
 
     private double diffEncoderX(RevBulkData prevData, RevBulkData curData){
@@ -269,17 +276,49 @@ public class Localizer {
         return encoder;
     }
 
-    public void averageDiffs(){
+    public void averageDiffs() {
         double xSum = 0;
         double ySum = 0;
         double size = ALPIP.size();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             xSum = xSum + ALPIP.get(i).rX;
             ySum = ySum + ALPIP.get(i).rY;
         }
-        strafeRatio = xSum/size;
-        straightRatio = ySum/size;
+        strafeRatio = xSum / size;
+        straightRatio = ySum / size;
         Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
 
+    }
+
+    public void dashboardGraphing(){
+        if (dashboard != null){
+            int apSize = ALPIP.size();
+            int acSize = ALOC.size();
+            double[] APIPX = new double[apSize];
+            double[] APIPY = new double[apSize];
+            double[] ALOCX = new double[acSize];
+            double[] ALOCY = new double[acSize];
+            if (apSize != 0) {
+                packet.put("xRatio", ALPIP.get(apSize - 1).rX);
+                packet.put("yRatio", ALPIP.get(apSize - 1).rY);
+                for (int i = 0; i < apSize; i++) {
+                    APIPX[i] = ALPIP.get(i).eX - 72;
+                    APIPY[i] = ALPIP.get(i).eY - 72;
+                }
+            }
+            if (ALOC.size() != 0) {
+                for (int i = 0; i < acSize; i++) {
+                    ALOCX[i] = - ALOC.get(i).oX + 72;
+                    ALOCY[i] = ALOC.get(i).oY - 72;
+                }
+            }
+            packet.put("x", getX());
+            packet.put("y", getY());
+            packet.fieldOverlay().setStroke("blue");
+            packet.fieldOverlay().strokePolyline(APIPX, APIPY);
+            packet.fieldOverlay().setStroke("red");
+            packet.fieldOverlay().strokePolyline(ALOCX, ALOCY);
+            dashboard.sendTelemetryPacket(packet);
+        }
     }
 }

@@ -536,15 +536,6 @@ abstract class SKYSTONEAutonomousMethods extends LinearOpMode {
             rotationVelocity = currentError * kR;
             localizer.update(prevData, encoderData);
 
-            if (dashboard != null && localizer.ALPIP.size() != 0) {
-                packet.put("xRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rX);
-                packet.put("yRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rY);
-                packet.put("x", localizer.getX());
-                packet.put("y", localizer.getY());
-                //packet.fieldOverlay().setFill("black").fillCircle(x, y, 1);
-                dashboard.sendTelemetryPacket(packet);
-            }
-
             //End of update
             double t2 = clock.nanoseconds();
             dt = t2-t1;
