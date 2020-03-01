@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Log;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -27,6 +29,8 @@ public class Localizer {
     private SKYSTONEDrivetrainClass myRobot;
     private boolean encoder = false;
     private Corner corner = Corner.LEFT_DOWN;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    TelemetryPacket packet = new TelemetryPacket();
     ElapsedTime clock;
     ArrayList<PiP> ALPIP;
     ArrayList<OCoord> ALOC;
@@ -142,6 +146,7 @@ public class Localizer {
         Log.d("Skystone: ", "finalPosition: x: " + x + " y: " + y + " encoderX " + encoderX +
                 " encoderY " + encoderY);
         updateCorner();
+        dashboardGraphing();
     }
 
     private double diffEncoderX(RevBulkData prevData, RevBulkData curData){
@@ -298,18 +303,50 @@ public class Localizer {
         return encoder;
     }
 
-    public void averageDiffs(){
+    public void averageDiffs() {
         double xSum = 0;
         double ySum = 0;
         double size = ALPIP.size();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             xSum = xSum + ALPIP.get(i).rX;
             ySum = ySum + ALPIP.get(i).rY;
         }
-        strafeRatio = xSum/size;
-        straightRatio = ySum/size;
+        strafeRatio = xSum / size;
+        straightRatio = ySum / size;
         Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
     }
 
+
+    public void dashboardGraphing(){
+        if (dashboard != null){
+            int apSize = ALPIP.size();
+            int acSize = ALOC.size();
+            double[] APIPX = new double[apSize];
+            double[] APIPY = new double[apSize];
+            double[] ALOCX = new double[acSize];
+            double[] ALOCY = new double[acSize];
+            if (apSize != 0) {
+                packet.put("xRatio", ALPIP.get(apSize - 1).rX);
+                packet.put("yRatio", ALPIP.get(apSize - 1).rY);
+                for (int i = 0; i < apSize; i++) {
+                    APIPX[i] = ALPIP.get(i).eX - 72;
+                    APIPY[i] = ALPIP.get(i).eY - 72;
+                }
+            }
+            if (ALOC.size() != 0) {
+                for (int i = 0; i < acSize; i++) {
+                    ALOCX[i] = - ALOC.get(i).oX + 72;
+                    ALOCY[i] = ALOC.get(i).oY - 72;
+                }
+            }
+            packet.put("x", getX());
+            packet.put("y", getY());
+            packet.fieldOverlay().setStroke("blue");
+            packet.fieldOverlay().strokePolyline(APIPX, APIPY);
+            packet.fieldOverlay().setStroke("red");
+            packet.fieldOverlay().strokePolyline(ALOCX, ALOCY);
+            dashboard.sendTelemetryPacket(packet);
+        }
+    }
 
 }

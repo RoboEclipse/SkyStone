@@ -75,8 +75,8 @@ public class SKYSTONEAutonomousConstants {
     public static double ddkD = -0.016;
     //Encoder PID
     public static double ekR = -0.01;
-    public static double ekP = 0.08;
-    public static double ekD = -0.016;
+    public static double ekP = 0.16;
+    public static double ekD = -0.025;
     public static double minimumPower = 0.2;
     public static double lateralFactor = 1.23;
     //Encoder drive constants

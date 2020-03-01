@@ -3,15 +3,28 @@ package org.firstinspires.ftc.teamcode;
         import android.graphics.Color;
         import android.util.Log;
 
+        import com.acmerobotics.dashboard.FtcDashboard;
+        import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.hardware.ColorSensor;
+        import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DistanceSensor;
         import com.qualcomm.robotcore.hardware.HardwareMap;
+        import com.qualcomm.robotcore.util.ElapsedTime;
 
         import org.firstinspires.ftc.robotcore.external.Telemetry;
+        import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+        import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+        import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+        import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+        import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+        import org.openftc.revextensions2.RevBulkData;
 
 abstract class SKYSTONEAutonomousMethods extends AutonomousMethods {
     //Software
     //private Telemetry telemetry;
 
+    private int turnPValue = 15;
     //Classes
     SKYSTONEClass skystoneClass(){
         return (SKYSTONEClass)myRobot;
