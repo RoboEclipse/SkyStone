@@ -11,20 +11,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name="TestBotBackUpAutonomous", group="Linear Opmode")
 //@Disabled
-public class TestBotBackUpAutonomous extends SKYSTONEAutonomousMethods {
+public class TestBotBackUpAutonomous extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     // private int x;
     // private int y;
     FtcDashboard dashboard;
+    //SKYSTONEDrivetrainClass myRobot = new SKYSTONEDrivetrainClass();
     double stopTime = 25;
 
     @Override
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, myRobot);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {

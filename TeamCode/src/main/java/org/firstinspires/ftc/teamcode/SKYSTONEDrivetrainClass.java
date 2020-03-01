@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.revextensions2.ExpansionHubEx;
 import org.openftc.revextensions2.ExpansionHubMotor;
@@ -69,5 +70,14 @@ public class SKYSTONEDrivetrainClass {
         lf.setPower(leftPower);
         rb.setPower(rightPower);
         rf.setPower(rightPower);
+    }
+    double getBackDistance(){
+        return backDistance.getDistance(DistanceUnit.INCH);
+    }
+    double getFrontDistance() {
+        return frontDistance.getDistance(DistanceUnit.INCH);
+    }
+    double getLeftDistance() {
+        return leftDistance.getDistance(DistanceUnit.INCH);
     }
 }

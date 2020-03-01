@@ -30,8 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -52,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="TestBotMixedAutonomousBlue", group="Linear Opmode")
 @Disabled
-public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
+public class TestBotMixedAutonomousBlue extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -64,15 +62,13 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEDrivetrainClass drivetrain = myRobot;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, myRobot);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    //telemetry.addData("Distance", skystoneClass.getBackDistance() + "");
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {
@@ -85,14 +81,14 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            //myRobot.leftFoundationServo.setPosition(SKYSTONEAutonomousConstants.lDown);
-            //myRobot.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
+            //skystoneClass.leftFoundationServo.setPosition(SKYSTONEAutonomousConstants.lDown);
+            //skystoneClass.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
 
             //Strafe sideways to allow the webcam to see.
             encoderStraightDrive(SKYSTONEAutonomousConstants.driveToStoneDistance, 1);
 
             //Grab the SkyStone
-            //myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.frDown);
+            //skystoneClass.frontBase.setPosition(SKYSTONEAutonomousConstants.frDown);
             telemetry.addData("grabbed stone",0);
             telemetry.update();
             sleep(800);
@@ -116,20 +112,20 @@ public class TestBotMixedAutonomousBlue extends SKYSTONEAutonomousMethods {
             telemetry.addData("grab foundation", 0);
             telemetry.update();
             //Put down foundation servos (to grab foundation)
-            //myRobot.leftFoundationServo.setPosition(SKYSTONEAutonomousConstants.lDown);
-            //myRobot.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
+            //skystoneClass.leftFoundationServo.setPosition(SKYSTONEAutonomousConstants.lDown);
+            //skystoneClass.rightFoundationServo.setPosition(SKYSTONEAutonomousConstants.rDown);
             //drive forwards to drop off stones
             encoderStraightDrive(SKYSTONEAutonomousConstants.dropOffStoneDistance, 1);
             telemetry.addData("drop off stone", 0);
             telemetry.update();
             encoderStraightDrive(SKYSTONEAutonomousConstants.moveAwayFromStoneDistance, 1);
-            //myRobot.frontBase.setPosition(SKYSTONEAutonomousConstants.frUp);
+            //skystoneClass.frontBase.setPosition(SKYSTONEAutonomousConstants.frUp);
             //turn to drop off foundation
             encoderTurn(270, 1.0, 3);
             //drive backwards to drop off foundation
-            myRobot.runMotors(-0.5,-0.5);
+            runMotors(-0.5,-0.5);
             sleep(1000);
-            myRobot.runMotors(0,0);
+            runMotors(0,0);
             //drive forward to get under bridge
             encoderStraightDrive(SKYSTONEAutonomousConstants.parkDistance, 1);
             break;

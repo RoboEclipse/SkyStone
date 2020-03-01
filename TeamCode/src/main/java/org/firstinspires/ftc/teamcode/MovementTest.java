@@ -50,10 +50,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="MovementTest", group="Linear Opmode")
 //@Disabled
-public class MovementTest extends SKYSTONEAutonomousMethods {
+public class MovementTest extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
+    SKYSTONEDrivetrainClass myRobot = new SKYSTONEDrivetrainClass();
+
     // private int x;
     // private int y;
     FtcDashboard dashboard;
@@ -61,9 +63,12 @@ public class MovementTest extends SKYSTONEAutonomousMethods {
     @Override
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        if(dashboard!=null){
+            telemetry = dashboard.getTelemetry();
+        }
+
         final double speed = 0.75;
-        initialize(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, this.myRobot);
         localizer.setCoordinates(144,28);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();

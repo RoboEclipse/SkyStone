@@ -201,7 +201,7 @@ public class SKYSTONETeleOp extends OpMode
             myRobot.backGrabber.setPosition(SKYSTONEAutonomousConstants.bsReady);
         }
 
-        // TODO myRobot.moveFrontClaw(flClawPosition, frClawPosition);
+        // TODO skystoneClass.moveFrontClaw(flClawPosition, frClawPosition);
 
         //Foundation Servo Control (testing)
         if(gamepad1.left_trigger>0.7){
@@ -222,7 +222,7 @@ public class SKYSTONETeleOp extends OpMode
 
         //Reset to Autonomous starting position
         /* if(gamepad1.x){
-            myRobot.resetAutonomous();
+            skystoneClass.resetAutonomous();
             clawRotator = SKYSTONEConstants.straight;
         }*/
 
@@ -246,8 +246,8 @@ public class SKYSTONETeleOp extends OpMode
         telemetry.addData("leftFoundationPosition", leftFoundationPosition);
         telemetry.addData("CollectorPower", collectorPower);
         telemetry.addData("CapstonePosition", capStonePosition);
-        //telemetry.addData("ElevatorDistance", myRobot.getElevatorDistance());
-        //telemetry.addData("BackDistance", myRobot.getBackDistance());
+        //telemetry.addData("ElevatorDistance", skystoneClass.getElevatorDistance());
+        //telemetry.addData("BackDistance", skystoneClass.getBackDistance());
         myRobot.readEncoders();
 
         //Log
@@ -281,14 +281,14 @@ public class SKYSTONETeleOp extends OpMode
     /* private void pickUpStone(){
         //State 1: Raise elevator, then rotate claw
         if(stage == 0 && timer.milliseconds()>=2000){
-            myRobot.runWithEncoder(0.5, 400, myRobot.elevator);
+            skystoneClass.runWithEncoder(0.5, 400, skystoneClass.elevator);
             clawRotator = SKYSTONEConstants.left90;
             timer.reset();
             stage++;
         }
         //State 2: Lower elevator, then grab stone
         if(stage == 1 && timer.milliseconds()>=2000){
-            myRobot.runWithEncoder(0.5, -400, myRobot.elevator);
+            skystoneClass.runWithEncoder(0.5, -400, skystoneClass.elevator);
             clawPosition = SKYSTONEConstants.tighten;
             timer.reset();
             stage++;

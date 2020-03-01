@@ -62,7 +62,7 @@ public class TestBotTripleSkystoneRed extends SKYSTONEAutonomousMethods {
     public void runOpMode() {
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, new SKYSTONEClass());
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {

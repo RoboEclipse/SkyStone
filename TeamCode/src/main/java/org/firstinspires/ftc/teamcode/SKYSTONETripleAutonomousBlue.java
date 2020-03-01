@@ -63,9 +63,9 @@ public class SKYSTONETripleAutonomousBlue extends SKYSTONEAutonomousMethods {
         String skyStonePosition;
         initialize(hardwareMap, telemetry);
         resetClaws();
-        telemetry.addData("Skystone: ", "frontDistance = " + myRobot.getFrontDistance());
-        telemetry.addData("Skystone: ", "backDistance = " + myRobot.getBackDistance());
-        telemetry.addData("Skystone: ", "leftDistance = " + myRobot.leftDistance.getDistance(DistanceUnit.INCH));
+        telemetry.addData("Skystone: ", "frontDistance = " + skystoneClass().getFrontDistance());
+        telemetry.addData("Skystone: ", "backDistance = " + skystoneClass().getBackDistance());
+        telemetry.addData("Skystone: ", "leftDistance = " + skystoneClass().leftDistance.getDistance(DistanceUnit.INCH));
         getAngleWaitForStart();
         runtime.reset();
 

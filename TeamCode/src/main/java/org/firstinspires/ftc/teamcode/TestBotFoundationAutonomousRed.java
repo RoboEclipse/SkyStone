@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="TestBotFoundationAutonomousRed", group="Linear Opmode")
 @Disabled
-public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotFoundationAutonomousRed extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -61,13 +61,12 @@ public class TestBotFoundationAutonomousRed extends SKYSTONEAutonomousMethods {
 
     @Override
     public void runOpMode() {
-        SKYSTONEDrivetrainClass drivetrain = myRobot;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, myRobot);
 
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    //telemetry.addData("Distance", skystoneClass.getBackDistance() + "");
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {

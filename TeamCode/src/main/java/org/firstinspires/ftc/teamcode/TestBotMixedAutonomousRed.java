@@ -30,8 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -52,7 +50,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="TestBotMixedAutonomousRed", group="Linear Opmode")
 @Disabled
-public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotMixedAutonomousRed extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -64,15 +62,13 @@ public class TestBotMixedAutonomousRed extends SKYSTONEAutonomousMethods {
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEDrivetrainClass drivetrain = myRobot;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, myRobot);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
-                    //telemetry.addData("Distance", myRobot.getBackDistance() + "");
+                    //telemetry.addData("Distance", skystoneClass.getBackDistance() + "");
                     telemetry.update();
                     this.wait();
                 } catch (InterruptedException e) {

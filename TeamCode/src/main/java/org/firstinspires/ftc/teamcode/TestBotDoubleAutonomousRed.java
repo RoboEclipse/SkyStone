@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="TestBotDoubleAutonomousRed", group="Linear Opmode")
 @Disabled
-public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
+public class TestBotDoubleAutonomousRed extends AutonomousMethods {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -67,9 +67,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
 
     @Override
     public void runOpMode() {
-
-        SKYSTONEDrivetrainClass drivetrain = myRobot;
-        myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        initializeDrivetrain(hardwareMap, telemetry, myRobot);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -106,6 +104,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
         while (opModeIsActive()) {
             //Drive the rest of the distance
             distanceEncoderDrive(1,1,1,0, frontSensor);
+            /*
             float leftHue = getHue(myRobot.frontColor);
             float rightHue = getHue(myRobot.backColor);
             if(leftHue >= 115) {
@@ -123,6 +122,7 @@ public class TestBotDoubleAutonomousRed extends SKYSTONEAutonomousMethods {
             if(skysStonePosition.equals("Right")) {
                 encoderStrafeDriveInchesRight(SKYSTONEAutonomousConstants.doubleAdjustDistance, 1);
             }
+             */
             //Drive backwards
             encoderStraightDrive(-3, 1);
             //Turn

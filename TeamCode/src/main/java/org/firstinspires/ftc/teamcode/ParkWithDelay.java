@@ -61,7 +61,7 @@ public class ParkWithDelay extends SKYSTONEAutonomousMethods {
     public void runOpMode() {
 
         SKYSTONEAutonomousMethods methods = this;
-        SKYSTONEClass myRobot = methods.myRobot;
+        SKYSTONEClass myRobot = skystoneClass();
         dashboard = FtcDashboard.getInstance();
         final double speed = 0.75;
         methods.initialize(hardwareMap, telemetry);

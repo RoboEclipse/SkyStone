@@ -75,7 +75,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
+            RevBulkData encoderData = skystoneClass().expansionHub.getBulkInputData();
 
             telemetry.addData("OpModeIsActive", opModeStatus());
             //Drive motor controls
@@ -86,7 +86,7 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             double theta = Math.atan2(lx, ly);
             double v_theta = Math.sqrt(lx * lx + ly * ly);
             double v_rotation = gamepad1.right_stick_x;
-            myRobot.drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
+            skystoneClass().drive(theta,  speedMultiplier*v_theta, rotationMultiplier*v_rotation);
 
             autoRotate += 0.06*gamepad2.left_stick_y;
             autoGrab += 0.06*gamepad2.right_stick_y;
@@ -106,13 +106,13 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             autoGrab = Math.max(Math.min(1, autoGrab),0);
             frontReadyStone();
             backReadyStone();
-            //myRobot.foundationServo.setPosition(sideFoundation);
+            //skystoneClass.foundationServo.setPosition(sideFoundation);
 
 
             // Show the elapsed game time and wheel power.s
-            telemetry.addData("Limit Switch: ", myRobot.limitSwitch.getState());
-            telemetry.addData("Front Color: ", getHue(myRobot.frontColor));
-            telemetry.addData("Back Color: ", getHue(myRobot.backColor));
+            telemetry.addData("Limit Switch: ", skystoneClass().limitSwitch.getState());
+            telemetry.addData("Front Color: ", getHue(skystoneClass().frontColor));
+            telemetry.addData("Back Color: ", getHue(skystoneClass().backColor));
             telemetry.addData("AutoRotate", autoRotate);
             telemetry.addData("AutoGrab", autoGrab);
             telemetry.addData("HorizontalAngle", getHorizontalAngle());
@@ -120,9 +120,9 @@ public class SKYSTONEAutonomousSensorTest extends SKYSTONEAutonomousMethods {
             telemetry.addData("VerticalAngle", getVerticalAngle());
             telemetry.addData("Encoders: ", "lf: " + leftFrontEncoder() + ", lb: " + leftBackEncoder() +
                     ", rf: " + rightFrontEncoder() + ", rb: " + rightBackEncoder());
-            telemetry.addData("BackDistance: ", myRobot.getBackDistance());
-            telemetry.addData("FrontDistance: ", myRobot.getFrontDistance());
-            telemetry.addData("LeftDistance: ", myRobot.getLeftDistance());
+            telemetry.addData("BackDistance: ", skystoneClass().getBackDistance());
+            telemetry.addData("FrontDistance: ", skystoneClass().getFrontDistance());
+            telemetry.addData("LeftDistance: ", skystoneClass().getLeftDistance());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("LeftStickY", gamepad1.left_stick_y);
             telemetry.addData("RightStickY", gamepad1.right_stick_y);
