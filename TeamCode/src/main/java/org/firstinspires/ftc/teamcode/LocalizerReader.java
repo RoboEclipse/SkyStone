@@ -74,6 +74,7 @@ public class LocalizerReader extends Thread {
         this.onStop = null;
         this.transitionTo = null;
         this.opModeManager = null;
+        this.localizer = null;
     }
 
     /**

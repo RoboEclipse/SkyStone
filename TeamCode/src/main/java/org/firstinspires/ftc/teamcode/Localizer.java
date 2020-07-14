@@ -22,9 +22,7 @@ public class Localizer {
     volatile double opticalX = 0;
     volatile double opticalY = 0;
 
-    //Kinematics Ratio with Encoder
-    public static double strafeRatio = 0.9;
-    public static double straightRatio = 1.1;
+
 
     private SKYSTONEDrivetrainClass myRobot;
     private boolean encoder = false;
@@ -99,11 +97,16 @@ public class Localizer {
         double newDiffEncoderX = diffEncoderX(prevData, encoderData);
         double newDiffEncoderY = diffEncoderY(prevData, encoderData);
         //Estimate position of robot
-        double encoderX = strafeRatio * newDiffEncoderX + x;
-        double encoderY = straightRatio * newDiffEncoderY + y;
+        double encoderX = newDiffEncoderX + x;
+        double encoderY = newDiffEncoderY + y;
         //Manual
-        x = encoderX;
-        y = encoderY;
+
+        if (!Double.isNaN(encoderX)) {
+            x = encoderX;
+        }
+        if (!Double.isNaN(encoderY)) {
+            y = encoderY;
+        }
         Log.d("Skystone:: ", "lf: " + lfPosition + " lb: " + lbPosition + " rf: " + rfPosition + " rb: " + rbPosition);
         /*
         if (!encoder) {
@@ -231,7 +234,7 @@ public class Localizer {
                 opticalX = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
                 break;
         }
-        if(Math.abs(opticalX-x) < 5){
+        if(Math.abs(opticalX-x) < 10){
             Log.d("Skystone", "Updated to OpticalX: " + opticalX + " PreviousX: " + x);
             x = opticalX;
         }
@@ -250,7 +253,7 @@ public class Localizer {
                 opticalY = SKYSTONEAutonomousConstants.fieldSize - myRobot.backDistance.getDistance(DistanceUnit.INCH);
                 break;
         }
-        if(Math.abs(opticalY-y) < 5){
+        if(Math.abs(opticalY-y) < 10){
             Log.d("Skystone", "Updated to OpticalY: " + opticalY + " PreviousY: " + y);
             y = opticalY;
         }
@@ -302,11 +305,17 @@ public class Localizer {
     boolean getEncoderOnly(){
         return encoder;
     }
-
+    /*
     public void averageDiffs() {
         double xSum = 0;
         double ySum = 0;
         double size = ALPIP.size();
+
+        if (size == 0)
+        {
+            // TODO log.
+            return;
+        }
         for (int i = 0; i < size; i++) {
             xSum = xSum + ALPIP.get(i).rX;
             ySum = ySum + ALPIP.get(i).rY;
@@ -315,7 +324,7 @@ public class Localizer {
         straightRatio = ySum / size;
         Log.d("Skystone:: ", "strafeRatio: " + strafeRatio + " straightRatio: " + straightRatio);
     }
-
+    */
 
     public void dashboardGraphing(){
         if (dashboard != null){

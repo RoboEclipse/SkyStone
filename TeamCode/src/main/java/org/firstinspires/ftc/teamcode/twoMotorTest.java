@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -56,8 +57,9 @@ public class twoMotorTest extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+    private DcMotor leftDrive, rightDrive;
+    private Servo testServo;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -70,7 +72,10 @@ public class twoMotorTest extends OpMode
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "motor1");
-        rightDrive = hardwareMap.get(DcMotor.class, "motor2");
+        //or
+        rightDrive = hardwareMap.dcMotor.get("motor2");
+
+        testServo = hardwareMap.servo.get("servo");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -102,22 +107,27 @@ public class twoMotorTest extends OpMode
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
+        double servoPosition = 0;
 
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
-
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        leftPower  = -gamepad1.left_stick_y ;
-        rightPower = leftPower;
+        leftPower  = -gamepad1.left_stick_y;
+        rightPower = -gamepad1.right_stick_y;
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
 
+        if(gamepad1.dpad_up){
+            servoPosition += 0.03;
+        }
+        if(gamepad1.dpad_down){
+            servoPosition -= 0.03;
+        }
+        testServo.setPosition(servoPosition);
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Servo", "Servo Position: " + servoPosition);
     }
 
     /*

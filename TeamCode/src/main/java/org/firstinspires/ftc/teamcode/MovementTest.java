@@ -29,10 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 /**
@@ -69,12 +73,16 @@ public class MovementTest extends AutonomousMethods {
 
         final double speed = 0.75;
         initializeDrivetrain(hardwareMap, telemetry, this.myRobot);
-        localizer.setCoordinates(144,28);
         // Wait for the game to start (driver presses PLAY)
         //methods.waitForStart2();
         while (!isStarted()) {
             synchronized (this) {
                 try {
+                    double x = SKYSTONEAutonomousConstants.fieldSize - myRobot.leftDistance.getDistance(DistanceUnit.INCH);
+                    double y = myRobot.backDistance.getDistance(DistanceUnit.INCH);
+                    localizer.setCoordinates(x, y);
+                    Log.d("Skystone", "x: " + localizer.getX());
+                    Log.d("Skystone", "y: " + localizer.getY());
                     this.wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -86,12 +94,13 @@ public class MovementTest extends AutonomousMethods {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
             localizer.useEncoderOnlyToggle(false);
             directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, true,2, 0);
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
             directionalDrive(144, 28, true,2, 0);
             localizer.useEncoderOnlyToggle(true);
-            localizer.averageDiffs();
+            //localizer.averageDiffs();
             directionalDrive(SKYSTONEAutonomousConstants.stoneGrabXRed, SKYSTONEAutonomousConstants.stoneGrabY, true,2, 0);
             directionalDrive(SKYSTONEAutonomousConstants.stoneAwayXRed, SKYSTONEAutonomousConstants.stoneAwayY, true,2, 0);
             directionalDrive(144, 28, true,2, 0);

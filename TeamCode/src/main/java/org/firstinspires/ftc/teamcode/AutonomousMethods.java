@@ -43,9 +43,13 @@ abstract class AutonomousMethods extends LinearOpMode {
     void initializeDrivetrain(HardwareMap hardwareMap, Telemetry telemetry, SKYSTONEDrivetrainClass inputRobot){
         myRobot = inputRobot;
         myRobot.initializeDriveTrain(hardwareMap, telemetry);
+        //Create localizer and localizerReader
         localizer = new Localizer(this.myRobot);
         localizerReader = LocalizerReader.INSTANCE;
+        //Bind localizerReader to localizer
         localizerReader.setLocalizer(localizer);
+        //Bind localizer to autoTransition
+        LocalizerReader.transitionOnStop(this, "");
         this.telemetry = telemetry;
 
     }
@@ -417,7 +421,10 @@ abstract class AutonomousMethods extends LinearOpMode {
         double totalDistance;
         RevBulkData prevData = myRobot.expansionHub.getBulkInputData();
         ElapsedTime clock = new ElapsedTime();
+
+        //Check if movement is needed
         if(opModeIsActive()){
+            //Determine distance and log it
             t1 = clock.nanoseconds();
             xDis = targetX - localizer.getX();
             yDis = targetY - localizer.getY();
@@ -427,16 +434,28 @@ abstract class AutonomousMethods extends LinearOpMode {
                             + localizer.getX() + "," + localizer.getY() + ")");
 
         }
+
+        //While movement is needed
         while((Math.abs(yDis)>tolerance || Math.abs(xDis)>tolerance) && opModeIsActive()){
+            //Kinematics Ratio with Encoder
+            double strafeRatio = 0.9;
+            double straightRatio = 1.1;
+            //Defining constants
+            double xI = 0;
+            double yI = 0;
             double kR;
             double kP;
             double kD;
             double kI;
+            //Setting constants
+            //If using only encoders (backup option)
             if(localizer.getEncoderOnly()){
                 kR = SKYSTONEAutonomousConstants.ekR;
                 kP = SKYSTONEAutonomousConstants.ekP;
                 kD = SKYSTONEAutonomousConstants.ekD;
+                kI = 0.01;
             }
+            //If using distance sensors (main option)
             else{
                 kR = SKYSTONEAutonomousConstants.ddkR;
                 kP = SKYSTONEAutonomousConstants.ddkP;
@@ -444,15 +463,24 @@ abstract class AutonomousMethods extends LinearOpMode {
                 kI = 0.01;
             }
             //Start of update
+            //create a BulkData instance to more quickly display encoder data
             RevBulkData encoderData = myRobot.expansionHub.getBulkInputData();
+            //Calculate time elapsed since last update
+            double t2 = clock.nanoseconds();
+            dt = t2-t1;
+            //Calculate the current error in angle
             currentAngle = loopAround(localizer.getAngle());
             currentError = targetAngle - currentAngle;
+            //Determine what to plug in as "rotation velocity" by multiplying error by the constant kR
             rotationVelocity = currentError * kR;
+            //Update data (encoders, gyro, distance sensor etc)
             localizer.update(prevData, encoderData);
-
+            //Add stats to telemetry, if any stats are available
             if (dashboard != null && localizer.ALPIP.size() != 0) {
+                //Add the ratios of how far the robot needs to move on the x axis compared to the y one
                 packet.put("xRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rX);
                 packet.put("yRatio", localizer.ALPIP.get(localizer.ALPIP.size() - 1).rY);
+                //Add the current position of the robot on the coordinate system/
                 packet.put("x", localizer.getX());
                 packet.put("y", localizer.getY());
                 //packet.fieldOverlay().setFill("black").fillCircle(x, y, 1);
@@ -460,44 +488,61 @@ abstract class AutonomousMethods extends LinearOpMode {
             }
 
             //End of update
-            double t2 = clock.nanoseconds();
-            dt = t2-t1;
             xDis = targetX - localizer.getX();
             yDis = targetY - localizer.getY();
 
             Log.d("Skystone:", "GyroError: " + rotationVelocity);
             double angle;
+            //If using PID loop
             if(PID) {
+                //Determine total distance from target position
                 totalDistance = Math.sqrt(xDis*xDis+yDis*yDis);
                 //double dXDis = (xRaw-previousX)/dt*Math.pow(10,9);
                 //double dYDis = (yRaw-previousY)/dt*Math.pow(10,9);
 
+                //Determine the derivative value (multiplies velocity of motor by derivative constant)
+                //Note: Always uses encoders due to slow update rate and occasional spikes with distance sensors.
                 double dY = localizer.getdY(encoderData);
                 double dX = localizer.getdX(encoderData);
 
-                double xVelocity = maxVelocity * getPD(xDis, dX, kP, kD);
-                double yVelocity = maxVelocity * getPD(yDis, dY, kP, kD);
+                //Update the integral value by adding the integral value of the current update to the total integral
+                //Change in time * change in distance
+                xI += dt*xDis;
+                yI += dt*yDis;
+                //Determine the velocities based on P, I and D inputs
+                double xVelocity = maxVelocity * getPID(xDis, dX, xI, kD, kP, kI) * strafeRatio;
+                double yVelocity = maxVelocity * getPID(yDis, dY, yI, kD, kP, kI) * straightRatio;
+                //Convert these velocities into an angle that can be taken by free drive
                 angle = Math.atan2(xVelocity * SKYSTONEAutonomousConstants.lateralFactor, yVelocity);
 
-                velocity = Math.min (1, /*SKYSTONEAutonomousConstants.minimumPower +*/ Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity));
+                //Cap max velocity at one
+                velocity = Math.min (1, /*SKYSTONEAutonomousConstants.minimumPower +*/Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity));
 
+                //Log everything
                 Log.d("Skystone", "Distance error = " + totalDistance + " Change in xDistance error = " + dX + " Change in yDistance error = " + dY + " dt = " + dt);
                 Log.d("Skystone:", " Proportional Action = " + totalDistance*kP + " xVelocity = " + xVelocity + " yVelocity = " + yVelocity);
                 Log.d("Skystone", " kP: " + kP + "kD: " + kD + " kR: " + kR);
                 Log.d("IAX", "Time: " + clock.seconds() + " XError: " + xDis + " kP: " + kP + " kD: " +
-                        kD + " xVelocity: " + xVelocity + " pxChange: " + xDis*kP + " dxChange: " + dX*kD);
+                        kD + " xVelocity: " + xVelocity + " pxChange: " + xDis*kP + " dxChange: " + dX*kD + "xIntegral: " + xI);
                 Log.d("IAY", "Time: " + clock.seconds() + " YError: " + yDis + " kP: " + kP + " kD: " +
-                        kD + " yVelocity: " + yVelocity + " pyChange: " + yDis*kP + " dyChange: " + dY*kD);
-            } else{
+                        kD + " yVelocity: " + yVelocity + " pyChange: " + yDis*kP + " dyChange: " + dY*kD + "yIntegral: " + yI);
+            }
+            //If not using PID
+            else{
+                //Determine angle based on distance alone.
                 angle = Math.atan2(xDis * SKYSTONEAutonomousConstants.lateralFactor ,yDis);
             }
+            //Create a variable to store end time of this update/start time of next update
             t1=t2;
 
+            //Adjust based on which corner of the field the robot is in.
             if(localizer.getCorner() == Localizer.Corner.RIGHT_UP
                     || localizer.getCorner() == Localizer.Corner.RIGHT_DOWN){
                 angle = Math.PI+angle;
             }
+            //Drive based on the determined angle, velocity and rotation velocity.
             freeDrive(angle, velocity, rotationVelocity);
+            //Log the angle, velocity and rotation velocity
             Log.d("Skystone: ", "Skystone Angle: "+ (angle*180/Math.PI) + "Velocity: " + velocity+ " RotationVelocity" + rotationVelocity);
             prevData = encoderData;
         }
@@ -507,8 +552,9 @@ abstract class AutonomousMethods extends LinearOpMode {
         return Math.min(1,Math.abs(error)*kP);
     }
 
-    double getPD(double error, double dError, double kP, double kD){
-        return error*kP + dError*kD;
+    double getPID(double error, double dError, double I, double kD, double kP, double kI){
+        //Error * Proportion constant + Change in Error (Derivative of Error vs Time) * Derivative Constant + Total Distance Traveled (Integral of Error vs Time) * Integral Constant
+        return error*kP + dError*kD + I*kI;
     }
 
     void freeDrive(double direction, double velocity, double rotationVelocity){
