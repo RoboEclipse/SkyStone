@@ -441,8 +441,8 @@ abstract class AutonomousMethods extends LinearOpMode {
             double strafeRatio = 0.9;
             double straightRatio = 1.1;
             //Defining constants
-            double xI = 0;
-            double yI = 0;
+            double xI = 0.003;
+            double yI = 0.003;
             double kR;
             double kP;
             double kD;
