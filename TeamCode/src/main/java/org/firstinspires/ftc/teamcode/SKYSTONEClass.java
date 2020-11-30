@@ -12,11 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.openftc.revextensions2.ExpansionHubEx;
-import org.openftc.revextensions2.ExpansionHubMotor;
-import org.openftc.revextensions2.RevBulkData;
 
 import java.util.List;
 import java.util.Locale;
@@ -44,12 +40,12 @@ public class SKYSTONEClass extends SKYSTONEDrivetrainClass{
     //private SKYSTONEConstants skystoneConstants = new SKYSTONEConstants();
 
     //Backend
-    void initialize(HardwareMap hardwareMap, Telemetry telemetry_){
+    void initializeDriveTrain(HardwareMap hardwareMap, Telemetry telemetry_){
         telemetry = telemetry_;
         FtcDashboard dashboard = FtcDashboard.getInstance();
 
         //HardwareMaps
-        initializeDriveTrain(hardwareMap, telemetry_);
+        super.initializeDriveTrain(hardwareMap, telemetry_);
         /*
         lb.setDirection(DcMotorSimple.Direction.FORWARD);
         lf.setDirection(DcMotorSimple.Direction.FORWARD);

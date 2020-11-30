@@ -79,7 +79,7 @@ public class TurnTest extends LinearOpMode {
     };
 
     void initialize(HardwareMap hardwareMap, Telemetry telemetry) {
-        myRobot.initialize(hardwareMap, telemetry);
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
 
         this.telemetry = telemetry;
         //Sensors

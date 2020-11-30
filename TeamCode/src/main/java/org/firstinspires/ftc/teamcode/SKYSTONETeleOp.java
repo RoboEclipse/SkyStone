@@ -58,7 +58,7 @@ public class SKYSTONETeleOp extends OpMode
      */
     @Override
     public void init() {
-        myRobot.initialize(hardwareMap, telemetry);
+        myRobot.initializeDriveTrain(hardwareMap, telemetry);
         myRobot.frontColor.enableLed(false);
         myRobot.backColor.enableLed(false);
         myRobot.frontColor.red();
